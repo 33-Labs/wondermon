@@ -73,6 +73,11 @@ class FlowService {
     4: false
   }
 
+  static async getOnchainInfo(address, flovatarId) {
+
+
+  }
+
   static async generateFlowAccounts() {
     const accounts = await prisma.flowAccount.findMany({
       where: { userId: null }
@@ -255,6 +260,7 @@ class FlowService {
     import MetadataViews from 0x1d7e57aa55817448
     import Flovatar from 0x921ea449dffec68a
     import FlovatarComponent from 0x921ea449dffec68a
+    import SloppyStakes from 0x53f389d96fb4ce5e
     
     transaction(name: String, publicKeyHex: String) {
         prepare(signer: AuthAccount) {
@@ -295,6 +301,13 @@ class FlowService {
             account.save(<- FlovatarComponent.createEmptyCollection(), to: FlovatarComponent.CollectionStoragePath)
             account.unlink(FlovatarComponent.CollectionPublicPath)
             account.link<&FlovatarComponent.Collection{NonFungibleToken.CollectionPublic, NonFungibleToken.Receiver, MetadataViews.ResolverCollection, FlovatarComponent.CollectionPublic}>(FlovatarComponent.CollectionPublicPath, target: FlovatarComponent.CollectionStoragePath) 
+
+            // setup LOPPY token
+            if signer.borrow<&FungibleToken.Vault>(from: /storage/SloppyStakesVault) == nil {
+              signer.save(<- SloppyStakes.createEmptyVault(), to: /storage/SloppyStakesVault)
+              signer.link<&SloppyStakes.Vault{FungibleToken.Balance}>(/public/SloppyStakesMetadata, target: /storage/SloppyStakesVault)
+              signer.link<&SloppyStakes.Vault{FungibleToken.Receiver}>(/public/SloppyStakesReceiver, target: /storage/SloppyStakesVault)
+            }
         }
     }
     `

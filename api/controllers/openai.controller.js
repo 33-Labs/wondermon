@@ -7,7 +7,15 @@ class OpenaiController {
       // const message = new ChatMessage(req.body.message, 'Human')
       // console.log(message)
       // const prompt = {name: 'Human', text: req.body.message, role: 'human'}
-      const data = await OpenaiService.chat([], req.body.prompt);
+
+      // const flowAddress = req.body.flowAddress
+      const user = req.user.payload
+      const flowAddress = user.flowAccount.address
+      const flovatarId = req.body.flovatarId
+      console.log(flowAddress, flovatarId)
+      const messages = []
+      // const data = await OpenaiService.chat(messages, req.body.prompt);
+      const data = 'yes'
       res.status(200).json({
         status: 0,
         message: 'success',
