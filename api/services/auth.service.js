@@ -125,7 +125,6 @@ class AuthService {
       }
       return user
     }
-    
 }
 
 module.exports = AuthService;

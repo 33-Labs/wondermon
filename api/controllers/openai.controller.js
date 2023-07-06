@@ -6,8 +6,8 @@ class OpenaiController {
     try {
       // const message = new ChatMessage(req.body.message, 'Human')
       // console.log(message)
-      const message = {name: 'Human', text: req.body.message, role: 'human'}
-      const data = await OpenaiService.chat([], req.body.message);
+      // const prompt = {name: 'Human', text: req.body.message, role: 'human'}
+      const data = await OpenaiService.chat([], req.body.prompt);
       res.status(200).json({
         status: 0,
         message: 'success',
