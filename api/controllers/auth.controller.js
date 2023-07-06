@@ -1,7 +1,7 @@
-const auth = require('../services/auth.service');
+const AuthService = require('../services/auth.service');
 const createError = require('http-errors');
 
-class authController {
+class AuthController {
 
     static validateEmail = (email) => {
       return String(email)
@@ -19,7 +19,7 @@ class authController {
               throw {statusCode: 422, message: "invalid params"}
             }
 
-            const user = await auth.register(req.body)
+            const user = await AuthService.register(req.body)
             res.status(200).json({
                 status: true,
                 message: 'User created successfully',
@@ -36,7 +36,7 @@ class authController {
     static login = async (req, res, next) => {
 
          try {
-            const data = await auth.login(req.body)
+            const data = await AuthService.login(req.body)
             res.status(200).json({
                 status: true,
                 message: "Account login successful",
@@ -49,7 +49,7 @@ class authController {
 
     static all = async (req, res, next) => {
         try {
-            const users = await auth.all();
+            const users = await AuthService.all();
             res.status(200).json({
                 status: true,
                 message: 'All users',
@@ -61,4 +61,4 @@ class authController {
     }
 }
 
-module.exports = authController
+module.exports = AuthController

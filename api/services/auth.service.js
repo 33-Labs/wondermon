@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('../utils/jwt')
 const createError = require('http-errors')
 
-class authService {
+class AuthService {
 
     static async registerOrLogin(userData) {
       const { name, email } = userData
@@ -128,4 +128,4 @@ class authService {
     
 }
 
-module.exports = authService;
+module.exports = AuthService;

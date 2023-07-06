@@ -11,7 +11,7 @@ utils.switchToMainnet()
 const WondermonPath = "0xWondermon"
 const WondermonAddress = process.env.ADMIN_ADDRESS
 
-class flowService {
+class FlowService {
   static encryptPrivateKey(key) {
     const secret = process.env.SECRET_PASSPHRASE
     const encrypted = CryptoJS.AES.encrypt(key, secret).toString()
@@ -304,4 +304,4 @@ class flowService {
   }
 }
 
-module.exports = flowService
+module.exports = FlowService
