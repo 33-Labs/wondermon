@@ -16,15 +16,44 @@ class OpenaiController {
       console.log(flowAddress, flovatarId)
       const messages = []
       const onchainData = await FlowService.getOnchainInfo(flowAddress, flovatarId)
-      const data = await OpenaiService.chat(messages, req.body.prompt, onchainData);
+      const aiMessage = await OpenaiService.chat(messages, req.body.prompt, onchainData);
+      const { message, command } = this.extractCommand(aiMessage);
+
+      this.executeCommand(command, onchainData);
+
       res.status(200).json({
         status: 0,
         message: 'success',
-        data: data,
+        data: message,
       });
     } catch (e) {
       console.log(e);
       next(createError.InternalServerError(e.message));
+    }
+  }
+
+  static async executeCommand(command, onchainData) {
+    if (command.action == 'change_flobits') {
+
+    }
+  }
+
+  static extractCommand(message) {
+    const regex = /(COMMAND: \[.*?\])/g;
+    const matches = message.match(regex);
+    
+    let result = message;
+    let command = null
+    if (matches) {
+      for (const match of matches) {
+        command = match.replace(/COMMAND: \[(.*?)\]/, "$1");
+        result = result.replace(match, "");
+      }
+    }
+
+    return {
+      message: result,
+      command: command
     }
   }
 }
