@@ -1,0 +1,607 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		91C1F8612A5817DD00607776 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8602A5817DD00607776 /* AppDelegate.swift */; };
+		91C1F8632A5817DD00607776 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8622A5817DD00607776 /* SceneDelegate.swift */; };
+		91C1F8652A5817DD00607776 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8642A5817DD00607776 /* ViewController.swift */; };
+		91C1F8682A5817DD00607776 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8662A5817DD00607776 /* Main.storyboard */; };
+		91C1F86A2A5817DE00607776 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8692A5817DE00607776 /* Assets.xcassets */; };
+		91C1F86D2A5817DE00607776 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F86B2A5817DE00607776 /* LaunchScreen.storyboard */; };
+		91C1F8782A5817DE00607776 /* WondermonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8772A5817DE00607776 /* WondermonTests.swift */; };
+		91C1F8822A5817DE00607776 /* WondermonUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8812A5817DE00607776 /* WondermonUITests.swift */; };
+		91C1F8842A5817DE00607776 /* WondermonUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8832A5817DE00607776 /* WondermonUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		91C1F8742A5817DE00607776 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 91C1F8552A5817DD00607776 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 91C1F85C2A5817DD00607776;
+			remoteInfo = Wondermon;
+		};
+		91C1F87E2A5817DE00607776 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 91C1F8552A5817DD00607776 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 91C1F85C2A5817DD00607776;
+			remoteInfo = Wondermon;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		91C1F85D2A5817DD00607776 /* Wondermon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wondermon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		91C1F8602A5817DD00607776 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		91C1F8622A5817DD00607776 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		91C1F8642A5817DD00607776 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		91C1F8672A5817DD00607776 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		91C1F8692A5817DE00607776 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		91C1F86C2A5817DE00607776 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		91C1F86E2A5817DE00607776 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		91C1F8732A5817DE00607776 /* WondermonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WondermonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		91C1F8772A5817DE00607776 /* WondermonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WondermonTests.swift; sourceTree = "<group>"; };
+		91C1F87D2A5817DE00607776 /* WondermonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WondermonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		91C1F8812A5817DE00607776 /* WondermonUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WondermonUITests.swift; sourceTree = "<group>"; };
+		91C1F8832A5817DE00607776 /* WondermonUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WondermonUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		91C1F85A2A5817DD00607776 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91C1F8702A5817DE00607776 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91C1F87A2A5817DE00607776 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		91C1F8542A5817DD00607776 = {
+			isa = PBXGroup;
+			children = (
+				91C1F85F2A5817DD00607776 /* Wondermon */,
+				91C1F8762A5817DE00607776 /* WondermonTests */,
+				91C1F8802A5817DE00607776 /* WondermonUITests */,
+				91C1F85E2A5817DD00607776 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		91C1F85E2A5817DD00607776 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				91C1F85D2A5817DD00607776 /* Wondermon.app */,
+				91C1F8732A5817DE00607776 /* WondermonTests.xctest */,
+				91C1F87D2A5817DE00607776 /* WondermonUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		91C1F85F2A5817DD00607776 /* Wondermon */ = {
+			isa = PBXGroup;
+			children = (
+				91C1F8602A5817DD00607776 /* AppDelegate.swift */,
+				91C1F8622A5817DD00607776 /* SceneDelegate.swift */,
+				91C1F8642A5817DD00607776 /* ViewController.swift */,
+				91C1F8662A5817DD00607776 /* Main.storyboard */,
+				91C1F8692A5817DE00607776 /* Assets.xcassets */,
+				91C1F86B2A5817DE00607776 /* LaunchScreen.storyboard */,
+				91C1F86E2A5817DE00607776 /* Info.plist */,
+			);
+			path = Wondermon;
+			sourceTree = "<group>";
+		};
+		91C1F8762A5817DE00607776 /* WondermonTests */ = {
+			isa = PBXGroup;
+			children = (
+				91C1F8772A5817DE00607776 /* WondermonTests.swift */,
+			);
+			path = WondermonTests;
+			sourceTree = "<group>";
+		};
+		91C1F8802A5817DE00607776 /* WondermonUITests */ = {
+			isa = PBXGroup;
+			children = (
+				91C1F8812A5817DE00607776 /* WondermonUITests.swift */,
+				91C1F8832A5817DE00607776 /* WondermonUITestsLaunchTests.swift */,
+			);
+			path = WondermonUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		91C1F85C2A5817DD00607776 /* Wondermon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91C1F8872A5817DE00607776 /* Build configuration list for PBXNativeTarget "Wondermon" */;
+			buildPhases = (
+				91C1F8592A5817DD00607776 /* Sources */,
+				91C1F85A2A5817DD00607776 /* Frameworks */,
+				91C1F85B2A5817DD00607776 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Wondermon;
+			productName = Wondermon;
+			productReference = 91C1F85D2A5817DD00607776 /* Wondermon.app */;
+			productType = "com.apple.product-type.application";
+		};
+		91C1F8722A5817DE00607776 /* WondermonTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91C1F88A2A5817DE00607776 /* Build configuration list for PBXNativeTarget "WondermonTests" */;
+			buildPhases = (
+				91C1F86F2A5817DE00607776 /* Sources */,
+				91C1F8702A5817DE00607776 /* Frameworks */,
+				91C1F8712A5817DE00607776 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				91C1F8752A5817DE00607776 /* PBXTargetDependency */,
+			);
+			name = WondermonTests;
+			productName = WondermonTests;
+			productReference = 91C1F8732A5817DE00607776 /* WondermonTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		91C1F87C2A5817DE00607776 /* WondermonUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91C1F88D2A5817DE00607776 /* Build configuration list for PBXNativeTarget "WondermonUITests" */;
+			buildPhases = (
+				91C1F8792A5817DE00607776 /* Sources */,
+				91C1F87A2A5817DE00607776 /* Frameworks */,
+				91C1F87B2A5817DE00607776 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				91C1F87F2A5817DE00607776 /* PBXTargetDependency */,
+			);
+			name = WondermonUITests;
+			productName = WondermonUITests;
+			productReference = 91C1F87D2A5817DE00607776 /* WondermonUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		91C1F8552A5817DD00607776 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					91C1F85C2A5817DD00607776 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+					91C1F8722A5817DE00607776 = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 91C1F85C2A5817DD00607776;
+					};
+					91C1F87C2A5817DE00607776 = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = 91C1F85C2A5817DD00607776;
+					};
+				};
+			};
+			buildConfigurationList = 91C1F8582A5817DD00607776 /* Build configuration list for PBXProject "Wondermon" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 91C1F8542A5817DD00607776;
+			productRefGroup = 91C1F85E2A5817DD00607776 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				91C1F85C2A5817DD00607776 /* Wondermon */,
+				91C1F8722A5817DE00607776 /* WondermonTests */,
+				91C1F87C2A5817DE00607776 /* WondermonUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		91C1F85B2A5817DD00607776 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91C1F86D2A5817DE00607776 /* LaunchScreen.storyboard in Resources */,
+				91C1F86A2A5817DE00607776 /* Assets.xcassets in Resources */,
+				91C1F8682A5817DD00607776 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91C1F8712A5817DE00607776 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91C1F87B2A5817DE00607776 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		91C1F8592A5817DD00607776 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91C1F8652A5817DD00607776 /* ViewController.swift in Sources */,
+				91C1F8612A5817DD00607776 /* AppDelegate.swift in Sources */,
+				91C1F8632A5817DD00607776 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91C1F86F2A5817DE00607776 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91C1F8782A5817DE00607776 /* WondermonTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		91C1F8792A5817DE00607776 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91C1F8842A5817DE00607776 /* WondermonUITestsLaunchTests.swift in Sources */,
+				91C1F8822A5817DE00607776 /* WondermonUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		91C1F8752A5817DE00607776 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 91C1F85C2A5817DD00607776 /* Wondermon */;
+			targetProxy = 91C1F8742A5817DE00607776 /* PBXContainerItemProxy */;
+		};
+		91C1F87F2A5817DE00607776 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 91C1F85C2A5817DD00607776 /* Wondermon */;
+			targetProxy = 91C1F87E2A5817DE00607776 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		91C1F8662A5817DD00607776 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				91C1F8672A5817DD00607776 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		91C1F86B2A5817DE00607776 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				91C1F86C2A5817DE00607776 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		91C1F8852A5817DE00607776 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		91C1F8862A5817DE00607776 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		91C1F8882A5817DE00607776 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y2VDUB37Q5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Wondermon/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lanford.work.Wondermon;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		91C1F8892A5817DE00607776 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y2VDUB37Q5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Wondermon/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lanford.work.Wondermon;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		91C1F88B2A5817DE00607776 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y2VDUB37Q5;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lanford.work.WondermonTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wondermon.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Wondermon";
+			};
+			name = Debug;
+		};
+		91C1F88C2A5817DE00607776 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y2VDUB37Q5;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lanford.work.WondermonTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wondermon.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Wondermon";
+			};
+			name = Release;
+		};
+		91C1F88E2A5817DE00607776 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y2VDUB37Q5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lanford.work.WondermonUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Wondermon;
+			};
+			name = Debug;
+		};
+		91C1F88F2A5817DE00607776 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y2VDUB37Q5;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lanford.work.WondermonUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Wondermon;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		91C1F8582A5817DD00607776 /* Build configuration list for PBXProject "Wondermon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91C1F8852A5817DE00607776 /* Debug */,
+				91C1F8862A5817DE00607776 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		91C1F8872A5817DE00607776 /* Build configuration list for PBXNativeTarget "Wondermon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91C1F8882A5817DE00607776 /* Debug */,
+				91C1F8892A5817DE00607776 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		91C1F88A2A5817DE00607776 /* Build configuration list for PBXNativeTarget "WondermonTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91C1F88B2A5817DE00607776 /* Debug */,
+				91C1F88C2A5817DE00607776 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		91C1F88D2A5817DE00607776 /* Build configuration list for PBXNativeTarget "WondermonUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				91C1F88E2A5817DE00607776 /* Debug */,
+				91C1F88F2A5817DE00607776 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 91C1F8552A5817DD00607776 /* Project object */;
+}
