@@ -73,6 +73,138 @@ class FlowService {
     4: false
   }
 
+  static async setFlobit(userData, flovatarId, flobitId) {
+    const { email } = userData
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { flowAccount: true }
+    })
+
+    if (!user) {
+      throw createError.NotFound('User not found')
+    }
+
+    if (!user.flowAccount) {
+      throw createError.NotFound('flow account not found')
+    }
+
+    let signer = await this.getUserSigner(user.flowAccount)
+    let code = `
+    import Flovatar, FlovatarComponent from 0x921ea449dffec68a
+
+    transaction(flovatarId: UInt64, flobitsId: UInt64) {
+      let flovatarCollection: &Flovatar.Collection
+      let flovatarComponentCollection: &FlovatarComponent.Collection
+      let flobitsNFT: @FlovatarComponent.NFT
+    
+      prepare(account: AuthAccount) {
+        self.flovatarCollection = account.borrow<&Flovatar.Collection>(from: Flovatar.CollectionStoragePath)!
+        self.flovatarComponentCollection = account.borrow<&FlovatarComponent.Collection>(from: FlovatarComponent.CollectionStoragePath)!
+        self.flobitsNFT <- self.flovatarComponentCollection.withdraw(withdrawID: flobitsId) as! @FlovatarComponent.NFT
+      }
+    
+      execute {
+        let flovatar: &{Flovatar.Private} = self.flovatarCollection.borrowFlovatarPrivate(id: flovatarId)!
+        let category = self.flobitsNFT.getCategory()
+        var oldFlobits: @FlovatarComponent.NFT? <- nil
+        if category == "hat" {
+          oldFlobits <-! flovatar.setHat(component: <-self.flobitsNFT)
+        } else if category == "eyeglasses" {
+          oldFlobits <-! flovatar.setEyeglasses(component: <-self.flobitsNFT)
+        } else if category == "background" {
+          oldFlobits <-! flovatar.setBackground(component: <-self.flobitsNFT)
+        } else if category == "accessory" {
+          oldFlobits <-! flovatar.setAccessory(component: <-self.flobitsNFT)
+        } else {
+          panic("Invalid category")
+        }
+    
+        if oldFlobits != nil {
+            self.flovatarComponentCollection.deposit(token: <-oldFlobits!)
+        } else {
+            destroy oldFlobits
+        }
+      }
+    }
+    `
+
+    try {
+      const txid = await signer.sendTransaction(code, (arg, t) => [
+        arg(`${flovatarId}`, t.UInt64),
+        arg(`${flobitId}`, t.UInt64),
+      ])
+
+      return txid
+    } catch (e) {
+      throw { statusCode: 500, message: `set flobit failed ${e}` }
+    }
+  }
+
+  static async removeFlobit(userData, flovatarId, category) {
+    const { email } = userData
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { flowAccount: true }
+    })
+
+    if (!user) {
+      throw createError.NotFound('User not found')
+    }
+
+    if (!user.flowAccount) {
+      throw createError.NotFound('flow account not found')
+    }
+
+    let signer = await this.getUserSigner(user.flowAccount)
+    let code = `
+    import Flovatar, FlovatarComponent from 0x921ea449dffec68a
+
+    transaction(flovatarId: UInt64, category: String) {
+    
+      let flovatarCollection: &Flovatar.Collection
+      let flovatarComponentCollection: &FlovatarComponent.Collection
+    
+      prepare(account: AuthAccount) {
+        self.flovatarCollection = account.borrow<&Flovatar.Collection>(from: Flovatar.CollectionStoragePath)!
+        self.flovatarComponentCollection = account.borrow<&FlovatarComponent.Collection>(from: FlovatarComponent.CollectionStoragePath)!
+      }
+    
+      execute {
+        let flovatar: &{Flovatar.Private} = self.flovatarCollection.borrowFlovatarPrivate(id: flovatarId)!
+        var oldFlobits: @FlovatarComponent.NFT? <- nil
+        if category == "hat" {
+          oldFlobits <-! flovatar.removeHat()
+        } else if category == "eyeglasses" {
+          oldFlobits <-! flovatar.removeEyeglasses()
+        } else if category == "background" {
+          oldFlobits <-! flovatar.removeBackground()
+        } else if category == "accessory" {
+          oldFlobits <-! flovatar.removeAccessory()
+        } else {
+          panic("Invalid category")
+        }
+    
+        if oldFlobits != nil {
+            self.flovatarComponentCollection.deposit(token: <-oldFlobits!)
+        } else {
+            destroy oldFlobits
+        }
+      }
+    }
+    `
+
+    try {
+      const txid = await signer.sendTransaction(code, (arg, t) => [
+        arg(`${flovatarId}`, t.UInt64),
+        arg(`${category}`, t.String),
+      ])
+
+      return txid
+    } catch (e) {
+      throw { statusCode: 500, message: `remove flobit failed ${e}` }
+    }
+  }
+
   static async getOnchainInfo(address, flovatarId) {
     let script = `
     import Flovatar from 0x921ea449dffec68a
@@ -81,6 +213,7 @@ class FlowService {
     import MetadataViews from 0x1d7e57aa55817448
     
     pub struct FlobitData {
+      pub let id: UInt64
       pub let templateId: UInt64
       pub let rarity: String
       pub let name: String
@@ -89,6 +222,7 @@ class FlowService {
       pub let color: String
     
       init(
+        id: UInt64,
         templateId: UInt64,
         rarity: String,
         name: String,
@@ -96,6 +230,7 @@ class FlowService {
         category: String,
         color: String
       ) {
+        self.id = id
         self.templateId = templateId
         self.rarity = rarity
         self.name = name
@@ -189,10 +324,24 @@ class FlowService {
         bio: rawFlovatarData.bio
       ) 
     
+      let flovatarCollectionRef = account.borrow<&Flovatar.Collection>(from: Flovatar.CollectionStoragePath)
+        ?? panic("Could not borrow flovatar collection reference")
+    
+      let flovatarPrivate = flovatarCollectionRef.borrowFlovatarPrivate(id: flovatarId)
+        ?? panic("Could not borrow flovatar private")
+    
       var accessoryData: FlobitData? = nil
       if let accessoryId = flovatarData.accessoryId {
+        var flobitId: UInt64 = 0
+        if let oldFlobit <- flovatarPrivate.removeAccessory() {
+          let ref = &oldFlobit as &FlovatarComponent.NFT
+          flobitId = ref.id
+          destroy oldFlobit
+        }
+    
         if let accessoryTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: accessoryId) {
           accessoryData = FlobitData(
+            id: flobitId,
             templateId: accessoryTemplateData.id,
             rarity: accessoryTemplateData.rarity,
             name: accessoryTemplateData.name,
@@ -205,8 +354,16 @@ class FlowService {
     
       var hatData: FlobitData? = nil
       if let hatId = flovatarData.hatId {
+        var flobitId: UInt64 = 0
+        if let oldFlobit <- flovatarPrivate.removeHat() {
+          let ref = &oldFlobit as &FlovatarComponent.NFT
+          flobitId = ref.id
+          destroy oldFlobit
+        }
+    
         if let hatTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: hatId) {
           hatData = FlobitData(
+            id: flobitId,
             templateId: hatTemplateData.id,
             rarity: hatTemplateData.rarity,
             name: hatTemplateData.name,
@@ -219,8 +376,16 @@ class FlowService {
     
       var eyeglassesData: FlobitData? = nil
       if let eyeglassesId = flovatarData.eyeglassesId {
+        var flobitId: UInt64 = 0
+        if let oldFlobit <- flovatarPrivate.removeEyeglasses() {
+          let ref = &oldFlobit as &FlovatarComponent.NFT
+          flobitId = ref.id
+          destroy oldFlobit
+        }
+    
         if let eyeglassesTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: eyeglassesId) {
           eyeglassesData = FlobitData(
+            id: flobitId,
             templateId: eyeglassesTemplateData.id,
             rarity: eyeglassesTemplateData.rarity,
             name: eyeglassesTemplateData.name,
@@ -233,8 +398,16 @@ class FlowService {
     
       var backgroundData: FlobitData? = nil
       if let backgroundId = flovatarData.backgroundId {
+        var flobitId: UInt64 = 0
+        if let oldFlobit <- flovatarPrivate.removeBackground() {
+          let ref = &oldFlobit as &FlovatarComponent.NFT
+          flobitId = ref.id
+          destroy oldFlobit
+        }
+    
         if let backgroundTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: backgroundId) {
           backgroundData = FlobitData(
+            id: flobitId,
             templateId: backgroundTemplateData.id,
             rarity: backgroundTemplateData.rarity,
             name: backgroundTemplateData.name,
@@ -264,11 +437,10 @@ class FlowService {
       cadence: script,
       args: (arg, t) => [
         arg(address, t.Address),
-        arg(flovatarId, t.UInt64)
+        arg(`${flovatarId}`, t.UInt64)
       ]
     })
 
-    onChainInfo.flovatarTraits.traits.map((t) => console.log(t))
     return onChainInfo
   }
 
