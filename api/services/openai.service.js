@@ -66,7 +66,8 @@ class OpenaiService {
     });
   
     const flovatarPrompt = this.generateFlovatarPrompt(onchainData)
-    const systemPrompt = this.getSystemPrompt("Flora", flovatarPrompt)
+    const name = onchainData.flovatarData.name || "Flora"
+    const systemPrompt = this.getSystemPrompt(name, flovatarPrompt)
     const chatPrompt = ChatPromptTemplate.fromPromptMessages([
       SystemMessagePromptTemplate.fromTemplate(systemPrompt),
       new MessagesPlaceholder("history"),
