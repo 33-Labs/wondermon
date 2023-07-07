@@ -76,183 +76,189 @@ class FlowService {
   static async getOnchainInfo(address, flovatarId) {
     let script = `
     import Flovatar from 0x921ea449dffec68a
-import FlovatarComponent from 0x921ea449dffec68a
-import FlovatarComponentTemplate from 0x921ea449dffec68a
-import MetadataViews from 0x1d7e57aa55817448
-
-pub struct FlobitData {
-  pub let templateId: UInt64
-  pub let rarity: String
-  pub let name: String
-  pub let description: String
-  pub let category: String
-  pub let color: String
-
-  init(
-    templateId: UInt64,
-    rarity: String,
-    name: String,
-    description: String,
-    category: String,
-    color: String
-  ) {
-    self.templateId = templateId
-    self.rarity = rarity
-    self.name = name
-    self.description = description
-    self.category = category
-    self.color = color
-  }
-}
-
-pub struct FlovatarData {
-  pub let id: UInt64
-  pub let name: String
-  pub let components: {String: UInt64}
-  pub let accessoryId: UInt64?
-  pub let hatId: UInt64?
-  pub let eyeglassesId: UInt64?
-  pub let backgroundId: UInt64?
-  pub let bio: {String: String}
-  init(
-      id: UInt64,
-      name: String,
-      components: {String: UInt64},
-      accessoryId: UInt64?,
-      hatId: UInt64?,
-      eyeglassesId: UInt64?,
-      backgroundId: UInt64?,
-      bio: {String: String}
+    import FlovatarComponent from 0x921ea449dffec68a
+    import FlovatarComponentTemplate from 0x921ea449dffec68a
+    import MetadataViews from 0x1d7e57aa55817448
+    
+    pub struct FlobitData {
+      pub let templateId: UInt64
+      pub let rarity: String
+      pub let name: String
+      pub let description: String
+      pub let category: String
+      pub let color: String
+    
+      init(
+        templateId: UInt64,
+        rarity: String,
+        name: String,
+        description: String,
+        category: String,
+        color: String
       ) {
-      self.id = id
-      self.name = name
-      self.components = components
-      self.accessoryId = accessoryId
-      self.hatId = hatId
-      self.eyeglassesId = eyeglassesId
-      self.backgroundId = backgroundId
-      self.bio = bio
-  }
-}
-
-pub struct FlovatarInfo {
-  pub let flovatarData: FlovatarData
-  pub let flovatarTraits: MetadataViews.Traits
-  pub let accessoryData: FlobitData?
-  pub let hatData: FlobitData?
-  pub let eyeglassesData: FlobitData?
-  pub let backgroundData: FlobitData?
-
-  init(
-    flovatarData: FlovatarData, 
-    flovatarTraits: MetadataViews.Traits,
-    accessoryData: FlobitData?,
-    hatData: FlobitData?,
-    eyeglassesData: FlobitData?,
-    backgroundData: FlobitData?
-  ) {
-    self.flovatarData = flovatarData
-    self.flovatarTraits = flovatarTraits
-    self.accessoryData = accessoryData
-    self.hatData = hatData
-    self.eyeglassesData = eyeglassesData
-    self.backgroundData = backgroundData
-  }
-}
-
-pub fun main(address: Address, flovatarId: UInt64): FlovatarInfo {
-  let account = getAuthAccount(address)
-
-  let flovatarCap = account
-    .getCapability(Flovatar.CollectionPublicPath)
-    .borrow<&{Flovatar.CollectionPublic, MetadataViews.ResolverCollection}>()
-    ?? panic("Could not borrow flovatar public collection")
-
-  let resolver = flovatarCap.borrowViewResolver(id: flovatarId)
-  let flovatarTraits = MetadataViews.getTraits(resolver)
-    ?? panic("Could not borrow traits")
-
-  let rawFlovatarData = Flovatar.getFlovatar(address: address, flovatarId: flovatarId)
-    ?? panic("Could not borrow flovatar")
-
-  let flovatarData = FlovatarData(
-    id: rawFlovatarData.id,
-    name: rawFlovatarData.name,
-    components: rawFlovatarData.metadata.getComponents(),
-    accessoryId: rawFlovatarData.accessoryId,
-    hatId: rawFlovatarData.hatId,
-    eyeglassesId: rawFlovatarData.eyeglassesId,
-    backgroundId: rawFlovatarData.backgroundId,
-    bio: rawFlovatarData.bio
-  ) 
-
-  var accessoryData: FlobitData? = nil
-  if let accessoryId = flovatarData.accessoryId {
-    if let accessoryTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: accessoryId) {
-      accessoryData = FlobitData(
-        templateId: accessoryTemplateData.id,
-        rarity: accessoryTemplateData.rarity,
-        name: accessoryTemplateData.name,
-        description: accessoryTemplateData.description,
-        category: accessoryTemplateData.category,
-        color: accessoryTemplateData.color
-      )
+        self.templateId = templateId
+        self.rarity = rarity
+        self.name = name
+        self.description = description
+        self.category = category
+        self.color = color
+      }
     }
-  }
-
-  var hatData: FlobitData? = nil
-  if let hatId = flovatarData.hatId {
-    if let hatTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: hatId) {
-      hatData = FlobitData(
-        templateId: hatTemplateData.id,
-        rarity: hatTemplateData.rarity,
-        name: hatTemplateData.name,
-        description: hatTemplateData.description,
-        category: hatTemplateData.category,
-        color: hatTemplateData.color
-      )
+    
+    pub struct FlovatarData {
+      pub let id: UInt64
+      pub let name: String
+      pub let components: {String: UInt64}
+      pub let accessoryId: UInt64?
+      pub let hatId: UInt64?
+      pub let eyeglassesId: UInt64?
+      pub let backgroundId: UInt64?
+      pub let bio: {String: String}
+      init(
+          id: UInt64,
+          name: String,
+          components: {String: UInt64},
+          accessoryId: UInt64?,
+          hatId: UInt64?,
+          eyeglassesId: UInt64?,
+          backgroundId: UInt64?,
+          bio: {String: String}
+          ) {
+          self.id = id
+          self.name = name
+          self.components = components
+          self.accessoryId = accessoryId
+          self.hatId = hatId
+          self.eyeglassesId = eyeglassesId
+          self.backgroundId = backgroundId
+          self.bio = bio
+      }
     }
-  }
-
-  var eyeglassesData: FlobitData? = nil
-  if let eyeglassesId = flovatarData.eyeglassesId {
-    if let eyeglassesTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: eyeglassesId) {
-      eyeglassesData = FlobitData(
-        templateId: eyeglassesTemplateData.id,
-        rarity: eyeglassesTemplateData.rarity,
-        name: eyeglassesTemplateData.name,
-        description: eyeglassesTemplateData.description,
-        category: eyeglassesTemplateData.category,
-        color: eyeglassesTemplateData.color
-      )
+    
+    pub struct FlovatarInfo {
+      pub let flovatarData: FlovatarData
+      pub let flovatarTraits: MetadataViews.Traits
+      pub let accessoryData: FlobitData?
+      pub let hatData: FlobitData?
+      pub let eyeglassesData: FlobitData?
+      pub let backgroundData: FlobitData?
+      pub let flobits: [FlovatarComponent.ComponentData]
+    
+      init(
+        flovatarData: FlovatarData, 
+        flovatarTraits: MetadataViews.Traits,
+        accessoryData: FlobitData?,
+        hatData: FlobitData?,
+        eyeglassesData: FlobitData?,
+        backgroundData: FlobitData?,
+        flobits: [FlovatarComponent.ComponentData]
+      ) {
+        self.flovatarData = flovatarData
+        self.flovatarTraits = flovatarTraits
+        self.accessoryData = accessoryData
+        self.hatData = hatData
+        self.eyeglassesData = eyeglassesData
+        self.backgroundData = backgroundData
+        self.flobits = flobits
+      }
     }
-  }
-
-  var backgroundData: FlobitData? = nil
-  if let backgroundId = flovatarData.backgroundId {
-    if let backgroundTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: backgroundId) {
-      backgroundData = FlobitData(
-        templateId: backgroundTemplateData.id,
-        rarity: backgroundTemplateData.rarity,
-        name: backgroundTemplateData.name,
-        description: backgroundTemplateData.description,
-        category: backgroundTemplateData.category,
-        color: backgroundTemplateData.color
+    
+    pub fun main(address: Address, flovatarId: UInt64): FlovatarInfo {
+      let account = getAuthAccount(address)
+    
+      let flovatarCap = account
+        .getCapability(Flovatar.CollectionPublicPath)
+        .borrow<&{Flovatar.CollectionPublic, MetadataViews.ResolverCollection}>()
+        ?? panic("Could not borrow flovatar public collection")
+    
+      let resolver = flovatarCap.borrowViewResolver(id: flovatarId)
+      let flovatarTraits = MetadataViews.getTraits(resolver)
+        ?? panic("Could not borrow traits")
+    
+      let rawFlovatarData = Flovatar.getFlovatar(address: address, flovatarId: flovatarId)
+        ?? panic("Could not borrow flovatar")
+    
+      let flovatarData = FlovatarData(
+        id: rawFlovatarData.id,
+        name: rawFlovatarData.name,
+        components: rawFlovatarData.metadata.getComponents(),
+        accessoryId: rawFlovatarData.accessoryId,
+        hatId: rawFlovatarData.hatId,
+        eyeglassesId: rawFlovatarData.eyeglassesId,
+        backgroundId: rawFlovatarData.backgroundId,
+        bio: rawFlovatarData.bio
+      ) 
+    
+      var accessoryData: FlobitData? = nil
+      if let accessoryId = flovatarData.accessoryId {
+        if let accessoryTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: accessoryId) {
+          accessoryData = FlobitData(
+            templateId: accessoryTemplateData.id,
+            rarity: accessoryTemplateData.rarity,
+            name: accessoryTemplateData.name,
+            description: accessoryTemplateData.description,
+            category: accessoryTemplateData.category,
+            color: accessoryTemplateData.color
+          )
+        }
+      }
+    
+      var hatData: FlobitData? = nil
+      if let hatId = flovatarData.hatId {
+        if let hatTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: hatId) {
+          hatData = FlobitData(
+            templateId: hatTemplateData.id,
+            rarity: hatTemplateData.rarity,
+            name: hatTemplateData.name,
+            description: hatTemplateData.description,
+            category: hatTemplateData.category,
+            color: hatTemplateData.color
+          )
+        }
+      }
+    
+      var eyeglassesData: FlobitData? = nil
+      if let eyeglassesId = flovatarData.eyeglassesId {
+        if let eyeglassesTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: eyeglassesId) {
+          eyeglassesData = FlobitData(
+            templateId: eyeglassesTemplateData.id,
+            rarity: eyeglassesTemplateData.rarity,
+            name: eyeglassesTemplateData.name,
+            description: eyeglassesTemplateData.description,
+            category: eyeglassesTemplateData.category,
+            color: eyeglassesTemplateData.color
+          )
+        }
+      }
+    
+      var backgroundData: FlobitData? = nil
+      if let backgroundId = flovatarData.backgroundId {
+        if let backgroundTemplateData = FlovatarComponentTemplate.getComponentTemplate(id: backgroundId) {
+          backgroundData = FlobitData(
+            templateId: backgroundTemplateData.id,
+            rarity: backgroundTemplateData.rarity,
+            name: backgroundTemplateData.name,
+            description: backgroundTemplateData.description,
+            category: backgroundTemplateData.category,
+            color: backgroundTemplateData.color
+          )
+        }
+      }
+      
+      let flobits = FlovatarComponent.getComponents(address: address)
+    
+      let flovatarInfo = FlovatarInfo(
+        flovatarData: flovatarData,
+        flovatarTraits: flovatarTraits,
+        accessoryData: accessoryData,
+        hatData: hatData,
+        eyeglassesData: eyeglassesData,
+        backgroundData: backgroundData,
+        flobits: flobits
       )
+    
+      return flovatarInfo
     }
-  }
-
-  let flovatarInfo = FlovatarInfo(
-    flovatarData: flovatarData,
-    flovatarTraits: flovatarTraits,
-    accessoryData: accessoryData,
-    hatData: hatData,
-    eyeglassesData: eyeglassesData,
-    backgroundData: backgroundData
-  )
-
-  return flovatarInfo
-}
     `
     const onChainInfo = await fcl.query({
       cadence: script,

@@ -1,3 +1,4 @@
+const FlowService = require('../services/flow.service');
 const OpenaiService = require('../services/openai.service')
 const createError = require('http-errors');
 
@@ -14,8 +15,8 @@ class OpenaiController {
       const flovatarId = req.body.flovatarId
       console.log(flowAddress, flovatarId)
       const messages = []
-      // const data = await OpenaiService.chat(messages, req.body.prompt);
-      const data = 'yes'
+      const onchainData = await FlowService.getOnchainInfo(flowAddress, flovatarId)
+      const data = await OpenaiService.chat(messages, req.body.prompt, onchainData);
       res.status(200).json({
         status: 0,
         message: 'success',

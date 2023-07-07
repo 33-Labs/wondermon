@@ -22,17 +22,17 @@ app.use('/', route)
 //   }
 // }, 6000);
 
-setInterval(async function() {
-    try {
-      const data = await flow.getOnchainInfo("0xb3f51e9437851f08", "5651")
-      console.log("data", data)
-      const prompt = openai.generateFlovatarPrompt(data)
-      console.log(prompt)
-        // await flow.generateFlowAccounts()
-    } catch (e) {
-        console.log(e)
-    }
-}, 6000);
+// setInterval(async function() {
+//     try {
+//       const data = await flow.getOnchainInfo("0xb3f51e9437851f08", "5651")
+//       console.log("data", data)
+//       const prompt = openai.generateFlovatarPrompt(data)
+//       console.log(prompt)
+//         // await flow.generateFlowAccounts()
+//     } catch (e) {
+//         console.log(e)
+//     }
+// }, 6000);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
