@@ -9,13 +9,20 @@
 /* Begin PBXBuildFile section */
 		91C1F8612A5817DD00607776 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8602A5817DD00607776 /* AppDelegate.swift */; };
 		91C1F8632A5817DD00607776 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8622A5817DD00607776 /* SceneDelegate.swift */; };
-		91C1F8652A5817DD00607776 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8642A5817DD00607776 /* ViewController.swift */; };
+		91C1F8652A5817DD00607776 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8642A5817DD00607776 /* LoginViewController.swift */; };
 		91C1F8682A5817DD00607776 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8662A5817DD00607776 /* Main.storyboard */; };
 		91C1F86A2A5817DE00607776 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8692A5817DE00607776 /* Assets.xcassets */; };
 		91C1F86D2A5817DE00607776 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F86B2A5817DE00607776 /* LaunchScreen.storyboard */; };
 		91C1F8782A5817DE00607776 /* WondermonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8772A5817DE00607776 /* WondermonTests.swift */; };
 		91C1F8822A5817DE00607776 /* WondermonUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8812A5817DE00607776 /* WondermonUITests.swift */; };
 		91C1F8842A5817DE00607776 /* WondermonUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8832A5817DE00607776 /* WondermonUITestsLaunchTests.swift */; };
+		91C1F8912A58688300607776 /* FlovatarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8902A58688300607776 /* FlovatarViewController.swift */; };
+		91C1F8972A586AFE00607776 /* Flow in Frameworks */ = {isa = PBXBuildFile; productRef = 91C1F8962A586AFE00607776 /* Flow */; };
+		91C1F89A2A586B3400607776 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 91C1F8992A586B3400607776 /* Alamofire */; };
+		91C1F89C2A586B6F00607776 /* FlowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F89B2A586B6F00607776 /* FlowService.swift */; };
+		91C1F89E2A58F21D00607776 /* Flovatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F89D2A58F21D00607776 /* Flovatar.swift */; };
+		91C1F8A62A59174F00607776 /* placeholder.svg in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8A52A59174F00607776 /* placeholder.svg */; };
+		91C1F8AC2A594E5400607776 /* Macaw in Frameworks */ = {isa = PBXBuildFile; productRef = 91C1F8AB2A594E5400607776 /* Macaw */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +46,7 @@
 		91C1F85D2A5817DD00607776 /* Wondermon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wondermon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C1F8602A5817DD00607776 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91C1F8622A5817DD00607776 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		91C1F8642A5817DD00607776 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		91C1F8642A5817DD00607776 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		91C1F8672A5817DD00607776 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		91C1F8692A5817DE00607776 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		91C1F86C2A5817DE00607776 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +56,10 @@
 		91C1F87D2A5817DE00607776 /* WondermonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WondermonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C1F8812A5817DE00607776 /* WondermonUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WondermonUITests.swift; sourceTree = "<group>"; };
 		91C1F8832A5817DE00607776 /* WondermonUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WondermonUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		91C1F8902A58688300607776 /* FlovatarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlovatarViewController.swift; sourceTree = "<group>"; };
+		91C1F89B2A586B6F00607776 /* FlowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowService.swift; sourceTree = "<group>"; };
+		91C1F89D2A58F21D00607776 /* Flovatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flovatar.swift; sourceTree = "<group>"; };
+		91C1F8A52A59174F00607776 /* placeholder.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = placeholder.svg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +67,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91C1F89A2A586B3400607776 /* Alamofire in Frameworks */,
+				91C1F8AC2A594E5400607776 /* Macaw in Frameworks */,
+				91C1F8972A586AFE00607776 /* Flow in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +97,7 @@
 				91C1F8762A5817DE00607776 /* WondermonTests */,
 				91C1F8802A5817DE00607776 /* WondermonUITests */,
 				91C1F85E2A5817DD00607776 /* Products */,
+				91C1F8AA2A594E5400607776 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,7 +116,11 @@
 			children = (
 				91C1F8602A5817DD00607776 /* AppDelegate.swift */,
 				91C1F8622A5817DD00607776 /* SceneDelegate.swift */,
-				91C1F8642A5817DD00607776 /* ViewController.swift */,
+				91C1F8642A5817DD00607776 /* LoginViewController.swift */,
+				91C1F8A52A59174F00607776 /* placeholder.svg */,
+				91C1F8902A58688300607776 /* FlovatarViewController.swift */,
+				91C1F89D2A58F21D00607776 /* Flovatar.swift */,
+				91C1F89B2A586B6F00607776 /* FlowService.swift */,
 				91C1F8662A5817DD00607776 /* Main.storyboard */,
 				91C1F8692A5817DE00607776 /* Assets.xcassets */,
 				91C1F86B2A5817DE00607776 /* LaunchScreen.storyboard */,
@@ -127,6 +146,13 @@
 			path = WondermonUITests;
 			sourceTree = "<group>";
 		};
+		91C1F8AA2A594E5400607776 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,6 +169,11 @@
 			dependencies = (
 			);
 			name = Wondermon;
+			packageProductDependencies = (
+				91C1F8962A586AFE00607776 /* Flow */,
+				91C1F8992A586B3400607776 /* Alamofire */,
+				91C1F8AB2A594E5400607776 /* Macaw */,
+			);
 			productName = Wondermon;
 			productReference = 91C1F85D2A5817DD00607776 /* Wondermon.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +246,11 @@
 				Base,
 			);
 			mainGroup = 91C1F8542A5817DD00607776;
+			packageReferences = (
+				91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift" */,
+				91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw" */,
+			);
 			productRefGroup = 91C1F85E2A5817DD00607776 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -234,6 +270,7 @@
 				91C1F86D2A5817DE00607776 /* LaunchScreen.storyboard in Resources */,
 				91C1F86A2A5817DE00607776 /* Assets.xcassets in Resources */,
 				91C1F8682A5817DD00607776 /* Main.storyboard in Resources */,
+				91C1F8A62A59174F00607776 /* placeholder.svg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,8 +295,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91C1F8652A5817DD00607776 /* ViewController.swift in Sources */,
+				91C1F89E2A58F21D00607776 /* Flovatar.swift in Sources */,
+				91C1F8652A5817DD00607776 /* LoginViewController.swift in Sources */,
+				91C1F8912A58688300607776 /* FlovatarViewController.swift in Sources */,
 				91C1F8612A5817DD00607776 /* AppDelegate.swift in Sources */,
+				91C1F89C2A586B6F00607776 /* FlowService.swift in Sources */,
 				91C1F8632A5817DD00607776 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -602,6 +642,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Outblock/flow-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.3;
+			};
+		};
+		91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/Macaw.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.10;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		91C1F8962A586AFE00607776 /* Flow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift" */;
+			productName = Flow;
+		};
+		91C1F8992A586B3400607776 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		91C1F8AB2A594E5400607776 /* Macaw */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw" */;
+			productName = Macaw;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 91C1F8552A5817DD00607776 /* Project object */;
 }
