@@ -33,6 +33,7 @@ class SignUpViewController: UIViewController {
         view.isSecureTextEntry = true
         view.borderStyle = .roundedRect
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self
         
         return view
     }()
@@ -43,6 +44,7 @@ class SignUpViewController: UIViewController {
         view.isSecureTextEntry = true
         view.borderStyle = .roundedRect
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self
         
         return view
     }()
@@ -55,11 +57,15 @@ class SignUpViewController: UIViewController {
         
         return button
     }()
+    
+    fileprivate var activeTextField: UITextField?
+    fileprivate var activeButton: UIButton?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .brown
         setupGestures()
+        setupNotifications()
         setupUI()
     }
     
@@ -100,8 +106,61 @@ class SignUpViewController: UIViewController {
         signUpButton.topAnchor.constraint(equalTo: repeatPasswordField.bottomAnchor, constant: 30).isActive = true
     }
     
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
         view.endEditing(true)
     }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+              let activeTextField = activeTextField else {
+            return
+        }
+
+        let keyboardHeight = keyboardFrame.height
+        let extraDistance: CGFloat = 10
+
+        let textFieldOrigin = activeTextField.convert(activeTextField.bounds, to: view).origin.y
+        let overlap = textFieldOrigin + activeTextField.frame.size.height - (view.bounds.height - keyboardHeight - extraDistance)
+
+        if overlap > 0 {
+            animateViewMoving(up: true, distance: overlap)
+        }
+    }
+
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        animateViewMoving(up: false, distance: 0)
+    }
+    
+    private func animateViewMoving(up: Bool, distance: CGFloat) {
+        let movementDuration: TimeInterval = 0.3
+
+        let movement = up ? -distance : 0
+
+        UIView.animate(withDuration: movementDuration,
+                       delay: 0,
+                       options: [.curveEaseInOut],
+                       animations: { [weak self] in
+                           self?.view.frame.origin.y = movement
+                       },
+                       completion: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
+extension SignUpViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        activeTextField = textField
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        activeTextField = nil
+    }
+}

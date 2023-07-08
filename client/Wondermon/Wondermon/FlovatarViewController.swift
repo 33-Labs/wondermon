@@ -303,7 +303,7 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     @objc func loginButtonTapped(_ sender: UIButton) {
         let loginViewController = LoginViewController()
-        loginViewController.modalPresentationStyle = .popover
+        loginViewController.modalPresentationStyle = .fullScreen
         present(loginViewController, animated: true, completion: nil)
     }
     
