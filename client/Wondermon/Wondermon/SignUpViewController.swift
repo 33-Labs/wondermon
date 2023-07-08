@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class SignUpViewController: UIViewController {
     
     private lazy var imageView: UIImageView = {
         let view = UIImageView()
@@ -37,37 +37,24 @@ class LoginViewController: UIViewController {
         return view
     }()
     
-    private lazy var loginButton: UIButton = {
+    private lazy var repeatPasswordField: UITextField = {
+        let view = UITextField()
+        view.placeholder = "Confirm Password"
+        view.isSecureTextEntry = true
+        view.borderStyle = .roundedRect
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    private lazy var signUpButton: UIButton = {
        let button = UIButton()
-        button.setTitle("Login", for: .normal)
+        button.setTitle("Sign Up", for: .normal)
         button.backgroundColor = .green
         button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
     }()
-    
-    private lazy var signUpLabel: UILabel = {
-        let signUpText = "Don't have an account? SIGN UP now!"
-        let signUpLinkText = "SIGN UP"
-        
-        let attributedString = NSMutableAttributedString(string: signUpText)
-        let range = (signUpText as NSString).range(of: signUpLinkText)
-        
-        attributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: range)
-        attributedString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: range)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(signUpTapped(_:)))
-        
-        let label = UILabel()
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.attributedText = attributedString
-        label.isUserInteractionEnabled = true
-        label.addGestureRecognizer(tapGesture)
-        
-        return label
-    }()
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,28 +87,21 @@ class LoginViewController: UIViewController {
         passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         passwordField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 30).isActive = true
         
-        view.addSubview(loginButton)
-        loginButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
-        loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 30).isActive = true
+        view.addSubview(repeatPasswordField)
+        repeatPasswordField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+        repeatPasswordField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        repeatPasswordField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        repeatPasswordField.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 30).isActive = true
         
-        view.addSubview(signUpLabel)
-        signUpLabel.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
-        signUpLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        signUpLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        signUpLabel.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 50).isActive = true
+        view.addSubview(signUpButton)
+        signUpButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+        signUpButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        signUpButton.topAnchor.constraint(equalTo: repeatPasswordField.bottomAnchor, constant: 30).isActive = true
     }
     
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
         view.endEditing(true)
-    }
-    
-    @objc func signUpTapped(_ gesture: UITapGestureRecognizer) {
-        print("SIGN UP tapped!")
-        let signUpViewController = SignUpViewController()
-        signUpViewController.modalPresentationStyle = .popover
-        present(signUpViewController, animated: true, completion: nil)
     }
 }
 
