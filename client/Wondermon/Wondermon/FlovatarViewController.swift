@@ -40,7 +40,7 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
 
     private lazy var audioButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Speak", for: .normal)
+        button.setTitle("Start", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.setTitle("Stop", for: .focused)
         button.setTitle("Stop", for: .highlighted)
@@ -50,6 +50,15 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         button.addTarget(self, action: #selector(audioButtonTapped), for: .touchDown)
         button.addTarget(self, action: #selector(audioButtonTapped), for: .touchUpInside)
         button.addTarget(self, action: #selector(audioButtonTapped), for: .touchUpOutside)
+        return button
+    }()
+    
+    private lazy var speakButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Speak", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .green
+        button.addTarget(self, action: #selector(speakButtonTapped), for: .touchDown)
         return button
     }()
     
@@ -85,7 +94,6 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         } catch {
             print("setup audioSession failed")
         }
-        
     }
     
     private func fetchFlovatarData() {
@@ -130,6 +138,13 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         audioButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         audioButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         audioButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        
+        view.addSubview(speakButton)
+        speakButton.translatesAutoresizingMaskIntoConstraints = false
+        speakButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+        speakButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        speakButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        speakButton.bottomAnchor.constraint(equalTo: audioButton.topAnchor, constant: -20).isActive = true
     }
     
     private func fetchFlovatarSvg(rawAddress: String, flovatarId: UInt64) async throws -> String {
@@ -265,4 +280,22 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
 
         audioButton.isEnabled = true
     }
+    
+    @objc func speakButtonTapped(_ sender: UIButton) {
+        speak(text: "How many roads must a man walk down, before you call him a man")
+    }
+    
+    private func speak(text: String) {
+        let synthesizer = AVSpeechSynthesizer()
+        
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.rate = 0.57
+        utterance.pitchMultiplier = 0.8
+        utterance.postUtteranceDelay = 0.2
+        utterance.volume = 0.8
+        
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        synthesizer.speak(utterance)
+    }
+
 }
