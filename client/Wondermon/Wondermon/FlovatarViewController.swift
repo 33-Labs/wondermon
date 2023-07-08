@@ -62,6 +62,15 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         return button
     }()
     
+    private lazy var loginButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Login", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .blue
+        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchDown)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad")
@@ -145,6 +154,13 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         speakButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         speakButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         speakButton.bottomAnchor.constraint(equalTo: audioButton.topAnchor, constant: -20).isActive = true
+        
+        view.addSubview(loginButton)
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+        loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loginButton.bottomAnchor.constraint(equalTo: speakButton.topAnchor, constant: -20).isActive = true
     }
     
     private func fetchFlovatarSvg(rawAddress: String, flovatarId: UInt64) async throws -> String {
@@ -283,6 +299,12 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     @objc func speakButtonTapped(_ sender: UIButton) {
         speak(text: "How many roads must a man walk down, before you call him a man")
+    }
+    
+    @objc func loginButtonTapped(_ sender: UIButton) {
+        let loginViewController = LoginViewController()
+        loginViewController.modalPresentationStyle = .popover
+        present(loginViewController, animated: true, completion: nil)
     }
     
     private func speak(text: String) {
