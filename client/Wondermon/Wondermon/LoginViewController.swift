@@ -42,7 +42,7 @@ class LoginViewController: UIViewController {
         button.setTitle("Login", for: .normal)
         button.backgroundColor = .green
         button.translatesAutoresizingMaskIntoConstraints = false
-        
+        button.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
         return button
     }()
     
@@ -128,8 +128,14 @@ class LoginViewController: UIViewController {
     @objc func signUpTapped(_ gesture: UITapGestureRecognizer) {
         print("SIGN UP tapped!")
         let signUpViewController = SignUpViewController()
-        signUpViewController.modalPresentationStyle = .fullScreen
+        signUpViewController.modalTransitionStyle = .crossDissolve
+        signUpViewController.modalPresentationStyle = .overFullScreen
         present(signUpViewController, animated: true, completion: nil)
+    }
+    
+    @objc func signInTapped(_ sender: UIButton) {
+        print("SIGN In tapped!")
+        self.dismiss(animated: true)
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {

@@ -10,7 +10,6 @@
 		91C1F8612A5817DD00607776 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8602A5817DD00607776 /* AppDelegate.swift */; };
 		91C1F8632A5817DD00607776 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8622A5817DD00607776 /* SceneDelegate.swift */; };
 		91C1F8652A5817DD00607776 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8642A5817DD00607776 /* LoginViewController.swift */; };
-		91C1F8682A5817DD00607776 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8662A5817DD00607776 /* Main.storyboard */; };
 		91C1F86A2A5817DE00607776 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8692A5817DE00607776 /* Assets.xcassets */; };
 		91C1F86D2A5817DE00607776 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F86B2A5817DE00607776 /* LaunchScreen.storyboard */; };
 		91C1F8782A5817DE00607776 /* WondermonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8772A5817DE00607776 /* WondermonTests.swift */; };
@@ -24,6 +23,7 @@
 		91C1F8A62A59174F00607776 /* placeholder.svg in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8A52A59174F00607776 /* placeholder.svg */; };
 		91C1F8AC2A594E5400607776 /* Macaw in Frameworks */ = {isa = PBXBuildFile; productRef = 91C1F8AB2A594E5400607776 /* Macaw */; };
 		91C1F8AE2A59728000607776 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8AD2A59728000607776 /* SignUpViewController.swift */; };
+		91C1F8B02A59BBAA00607776 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8AF2A59BBAA00607776 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +48,6 @@
 		91C1F8602A5817DD00607776 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91C1F8622A5817DD00607776 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		91C1F8642A5817DD00607776 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		91C1F8672A5817DD00607776 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		91C1F8692A5817DE00607776 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		91C1F86C2A5817DE00607776 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		91C1F86E2A5817DE00607776 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -62,6 +61,7 @@
 		91C1F89D2A58F21D00607776 /* Flovatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flovatar.swift; sourceTree = "<group>"; };
 		91C1F8A52A59174F00607776 /* placeholder.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = placeholder.svg; sourceTree = "<group>"; };
 		91C1F8AD2A59728000607776 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		91C1F8AF2A59BBAA00607776 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,11 +120,11 @@
 				91C1F8622A5817DD00607776 /* SceneDelegate.swift */,
 				91C1F8AD2A59728000607776 /* SignUpViewController.swift */,
 				91C1F8642A5817DD00607776 /* LoginViewController.swift */,
+				91C1F8AF2A59BBAA00607776 /* Main.storyboard */,
 				91C1F8A52A59174F00607776 /* placeholder.svg */,
 				91C1F8902A58688300607776 /* FlovatarViewController.swift */,
 				91C1F89D2A58F21D00607776 /* Flovatar.swift */,
 				91C1F89B2A586B6F00607776 /* FlowService.swift */,
-				91C1F8662A5817DD00607776 /* Main.storyboard */,
 				91C1F8692A5817DE00607776 /* Assets.xcassets */,
 				91C1F86B2A5817DE00607776 /* LaunchScreen.storyboard */,
 				91C1F86E2A5817DE00607776 /* Info.plist */,
@@ -272,8 +272,8 @@
 			files = (
 				91C1F86D2A5817DE00607776 /* LaunchScreen.storyboard in Resources */,
 				91C1F86A2A5817DE00607776 /* Assets.xcassets in Resources */,
-				91C1F8682A5817DD00607776 /* Main.storyboard in Resources */,
 				91C1F8A62A59174F00607776 /* placeholder.svg in Resources */,
+				91C1F8B02A59BBAA00607776 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,14 +341,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		91C1F8662A5817DD00607776 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				91C1F8672A5817DD00607776 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		91C1F86B2A5817DE00607776 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -75,6 +75,7 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         super.viewDidLoad()
         print("viewDidLoad")
         view.backgroundColor = .purple
+        setupNavigationBar()
         setupUI()
         setupAudio()
         fetchFlovatarData()
@@ -84,7 +85,17 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear")
-
+    }
+    
+    private func setupNavigationBar() {
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.title = "Flovatar"
+        navigationItem.rightBarButtonItem = {
+            let button = UIBarButtonItem()
+            button.title = "Profile"
+            return button
+        }()
     }
     
     private func setupAudio() {
@@ -303,7 +314,7 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     @objc func loginButtonTapped(_ sender: UIButton) {
         let loginViewController = LoginViewController()
-        loginViewController.modalPresentationStyle = .fullScreen
+        loginViewController.modalPresentationStyle = .overFullScreen
         present(loginViewController, animated: true, completion: nil)
     }
     

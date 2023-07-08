@@ -54,8 +54,30 @@ class SignUpViewController: UIViewController {
         button.setTitle("Sign Up", for: .normal)
         button.backgroundColor = .green
         button.translatesAutoresizingMaskIntoConstraints = false
-        
+        button.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var signInLabel: UILabel = {
+        let signInText = "Already registered? SIGN IN now!"
+        let signInLinkText = "SIGN IN"
+        
+        let attributedString = NSMutableAttributedString(string: signInText)
+        let range = (signInText as NSString).range(of: signInLinkText)
+        
+        attributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: range)
+        attributedString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: range)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(signInTapped(_:)))
+        
+        let label = UILabel()
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.attributedText = attributedString
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tapGesture)
+        
+        return label
     }()
     
     fileprivate var activeTextField: UITextField?
@@ -104,6 +126,12 @@ class SignUpViewController: UIViewController {
         signUpButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         signUpButton.topAnchor.constraint(equalTo: repeatPasswordField.bottomAnchor, constant: 30).isActive = true
+        
+        view.addSubview(signInLabel)
+        signInLabel.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+        signInLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        signInLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        signInLabel.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 50).isActive = true
     }
     
     private func setupNotifications() {
@@ -113,6 +141,20 @@ class SignUpViewController: UIViewController {
     
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
         view.endEditing(true)
+    }
+    
+    @objc func signInTapped(_ gesture: UITapGestureRecognizer) {
+        print("SIGN IN tapped!")
+        self.dismiss(animated: true)
+    }
+    
+    @objc func signUpTapped(_ sender: UIButton) {
+        print("SIGN UP TAPPED")
+        dismissAllViewControllers()
+    }
+    
+    func dismissAllViewControllers() {
+        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
