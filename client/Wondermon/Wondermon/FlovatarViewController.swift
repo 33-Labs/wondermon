@@ -62,12 +62,15 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
 
     private lazy var audioButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Start", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.setTitle("Stop", for: .focused)
-        button.setTitle("Stop", for: .highlighted)
-        button.setTitle("Stop", for: .disabled)
-        button.backgroundColor = .yellow
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 40
+        button.clipsToBounds = true
+        let startImage = UIImage(named: "holdtotalk")
+        let stopImage = UIImage(named: "releasetosend")
+        button.setImage(startImage, for: .normal)
+        button.setImage(stopImage, for: .focused)
+        button.setImage(stopImage, for: .highlighted)
+        button.setImage(stopImage, for: .disabled)
         
         button.addTarget(self, action: #selector(audioButtonTapped), for: .touchDown)
         button.addTarget(self, action: #selector(audioButtonTapped), for: .touchUpInside)
@@ -95,13 +98,19 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getUser()
         
+        getUser()
+        fetchFlovatarData()
+
         view.backgroundColor = .wm_purple
         setupNavigationBar()
         setupUI()
         setupAudio()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getUser()
         fetchFlovatarData()
     }
     
@@ -198,24 +207,24 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
 
         view.addSubview(audioButton)
         audioButton.translatesAutoresizingMaskIntoConstraints = false
-        audioButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
-        audioButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        audioButton.widthAnchor.constraint(equalToConstant:  280).isActive = true
+        audioButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
         audioButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        audioButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        audioButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40).isActive = true
         
-        view.addSubview(speakButton)
-        speakButton.translatesAutoresizingMaskIntoConstraints = false
-        speakButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
-        speakButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        speakButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        speakButton.bottomAnchor.constraint(equalTo: audioButton.topAnchor, constant: -20).isActive = true
-        
-        view.addSubview(loginButton)
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
-        loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginButton.bottomAnchor.constraint(equalTo: speakButton.topAnchor, constant: -20).isActive = true
+//        view.addSubview(speakButton)
+//        speakButton.translatesAutoresizingMaskIntoConstraints = false
+//        speakButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+//        speakButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        speakButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        speakButton.bottomAnchor.constraint(equalTo: audioButton.topAnchor, constant: -20).isActive = true
+//
+//        view.addSubview(loginButton)
+//        loginButton.translatesAutoresizingMaskIntoConstraints = false
+//        loginButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+//        loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        loginButton.bottomAnchor.constraint(equalTo: speakButton.topAnchor, constant: -20).isActive = true
     }
     
     private func fetchFlovatarSvg(rawAddress: String, flovatarId: UInt64) async throws -> String {
