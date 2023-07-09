@@ -56,6 +56,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         view.layer.borderWidth = 2
         view.layer.borderColor = UIColor.wm_deepPurple.cgColor
         view.clipsToBounds = true
+        view.isEditable = false
         view.font = .systemFont(ofSize: 16)
         view.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         return view
@@ -130,15 +131,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         return button
     }()
     
-    private lazy var speakButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Speak", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .green
-        button.addTarget(self, action: #selector(speakButtonTapped), for: .touchDown)
-        return button
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad")
@@ -183,7 +175,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         }
         
         do {
-            try audioSession.setCategory(.record, mode: .default)
+            try audioSession.setCategory(.playAndRecord, mode: .default, options: .defaultToSpeaker)
         } catch {
             print("setup audioSession failed")
         }
@@ -270,13 +262,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         speakView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
         speakView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
         speakView.bottomAnchor.constraint(equalTo: audioButton.topAnchor, constant: -16).isActive = true
-        
-//        view.addSubview(speakButton)
-//        speakButton.translatesAutoresizingMaskIntoConstraints = false
-//        speakButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
-//        speakButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        speakButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        speakButton.bottomAnchor.constraint(equalTo: audioButton.topAnchor, constant: -20).isActive = true
     }
     
     private func fetchFlovatarSvg(rawAddress: String, flovatarId: UInt64) async throws -> String {
@@ -371,16 +356,14 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                 var finished = false
                 if let result = result {
                     let recognizedText = result.bestTranscription.formattedString
-                    print("Recognized Text: \(recognizedText)")
                     if result.isFinal {
                         sSelf.convertedText = recognizedText
-                        print("Converted: \(sSelf.convertedText!)")
                         finished = true
                     }
                 }
                 
                 if let error = error {
-                    print("Recognition error: \(error)")
+                    debugPrint("Recognition error: \(error)")
                 }
                 
                 if error != nil || finished {
@@ -416,10 +399,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         audioButton.isEnabled = true
     }
     
-    @objc func speakButtonTapped(_ sender: UIButton) {
-        speak(text: "How many roads must a man walk down, before you call him a man")
-    }
-    
     @objc func flobitsButtonTapped(_ sender: UIButton) {
         if let user = user {
             let vc = FlobitsCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
@@ -444,7 +423,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     private func chat(prompt: String, flovatarId: UInt64) {
         NetworkManager.shared.chat(prompt: prompt, flovatarId: flovatarId, messages: []) { [weak self] result in
             guard let sSelf = self else { return }
-            print(result)
             switch result {
             case .success(let message):
                 sSelf.speakView.text = "Flora: \(message.message)"
@@ -467,14 +445,25 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
               let region = ProcessInfo.processInfo.environment["SPEECH_REGION"] else {
             return
         }
-        
+
         var speechConfig: SPXSpeechConfiguration?
         do {
             try speechConfig = SPXSpeechConfiguration(subscription: sub, region: region)
             speechConfig!.speechSynthesisVoiceName = "en-US-RogerNeural";
-
+            
             let synthesizer = try! SPXSpeechSynthesizer(speechConfig!)
-            let result = try! synthesizer.speakText(text)
+            let ssml = """
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis"
+       xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="en-US">
+    <voice name="en-US-RogerNeural">
+        <mstts:express-as style="excited" styledegree="2">
+            \(text)
+        </mstts:express-as>
+    </voice>
+</speak>
+"""
+            let result = try! synthesizer.speakSsml(ssml)
+            
             if result.reason == SPXResultReason.canceled {
                 let cancellationDetails = try! SPXSpeechSynthesisCancellationDetails(fromCanceledSynthesisResult: result)
                 print("cancelled, error code: \(cancellationDetails.errorCode) detail: \(cancellationDetails.errorDetails!) ")
@@ -484,7 +473,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
             
         } catch {
             print("error \(error) happened")
-            speechConfig = nil
         }
     }
     
