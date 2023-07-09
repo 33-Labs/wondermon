@@ -24,13 +24,13 @@ struct AiMessage: Codable {
 }
 
 struct UserResponse: Codable {
-    let status: Bool
+    let status: UInt8
     let message: String
     let data: User?
 }
 
 struct AiMessageResponse: Codable {
-    let status: Bool
+    let status: UInt8
     let message: String
     let data: AiMessage?
 }

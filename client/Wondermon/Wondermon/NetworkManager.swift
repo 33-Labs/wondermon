@@ -23,7 +23,7 @@ class NetworkManager {
             
             switch response.result {
             case .success(let userResponse):
-                if userResponse.status, let user = userResponse.data {
+                if userResponse.status == 0, let user = userResponse.data {
                     completion(.success(user))
                 }
             case .failure(let error):
@@ -39,7 +39,7 @@ class NetworkManager {
         AF.request(endpoint, method: .post, parameters: parameters).responseDecodable(of: UserResponse.self) { response in
             switch response.result {
             case .success(let userResponse):
-                if userResponse.status, let user = userResponse.data {
+                if userResponse.status == 0, let user = userResponse.data {
                     completion(.success(user))
                 }
             case .failure(let error):
@@ -48,7 +48,27 @@ class NetworkManager {
         }
     }
     
+
+    
     func chat(prompt: String, flovatarId: UInt64, messages: [String], completion: @escaping (Result<AiMessage, Error>) -> Void) {
+        let endpoint = "\(endpoint)/openai/chat"
+        let parameters: [String: Any] = ["prompt": prompt, "flovatarId": flovatarId]
+        guard let user = UserDefaults.standard.fetchUser() else {
+            completion(.failure(WMError.unauthorized))
+            return
+        }
         
+        let headers: HTTPHeaders = [.authorization(bearerToken: user.accessToken)]
+        AF.request(endpoint, method: .post, parameters: parameters, headers: headers).responseDecodable(of: AiMessageResponse.self) { response in
+            debugPrint(response)
+            switch response.result {
+            case .success(let messageResponse):
+                if messageResponse.status == 0, let message = messageResponse.data {
+                    completion(.success(message))
+                }
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+        }
     }
 }

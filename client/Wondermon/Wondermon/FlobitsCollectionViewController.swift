@@ -54,9 +54,11 @@ class FlobitsCollectionViewController: UICollectionViewController, UICollectionV
     private func fetchFlobits() async throws -> [Flobit] {
         print("fetchFlobits")
         guard let user = user,
-              let flowAccount = user.flowAccount else { return [] }
-//        let rawAddress = flowAccount.address
-        let rawAddress = "0xb3f51e9437851f08"
+              let flowAccount = user.flowAccount else {
+            return []
+        }
+        
+        let rawAddress = flowAccount.address
         let rawScript = fetchFlobitsScript()
         let script = Flow.Script(text: rawScript)
         let address = Flow.Address(hex: rawAddress)

@@ -19,6 +19,7 @@
 		91385FCA2A5AA9A600DF5259 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 91385FC92A5AA9A600DF5259 /* Kingfisher */; };
 		91385FCC2A5AAEF100DF5259 /* Kingfisher+Wondermon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91385FCB2A5AAEF100DF5259 /* Kingfisher+Wondermon.swift */; };
 		91385FCF2A5AAF2B00DF5259 /* SVGKitSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 91385FCE2A5AAF2B00DF5259 /* SVGKitSwift */; };
+		91385FD12A5AF69F00DF5259 /* WMError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91385FD02A5AF69F00DF5259 /* WMError.swift */; };
 		91C1F8612A5817DD00607776 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8602A5817DD00607776 /* AppDelegate.swift */; };
 		91C1F8632A5817DD00607776 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8622A5817DD00607776 /* SceneDelegate.swift */; };
 		91C1F8652A5817DD00607776 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8642A5817DD00607776 /* LoginViewController.swift */; };
@@ -64,6 +65,7 @@
 		91385FC42A5A99C600DF5259 /* FlobitCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlobitCollectionViewCell.swift; sourceTree = "<group>"; };
 		91385FC62A5AA5F800DF5259 /* FlobitsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlobitsHeaderView.swift; sourceTree = "<group>"; };
 		91385FCB2A5AAEF100DF5259 /* Kingfisher+Wondermon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Kingfisher+Wondermon.swift"; sourceTree = "<group>"; };
+		91385FD02A5AF69F00DF5259 /* WMError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WMError.swift; sourceTree = "<group>"; };
 		91C1F85D2A5817DD00607776 /* Wondermon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wondermon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C1F8602A5817DD00607776 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91C1F8622A5817DD00607776 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				91385FB52A59C25500DF5259 /* UIColor+Wondermon.swift */,
 				91385FBE2A5A860500DF5259 /* UserDefaults+Wondermon.swift */,
 				91385FC02A5A988E00DF5259 /* ProfileViewController.swift */,
+				91385FD02A5AF69F00DF5259 /* WMError.swift */,
 				91385FC22A5A999600DF5259 /* FlobitsCollectionViewController.swift */,
 				91385FC62A5AA5F800DF5259 /* FlobitsHeaderView.swift */,
 				91385FC42A5A99C600DF5259 /* FlobitCollectionViewCell.swift */,
@@ -340,6 +343,7 @@
 				91385FCC2A5AAEF100DF5259 /* Kingfisher+Wondermon.swift in Sources */,
 				91385FBD2A5A5A6600DF5259 /* NetworkManager.swift in Sources */,
 				91385FBF2A5A860500DF5259 /* UserDefaults+Wondermon.swift in Sources */,
+				91385FD12A5AF69F00DF5259 /* WMError.swift in Sources */,
 				91C1F8652A5817DD00607776 /* LoginViewController.swift in Sources */,
 				91385FB62A59C25500DF5259 /* UIColor+Wondermon.swift in Sources */,
 				91385FC12A5A988E00DF5259 /* ProfileViewController.swift in Sources */,

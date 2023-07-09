@@ -32,11 +32,15 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         }
     }
     
+    private var flovatarId: UInt64?
+    
     private var convertedText: String? {
         didSet {
             if let user = user,
-               let convertedText = convertedText {
+               let convertedText = convertedText,
+               let flovatarId = flovatarId{
                 speakView.text = "\(user.name): \(convertedText)\n"
+                chat(prompt: convertedText, flovatarId: flovatarId)
             } else {
                 speakView.text = ""
             }
@@ -102,6 +106,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     private let audioEngine = AVAudioEngine()
     private let audioSession = AVAudioSession.sharedInstance()
+    private let synthesizer = AVSpeechSynthesizer()
     private lazy var speechRecognizer: SFSpeechRecognizer = {
         let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
         speechRecognizer.delegate = self
@@ -112,9 +117,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
 
     private lazy var audioButton: UIButton = {
         let button = UIButton()
-//        button.backgroundColor = .white
-//        button.layer.cornerRadius = 40
-//        button.clipsToBounds = true
         let startImage = UIImage(named: "holdtotalk")
         let stopImage = UIImage(named: "releasetosend")
         button.setImage(startImage, for: .normal)
@@ -194,16 +196,17 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     private func fetchFlovatarData() {
         guard let user = user,
               let flowAccount = user.flowAccount else {
-            flovatarNode = nil
+            cleanFlovatar()
             return
         }
 
         Task {
             do {
-                let rawAddress = "0xb3f51e9437851f08"
+                let rawAddress = flowAccount.address
                 let tokenIds = try await self.fetchFlovatarIds(rawAddress: rawAddress)
                 if (tokenIds.count > 0) {
                     let tokenId = tokenIds[0]
+                    flovatarId = tokenId
                     let svg = try await self.fetchFlovatarSvg(rawAddress: rawAddress, flovatarId: tokenId)
                     let node = try SVGParser.parse(text: svg)
                     
@@ -211,11 +214,18 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                         guard let sSelf = self else { return }
                         sSelf.flovatarNode = node
                     }
+                } else {
+                    cleanFlovatar()
                 }
             } catch {
                 print(error)
             }
         }
+    }
+    
+    private func cleanFlovatar() {
+        flovatarId = nil
+        flovatarNode = nil
     }
     
     private func setupUI() {
@@ -232,7 +242,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         svgView.heightAnchor.constraint(equalTo: svgView.widthAnchor).isActive = true
         svgView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
         svgView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
-        
         
         imageView.addSubview(unauthenticatedCoverView)
         unauthenticatedCoverView.translatesAutoresizingMaskIntoConstraints = false
@@ -430,12 +439,27 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
             let vc = LoginViewController()
             present(vc, animated: true, completion: nil)
         }
-
+    }
+    
+    private func chat(prompt: String, flovatarId: UInt64) {
+        NetworkManager.shared.chat(prompt: prompt, flovatarId: flovatarId, messages: []) { [weak self] result in
+            guard let sSelf = self else { return }
+            print(result)
+            switch result {
+            case .success(let message):
+                sSelf.speakView.text = "Flora: \(message.message)"
+                sSelf.speak(text: message.message)
+                if let txid = message.txid {
+                    print(txid)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
     }
     
     private func speak(text: String) {
-        let synthesizer = AVSpeechSynthesizer()
-        
         let utterance = AVSpeechUtterance(string: text)
         utterance.rate = 0.57
         utterance.pitchMultiplier = 0.8
