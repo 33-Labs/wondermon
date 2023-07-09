@@ -19,4 +19,18 @@ extension UserDefaults {
             return false
         }
     }
+    
+    func fetchUser() -> User? {
+        if let data = UserDefaults.standard.data(forKey: "user") {
+            do {
+                let decoder = JSONDecoder()
+                let user = try decoder.decode(User.self, from: data)
+                return user
+            } catch {
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
 }

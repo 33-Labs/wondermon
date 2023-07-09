@@ -34,3 +34,18 @@ struct AiMessageResponse: Codable {
     let message: String
     let data: AiMessage?
 }
+
+struct HTTPFile: Codable {
+    let url: String
+}
+
+struct FlobitDisplay: Codable {
+    let name: String
+    let description: String
+    let thumbnail: HTTPFile
+}
+
+struct Flobit: Codable {
+    let id: UInt64
+    let display: FlobitDisplay
+}

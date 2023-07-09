@@ -13,6 +13,8 @@ import AVFoundation
 
 class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     
+    private var user: User?
+    
     private lazy var svgView: SVGView = {
         let node = try! SVGParser.parse(resource: "placeholder", ofType: "svg")
         let svgView = SVGView(node: node, frame: CGRect(x: 0, y: 0, width: 0, height: 0))
@@ -26,6 +28,24 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         view.layer.cornerRadius = 30
         view.clipsToBounds = true
 
+        return view
+    }()
+    
+    private lazy var flobitsButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Flobit", for: .normal)
+        button.addTarget(self, action: #selector(flobitsButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var unauthenticatedCoverView: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFit
+        view.backgroundColor = .green
+        view.layer.cornerRadius = 30
+        view.clipsToBounds = true
+        view.image = UIImage(named: "signin_placeholder")
+        
         return view
     }()
     
@@ -75,13 +95,14 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
+        getUser()
+        
         view.backgroundColor = .wm_purple
         setupNavigationBar()
         setupUI()
         setupAudio()
-        fetchFlovatarData()
         
+        fetchFlovatarData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,7 +143,16 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         }
     }
     
+    private func getUser() {
+        if let user = UserDefaults.standard.fetchUser() {
+            self.user = user
+        }
+    }
+    
     private func fetchFlovatarData() {
+        guard let user = user,
+              let flowAccount = user.flowAccount else { return }
+
         Task {
             do {
                 let rawAddress = "0xb3f51e9437851f08"
@@ -158,6 +188,22 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         svgView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
         svgView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
         
+        if user == nil {
+            imageView.addSubview(unauthenticatedCoverView)
+            unauthenticatedCoverView.translatesAutoresizingMaskIntoConstraints = false
+            unauthenticatedCoverView.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
+            unauthenticatedCoverView.heightAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
+            unauthenticatedCoverView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
+            unauthenticatedCoverView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        }
+        
+        view.addSubview(flobitsButton)
+        flobitsButton.translatesAutoresizingMaskIntoConstraints = false
+        flobitsButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        flobitsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        flobitsButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
+        flobitsButton.topAnchor.constraint(equalTo: imageView.bottomAnchor).isActive = true
+
         view.addSubview(audioButton)
         audioButton.translatesAutoresizingMaskIntoConstraints = false
         audioButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
@@ -181,7 +227,6 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     }
     
     private func fetchFlovatarSvg(rawAddress: String, flovatarId: UInt64) async throws -> String {
-        print("fetchFlovatar")
         let rawScript = fetchFlovatarSvgScript()
         let script = Flow.Script(text: rawScript)
         let address = Flow.Address(hex: rawAddress)
@@ -196,7 +241,6 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     }
     
     private func fetchFlovatarIds(rawAddress: String) async throws -> [UInt64] {
-        print("fetchFlovatarIds")
         let rawScript = fetchFlovatarIdsScript()
         let script = Flow.Script(text: rawScript)
         let address = Flow.Address(hex: rawAddress)
@@ -322,6 +366,11 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         let loginViewController = LoginViewController()
         loginViewController.modalPresentationStyle = .overFullScreen
         present(loginViewController, animated: true, completion: nil)
+    }
+    
+    @objc func flobitsButtonTapped(_ sender: UIButton) {
+        let vc = FlobitsCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        present(vc, animated: true, completion: nil)
     }
     
     private func speak(text: String) {
