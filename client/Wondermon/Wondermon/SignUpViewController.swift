@@ -9,21 +9,49 @@ import UIKit
 
 class SignUpViewController: UIViewController {
     
-    private lazy var imageView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFit
-        view.backgroundColor = .green
+    private lazy var titleView: UIView = {
+       let view = UIView()
+        view.backgroundColor = .wm_purple
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
     
-    private lazy var usernameField: UITextField = {
-        let view = UITextField()
-        view.placeholder = "Username"
-        view.borderStyle = .roundedRect
+    private lazy var imageView: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
-        
+        view.image = UIImage(named: "logo")
+        return view
+    }()
+    
+    private lazy var emailBorder: CALayer = {
+        let bottomBorder = CALayer()
+        bottomBorder.backgroundColor = UIColor.wm_deepPurple.cgColor
+        return bottomBorder
+    }()
+    
+    private lazy var passwordBorder: CALayer = {
+        let bottomBorder = CALayer()
+        bottomBorder.backgroundColor = UIColor.wm_deepPurple.cgColor
+        return bottomBorder
+    }()
+    
+    private lazy var repeatPasswordBorder: CALayer = {
+        let bottomBorder = CALayer()
+        bottomBorder.backgroundColor = UIColor.wm_deepPurple.cgColor
+        return bottomBorder
+    }()
+    
+    private lazy var emailField: UITextField = {
+        let view = UITextField()
+        view.placeholder = "Email"
+        view.backgroundColor = .clear
+        view.borderStyle = .none
+        view.keyboardType = .emailAddress
+        view.layer.addSublayer(emailBorder)
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self
         return view
     }()
     
@@ -31,7 +59,10 @@ class SignUpViewController: UIViewController {
         let view = UITextField()
         view.placeholder = "Password"
         view.isSecureTextEntry = true
-        view.borderStyle = .roundedRect
+        view.backgroundColor = .clear
+        view.borderStyle = .none
+        view.layer.addSublayer(passwordBorder)
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         
@@ -42,7 +73,10 @@ class SignUpViewController: UIViewController {
         let view = UITextField()
         view.placeholder = "Confirm Password"
         view.isSecureTextEntry = true
-        view.borderStyle = .roundedRect
+        view.backgroundColor = .clear
+        view.borderStyle = .none
+        view.layer.addSublayer(repeatPasswordBorder)
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         
@@ -51,8 +85,8 @@ class SignUpViewController: UIViewController {
     
     private lazy var signUpButton: UIButton = {
        let button = UIButton()
-        button.setTitle("Sign Up", for: .normal)
-        button.backgroundColor = .green
+        button.setImage(UIImage(named: "signup"), for: .normal)
+        button.backgroundColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
         return button
@@ -65,12 +99,14 @@ class SignUpViewController: UIViewController {
         let attributedString = NSMutableAttributedString(string: signInText)
         let range = (signInText as NSString).range(of: signInLinkText)
         
-        attributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: range)
-        attributedString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: range)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.wm_deepPurple, range: range)
+        attributedString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 14), range: range)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(signInTapped(_:)))
         
         let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .lightGray
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.attributedText = attributedString
@@ -85,10 +121,19 @@ class SignUpViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .brown
+        view.backgroundColor = .white
         setupGestures()
         setupNotifications()
         setupUI()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        emailBorder.frame = CGRect(x: 0, y: emailField.frame.height - 1, width: emailField.frame.width, height: 1)
+        passwordBorder.frame = CGRect(x: 0, y: passwordField.frame.height - 1, width: passwordField.frame.width, height: 1)
+        repeatPasswordBorder.frame = CGRect(x: 0, y: repeatPasswordField.frame.height - 1, width: repeatPasswordField.frame.width, height: 1)
+        
     }
     
     private func setupGestures() {
@@ -97,23 +142,29 @@ class SignUpViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.addSubview(imageView)
-        imageView.widthAnchor.constraint(equalToConstant: 220).isActive = true
-        imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80).isActive = true
-        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        view.addSubview(titleView)
+        titleView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        titleView.heightAnchor.constraint(equalTo: titleView.widthAnchor).isActive = true
+        titleView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        titleView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        view.addSubview(usernameField)
-        usernameField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
-        usernameField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        usernameField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        usernameField.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 50).isActive = true
+        titleView.addSubview(imageView)
+        imageView.widthAnchor.constraint(equalToConstant: 230).isActive = true
+        imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
+        imageView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor, constant: 50).isActive = true
+        
+        view.addSubview(emailField)
+        emailField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+        emailField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        emailField.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 50).isActive = true
         
         view.addSubview(passwordField)
         passwordField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         passwordField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        passwordField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 16).isActive = true
+        passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 16).isActive = true
         
         view.addSubview(repeatPasswordField)
         repeatPasswordField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
@@ -150,7 +201,14 @@ class SignUpViewController: UIViewController {
     
     @objc func signUpTapped(_ sender: UIButton) {
         print("SIGN UP TAPPED")
-        dismissAllViewControllers()
+        if let email = emailField.text,
+            email.isValidEmail() {
+            dismissAllViewControllers()
+        } else {
+            print("Wrong email address")
+            // TODO: alert wrong email address
+        }
+
     }
     
     func dismissAllViewControllers() {

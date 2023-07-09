@@ -183,7 +183,6 @@ class LoginViewController: UIViewController {
             print("Wrong email address")
             // TODO: alert wrong email address
         }
-        
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
