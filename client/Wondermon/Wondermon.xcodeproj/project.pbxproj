@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D0A84E16B152F66D39EEDBF /* Pods_Wondermon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D21C604EC87BED43C70E47A2 /* Pods_Wondermon.framework */; };
 		91385FB62A59C25500DF5259 /* UIColor+Wondermon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91385FB52A59C25500DF5259 /* UIColor+Wondermon.swift */; };
 		91385FB82A5A4F1700DF5259 /* String+Wondermon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91385FB72A5A4F1700DF5259 /* String+Wondermon.swift */; };
 		91385FBB2A5A529C00DF5259 /* NotificationBannerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 91385FBA2A5A529C00DF5259 /* NotificationBannerSwift */; };
@@ -83,6 +84,9 @@
 		91C1F8A52A59174F00607776 /* placeholder.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = placeholder.svg; sourceTree = "<group>"; };
 		91C1F8AD2A59728000607776 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		91C1F8AF2A59BBAA00607776 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		B099ACD620D6B1407471BE40 /* Pods-Wondermon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wondermon.release.xcconfig"; path = "Target Support Files/Pods-Wondermon/Pods-Wondermon.release.xcconfig"; sourceTree = "<group>"; };
+		C79D0B9318F9E4AAE987C41E /* Pods-Wondermon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wondermon.debug.xcconfig"; path = "Target Support Files/Pods-Wondermon/Pods-Wondermon.debug.xcconfig"; sourceTree = "<group>"; };
+		D21C604EC87BED43C70E47A2 /* Pods_Wondermon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wondermon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,7 @@
 				91C1F8AC2A594E5400607776 /* Macaw in Frameworks */,
 				91C1F8972A586AFE00607776 /* Flow in Frameworks */,
 				91385FCA2A5AA9A600DF5259 /* Kingfisher in Frameworks */,
+				4D0A84E16B152F66D39EEDBF /* Pods_Wondermon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +121,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7A50FFBC997BCEEB6681C01B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C79D0B9318F9E4AAE987C41E /* Pods-Wondermon.debug.xcconfig */,
+				B099ACD620D6B1407471BE40 /* Pods-Wondermon.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		91C1F8542A5817DD00607776 = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +139,7 @@
 				91C1F8802A5817DE00607776 /* WondermonUITests */,
 				91C1F85E2A5817DD00607776 /* Products */,
 				91C1F8AA2A594E5400607776 /* Frameworks */,
+				7A50FFBC997BCEEB6681C01B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -185,6 +201,7 @@
 		91C1F8AA2A594E5400607776 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D21C604EC87BED43C70E47A2 /* Pods_Wondermon.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -196,9 +213,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 91C1F8872A5817DE00607776 /* Build configuration list for PBXNativeTarget "Wondermon" */;
 			buildPhases = (
+				7B79F782C12E88EB7DCB5176 /* [CP] Check Pods Manifest.lock */,
 				91C1F8592A5817DD00607776 /* Sources */,
 				91C1F85A2A5817DD00607776 /* Frameworks */,
 				91C1F85B2A5817DD00607776 /* Resources */,
+				51BFD2CFB2F6654AF307B94D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -286,12 +305,12 @@
 			);
 			mainGroup = 91C1F8542A5817DD00607776;
 			packageReferences = (
-				91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift" */,
-				91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw" */,
-				91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner" */,
-				91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit" */,
+				91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift.git" */,
+				91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire.git" */,
+				91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw.git" */,
+				91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner.git" */,
+				91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher.git" */,
+				91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit.git" */,
 			);
 			productRefGroup = 91C1F85E2A5817DD00607776 /* Products */;
 			projectDirPath = "";
@@ -331,6 +350,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		51BFD2CFB2F6654AF307B94D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Wondermon/Pods-Wondermon-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Wondermon/Pods-Wondermon-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Wondermon/Pods-Wondermon-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7B79F782C12E88EB7DCB5176 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Wondermon-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		91C1F8592A5817DD00607776 /* Sources */ = {
@@ -516,6 +577,7 @@
 		};
 		91C1F8882A5817DE00607776 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C79D0B9318F9E4AAE987C41E /* Pods-Wondermon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -544,6 +606,7 @@
 		};
 		91C1F8892A5817DE00607776 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B099ACD620D6B1407471BE40 /* Pods-Wondermon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -688,7 +751,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner" */ = {
+		91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Daltron/NotificationBanner.git";
 			requirement = {
@@ -696,7 +759,7 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+		91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
@@ -704,7 +767,7 @@
 				minimumVersion = 7.0.0;
 			};
 		};
-		91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit" */ = {
+		91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SVGKit/SVGKit.git";
 			requirement = {
@@ -712,7 +775,7 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift" */ = {
+		91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Outblock/flow-swift.git";
 			requirement = {
@@ -720,7 +783,7 @@
 				minimumVersion = 0.3.3;
 			};
 		};
-		91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -728,7 +791,7 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw" */ = {
+		91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/exyte/Macaw.git";
 			requirement = {
@@ -741,32 +804,32 @@
 /* Begin XCSwiftPackageProductDependency section */
 		91385FBA2A5A529C00DF5259 /* NotificationBannerSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner" */;
+			package = 91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner.git" */;
 			productName = NotificationBannerSwift;
 		};
 		91385FC92A5AA9A600DF5259 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			package = 91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher.git" */;
 			productName = Kingfisher;
 		};
 		91385FCE2A5AAF2B00DF5259 /* SVGKitSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit" */;
+			package = 91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit.git" */;
 			productName = SVGKitSwift;
 		};
 		91C1F8962A586AFE00607776 /* Flow */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift" */;
+			package = 91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift.git" */;
 			productName = Flow;
 		};
 		91C1F8992A586B3400607776 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = 91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire.git" */;
 			productName = Alamofire;
 		};
 		91C1F8AB2A594E5400607776 /* Macaw */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw" */;
+			package = 91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw.git" */;
 			productName = Macaw;
 		};
 /* End XCSwiftPackageProductDependency section */

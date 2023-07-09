@@ -10,6 +10,7 @@ import Flow
 import Macaw
 import Speech
 import AVFoundation
+import MicrosoftCognitiveServicesSpeech
 
 class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeechRecognizerDelegate {
     
@@ -106,7 +107,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     private let audioEngine = AVAudioEngine()
     private let audioSession = AVAudioSession.sharedInstance()
-    private let synthesizer = AVSpeechSynthesizer()
     private lazy var speechRecognizer: SFSpeechRecognizer = {
         let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
         speechRecognizer.delegate = self
@@ -448,7 +448,10 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
             switch result {
             case .success(let message):
                 sSelf.speakView.text = "Flora: \(message.message)"
-                sSelf.speak(text: message.message)
+                DispatchQueue.global().async { [weak self] in
+                    self?.speak(text: message.message)
+                }
+                
                 if let txid = message.txid {
                     print(txid)
                 }
@@ -460,14 +463,29 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     private func speak(text: String) {
-        let utterance = AVSpeechUtterance(string: text)
-        utterance.rate = 0.57
-        utterance.pitchMultiplier = 0.8
-        utterance.postUtteranceDelay = 0.2
-        utterance.volume = 0.8
+        guard let sub = ProcessInfo.processInfo.environment["SPEECH_KEY"],
+              let region = ProcessInfo.processInfo.environment["SPEECH_REGION"] else {
+            return
+        }
         
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
-        synthesizer.speak(utterance)
+        var speechConfig: SPXSpeechConfiguration?
+        do {
+            try speechConfig = SPXSpeechConfiguration(subscription: sub, region: region)
+            speechConfig!.speechSynthesisVoiceName = "en-US-RogerNeural";
+
+            let synthesizer = try! SPXSpeechSynthesizer(speechConfig!)
+            let result = try! synthesizer.speakText(text)
+            if result.reason == SPXResultReason.canceled {
+                let cancellationDetails = try! SPXSpeechSynthesisCancellationDetails(fromCanceledSynthesisResult: result)
+                print("cancelled, error code: \(cancellationDetails.errorCode) detail: \(cancellationDetails.errorDetails!) ")
+                print("Did you set the speech resource key and region values?");
+                return
+            }
+            
+        } catch {
+            print("error \(error) happened")
+            speechConfig = nil
+        }
     }
     
     deinit {
