@@ -25,6 +25,12 @@ class SignUpViewController: UIViewController {
         return view
     }()
     
+    private lazy var usernameBorder: CALayer = {
+        let bottomBorder = CALayer()
+        bottomBorder.backgroundColor = UIColor.wm_deepPurple.cgColor
+        return bottomBorder
+    }()
+    
     private lazy var emailBorder: CALayer = {
         let bottomBorder = CALayer()
         bottomBorder.backgroundColor = UIColor.wm_deepPurple.cgColor
@@ -37,10 +43,17 @@ class SignUpViewController: UIViewController {
         return bottomBorder
     }()
     
-    private lazy var repeatPasswordBorder: CALayer = {
-        let bottomBorder = CALayer()
-        bottomBorder.backgroundColor = UIColor.wm_deepPurple.cgColor
-        return bottomBorder
+    private lazy var usernameField: UITextField = {
+        let view = UITextField()
+        view.placeholder = "Username"
+        view.backgroundColor = .clear
+        view.borderStyle = .none
+        view.layer.addSublayer(usernameBorder)
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self
+        
+        return view
     }()
     
     private lazy var emailField: UITextField = {
@@ -63,20 +76,6 @@ class SignUpViewController: UIViewController {
         view.backgroundColor = .clear
         view.borderStyle = .none
         view.layer.addSublayer(passwordBorder)
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.delegate = self
-        
-        return view
-    }()
-    
-    private lazy var repeatPasswordField: UITextField = {
-        let view = UITextField()
-        view.placeholder = "Confirm Password"
-        view.isSecureTextEntry = true
-        view.backgroundColor = .clear
-        view.borderStyle = .none
-        view.layer.addSublayer(repeatPasswordBorder)
         
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
@@ -131,10 +130,9 @@ class SignUpViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        usernameBorder.frame = CGRect(x: 0, y: usernameField.frame.height - 1, width: usernameField.frame.width, height: 1)
         emailBorder.frame = CGRect(x: 0, y: emailField.frame.height - 1, width: emailField.frame.width, height: 1)
         passwordBorder.frame = CGRect(x: 0, y: passwordField.frame.height - 1, width: passwordField.frame.width, height: 1)
-        repeatPasswordBorder.frame = CGRect(x: 0, y: repeatPasswordField.frame.height - 1, width: repeatPasswordField.frame.width, height: 1)
-        
     }
     
     private func setupGestures() {
@@ -155,11 +153,17 @@ class SignUpViewController: UIViewController {
         imageView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
         imageView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor, constant: 50).isActive = true
         
+        view.addSubview(usernameField)
+        usernameField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+        usernameField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        usernameField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        usernameField.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 50).isActive = true
+        
         view.addSubview(emailField)
         emailField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         emailField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        emailField.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 50).isActive = true
+        emailField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 16).isActive = true
         
         view.addSubview(passwordField)
         passwordField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
@@ -167,17 +171,11 @@ class SignUpViewController: UIViewController {
         passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 16).isActive = true
         
-        view.addSubview(repeatPasswordField)
-        repeatPasswordField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
-        repeatPasswordField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        repeatPasswordField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        repeatPasswordField.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 16).isActive = true
-        
         view.addSubview(signUpButton)
         signUpButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         signUpButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        signUpButton.topAnchor.constraint(equalTo: repeatPasswordField.bottomAnchor, constant: 50).isActive = true
+        signUpButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 50).isActive = true
         
         view.addSubview(signInLabel)
         signInLabel.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
@@ -201,16 +199,56 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func signUpTapped(_ sender: UIButton) {
-        print("SIGN UP TAPPED")
-        if let email = emailField.text,
-            email.isValidEmail() {
-            dismissAllViewControllers()
-        } else {
-            let banner = FloatingNotificationBanner(title: "Invalid Email", style: .warning)
+        guard let username = usernameField.text, username.isValidUsername() else {
+            let banner = FloatingNotificationBanner(title: "Invalid username", style: .warning)
             banner.duration = 1
             banner.show()
+            return
         }
-
+        
+        guard let email = emailField.text, email.isValidEmail() else {
+            let banner = FloatingNotificationBanner(title: "Invalid email", subtitle: "Can only contain numbers and letters, and must start with a letter", style: .warning)
+            banner.duration = 1
+            banner.show()
+            return
+        }
+        
+        guard let password = passwordField.text, password.isValidPassword() else {
+            let banner = FloatingNotificationBanner(title: "Invalid password", subtitle: "Length needs to be greater than 5 characters.", style: .warning)
+            banner.duration = 1
+            banner.show()
+            return
+        }
+        
+        NetworkManager.shared.register(username: username, email: email, password: password) { [weak self] result in
+            guard let sSelf = self else { return }
+            
+            switch result {
+            case .success(let user):
+                debugPrint(user)
+                if UserDefaults.standard.store(user: user) {
+                    sSelf.showSignUpSucceed()
+                    sSelf.dismiss(animated: true)
+                } else {
+                    sSelf.showSignUpFailed()
+                }
+            case .failure(let error):
+                debugPrint(error)
+                sSelf.showSignUpFailed()
+            }
+        }
+    }
+    
+    private func showSignUpSucceed() {
+        let banner = FloatingNotificationBanner(title: "Sign up successfully, please sign in", style: .success)
+        banner.duration = 2
+        banner.show()
+    }
+    
+    private func showSignUpFailed() {
+        let banner = FloatingNotificationBanner(title: "Sign up failed", style: .warning)
+        banner.duration = 1
+        banner.show()
     }
     
     func dismissAllViewControllers() {

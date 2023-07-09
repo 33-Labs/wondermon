@@ -21,4 +21,22 @@ extension String {
             return false
         }
     }
+    
+    func isValidUsername() -> Bool {
+        let pattern = "^(?!\\d)[a-zA-Z0-9]{4,15}$"
+        
+        do {
+            let regex = try NSRegularExpression(pattern: pattern)
+            let range = NSRange(location: 0, length: self.utf16.count)
+            let matches = regex.matches(in: self, range: range)
+            return !matches.isEmpty
+        } catch {
+            print("Invalid regex pattern: \(error.localizedDescription)")
+            return false
+        }
+    }
+    
+    func isValidPassword() -> Bool {
+        return self.count > 5
+    }
 }

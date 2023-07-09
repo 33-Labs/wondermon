@@ -10,6 +10,8 @@
 		91385FB62A59C25500DF5259 /* UIColor+Wondermon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91385FB52A59C25500DF5259 /* UIColor+Wondermon.swift */; };
 		91385FB82A5A4F1700DF5259 /* String+Wondermon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91385FB72A5A4F1700DF5259 /* String+Wondermon.swift */; };
 		91385FBB2A5A529C00DF5259 /* NotificationBannerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 91385FBA2A5A529C00DF5259 /* NotificationBannerSwift */; };
+		91385FBD2A5A5A6600DF5259 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91385FBC2A5A5A6600DF5259 /* NetworkManager.swift */; };
+		91385FBF2A5A860500DF5259 /* UserDefaults+Wondermon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91385FBE2A5A860500DF5259 /* UserDefaults+Wondermon.swift */; };
 		91C1F8612A5817DD00607776 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8602A5817DD00607776 /* AppDelegate.swift */; };
 		91C1F8632A5817DD00607776 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8622A5817DD00607776 /* SceneDelegate.swift */; };
 		91C1F8652A5817DD00607776 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8642A5817DD00607776 /* LoginViewController.swift */; };
@@ -22,7 +24,7 @@
 		91C1F8972A586AFE00607776 /* Flow in Frameworks */ = {isa = PBXBuildFile; productRef = 91C1F8962A586AFE00607776 /* Flow */; };
 		91C1F89A2A586B3400607776 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 91C1F8992A586B3400607776 /* Alamofire */; };
 		91C1F89C2A586B6F00607776 /* FlowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F89B2A586B6F00607776 /* FlowService.swift */; };
-		91C1F89E2A58F21D00607776 /* Flovatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F89D2A58F21D00607776 /* Flovatar.swift */; };
+		91C1F89E2A58F21D00607776 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F89D2A58F21D00607776 /* Models.swift */; };
 		91C1F8A62A59174F00607776 /* placeholder.svg in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8A52A59174F00607776 /* placeholder.svg */; };
 		91C1F8AC2A594E5400607776 /* Macaw in Frameworks */ = {isa = PBXBuildFile; productRef = 91C1F8AB2A594E5400607776 /* Macaw */; };
 		91C1F8AE2A59728000607776 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8AD2A59728000607776 /* SignUpViewController.swift */; };
@@ -49,6 +51,8 @@
 /* Begin PBXFileReference section */
 		91385FB52A59C25500DF5259 /* UIColor+Wondermon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Wondermon.swift"; sourceTree = "<group>"; };
 		91385FB72A5A4F1700DF5259 /* String+Wondermon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Wondermon.swift"; sourceTree = "<group>"; };
+		91385FBC2A5A5A6600DF5259 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		91385FBE2A5A860500DF5259 /* UserDefaults+Wondermon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Wondermon.swift"; sourceTree = "<group>"; };
 		91C1F85D2A5817DD00607776 /* Wondermon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wondermon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C1F8602A5817DD00607776 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91C1F8622A5817DD00607776 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,7 +67,7 @@
 		91C1F8832A5817DE00607776 /* WondermonUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WondermonUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		91C1F8902A58688300607776 /* FlovatarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlovatarViewController.swift; sourceTree = "<group>"; };
 		91C1F89B2A586B6F00607776 /* FlowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowService.swift; sourceTree = "<group>"; };
-		91C1F89D2A58F21D00607776 /* Flovatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flovatar.swift; sourceTree = "<group>"; };
+		91C1F89D2A58F21D00607776 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		91C1F8A52A59174F00607776 /* placeholder.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = placeholder.svg; sourceTree = "<group>"; };
 		91C1F8AD2A59728000607776 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		91C1F8AF2A59BBAA00607776 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -126,12 +130,14 @@
 				91C1F8622A5817DD00607776 /* SceneDelegate.swift */,
 				91C1F8AD2A59728000607776 /* SignUpViewController.swift */,
 				91C1F8642A5817DD00607776 /* LoginViewController.swift */,
+				91385FBC2A5A5A6600DF5259 /* NetworkManager.swift */,
 				91385FB72A5A4F1700DF5259 /* String+Wondermon.swift */,
 				91385FB52A59C25500DF5259 /* UIColor+Wondermon.swift */,
+				91385FBE2A5A860500DF5259 /* UserDefaults+Wondermon.swift */,
 				91C1F8AF2A59BBAA00607776 /* Main.storyboard */,
 				91C1F8A52A59174F00607776 /* placeholder.svg */,
 				91C1F8902A58688300607776 /* FlovatarViewController.swift */,
-				91C1F89D2A58F21D00607776 /* Flovatar.swift */,
+				91C1F89D2A58F21D00607776 /* Models.swift */,
 				91C1F89B2A586B6F00607776 /* FlowService.swift */,
 				91C1F8692A5817DE00607776 /* Assets.xcassets */,
 				91C1F86B2A5817DE00607776 /* LaunchScreen.storyboard */,
@@ -308,8 +314,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91C1F89E2A58F21D00607776 /* Flovatar.swift in Sources */,
+				91C1F89E2A58F21D00607776 /* Models.swift in Sources */,
 				91C1F8AE2A59728000607776 /* SignUpViewController.swift in Sources */,
+				91385FBD2A5A5A6600DF5259 /* NetworkManager.swift in Sources */,
+				91385FBF2A5A860500DF5259 /* UserDefaults+Wondermon.swift in Sources */,
 				91C1F8652A5817DD00607776 /* LoginViewController.swift in Sources */,
 				91385FB62A59C25500DF5259 /* UIColor+Wondermon.swift in Sources */,
 				91385FB82A5A4F1700DF5259 /* String+Wondermon.swift in Sources */,

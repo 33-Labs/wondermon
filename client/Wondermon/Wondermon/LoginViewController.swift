@@ -170,21 +170,48 @@ class LoginViewController: UIViewController {
     @objc func signUpTapped(_ gesture: UITapGestureRecognizer) {
         print("SIGN UP tapped!")
         let signUpViewController = SignUpViewController()
-        signUpViewController.modalTransitionStyle = .crossDissolve
         signUpViewController.modalPresentationStyle = .overFullScreen
         present(signUpViewController, animated: true, completion: nil)
     }
     
     @objc func signInTapped(_ sender: UIButton) {
-        print("SIGN In tapped!")
-        if let email = emailField.text,
-            email.isValidEmail() {
-            self.dismiss(animated: true)
-        } else {
-            let banner = FloatingNotificationBanner(title: "Invalid Email", style: .warning)
+        guard let email = emailField.text, email.isValidEmail() ,
+            let password = passwordField.text, password.isValidPassword() else {
+            let banner = FloatingNotificationBanner(title: "Invalid email or password", style: .warning)
             banner.duration = 1
             banner.show()
+            return
         }
+
+        NetworkManager.shared.login(email: email, password: password) { [weak self] result in
+            guard let sSelf = self else { return }
+            
+            switch result {
+            case .success(let user):
+                debugPrint(user)
+                if UserDefaults.standard.store(user: user) {
+                    sSelf.showSignInSucceed()
+                    sSelf.dismiss(animated: true)
+                } else {
+                    sSelf.showSignInFailed()
+                }
+            case .failure(let error):
+                debugPrint(error)
+                sSelf.showSignInFailed()
+            }
+        }
+    }
+    
+    private func showSignInSucceed() {
+        let banner = FloatingNotificationBanner(title: "Sign in successfully", style: .success)
+        banner.duration = 1
+        banner.show()
+    }
+    
+    private func showSignInFailed() {
+        let banner = FloatingNotificationBanner(title: "Sign in failed", style: .warning)
+        banner.duration = 1
+        banner.show()
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
