@@ -31,9 +31,7 @@ class FlobitsCollectionViewController: UICollectionViewController, UICollectionV
     }
     
     private func getUser() {
-        if let user = UserDefaults.standard.fetchUser() {
-            self.user = user
-        }
+        self.user = UserDefaults.standard.fetchUser()
     }
     
     private func loadFlobits() {

@@ -13,7 +13,16 @@ import AVFoundation
 
 class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeechRecognizerDelegate {
     
-    private var user: User?
+    private var user: User? {
+        didSet {
+            if let user = user {
+                unauthenticatedCoverView.isHidden = true
+                fetchFlovatarData()
+            } else {
+                unauthenticatedCoverView.isHidden = false
+            }
+        }
+    }
     
     private lazy var svgView: SVGView = {
         let node = try! SVGParser.parse(resource: "placeholder", ofType: "svg")
@@ -41,7 +50,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     private lazy var unauthenticatedCoverView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
-        view.backgroundColor = .green
+        view.backgroundColor = .yellow
         view.layer.cornerRadius = 30
         view.clipsToBounds = true
         view.image = UIImage(named: "signin_placeholder")
@@ -87,20 +96,10 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         return button
     }()
     
-    private lazy var loginButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Login", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .blue
-        button.addTarget(self, action: #selector(loginButtonTapped), for: .touchDown)
-        return button
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         getUser()
-        fetchFlovatarData()
 
         view.backgroundColor = .wm_purple
         setupNavigationBar()
@@ -111,7 +110,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getUser()
-        fetchFlovatarData()
     }
     
     private func setupNavigationBar() {
@@ -145,9 +143,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     private func getUser() {
-        if let user = UserDefaults.standard.fetchUser() {
-            self.user = user
-        }
+        self.user = UserDefaults.standard.fetchUser()
     }
     
     private func fetchFlovatarData() {
@@ -285,10 +281,15 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     @objc func audioButtonTapped(_ sender: UIButton) {
-        if audioEngine.isRunning {
-            stopRecording()
+        if let user = user {
+            if audioEngine.isRunning {
+                stopRecording()
+            } else {
+                startRecording()
+            }
         } else {
-            startRecording()
+            let vc = LoginViewController()
+            present(vc, animated: true, completion: nil)
         }
     }
     
@@ -363,20 +364,26 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         speak(text: "How many roads must a man walk down, before you call him a man")
     }
     
-    @objc func loginButtonTapped(_ sender: UIButton) {
-        let loginViewController = LoginViewController()
-        loginViewController.modalPresentationStyle = .overFullScreen
-        present(loginViewController, animated: true, completion: nil)
-    }
-    
     @objc func flobitsButtonTapped(_ sender: UIButton) {
-        let vc = FlobitsCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        present(vc, animated: true, completion: nil)
+        if let user = user {
+            let vc = FlobitsCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+            present(vc, animated: true, completion: nil)
+        } else {
+            let vc = LoginViewController()
+            present(vc, animated: true, completion: nil)
+        }
+
     }
     
     @objc func profileButtonTapped(_ sender: UIBarButtonItem) {
-        let vc = ProfileViewController()
-        present(vc, animated: true, completion: nil)
+        if let user = user {
+            let vc = ProfileViewController()
+            present(vc, animated: true, completion: nil)
+        } else {
+            let vc = LoginViewController()
+            present(vc, animated: true, completion: nil)
+        }
+
     }
     
     private func speak(text: String) {

@@ -247,9 +247,7 @@ class ProfileViewController: UIViewController {
     }
     
     private func getUser() {
-        if let user = UserDefaults.standard.fetchUser() {
-            self.user = user
-        }
+        self.user = UserDefaults.standard.fetchUser()
     }
     
     @objc private func signOutTapped(_ sender: UIButton) {
