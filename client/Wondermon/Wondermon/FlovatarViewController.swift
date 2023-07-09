@@ -23,6 +23,8 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
         view.backgroundColor = .green
+        view.layer.cornerRadius = 30
+        view.clipsToBounds = true
 
         return view
     }()
@@ -74,7 +76,7 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad")
-        view.backgroundColor = .purple
+        view.backgroundColor = .wm_purple
         setupNavigationBar()
         setupUI()
         setupAudio()
@@ -90,7 +92,11 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     private func setupNavigationBar() {
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationItem.title = "Flovatar"
+        navigationItem.titleView = {
+            let view = UIImageView()
+            view.image = UIImage(named: "slogan")
+            return view
+        }()
         navigationItem.rightBarButtonItem = {
             let button = UIBarButtonItem()
             button.title = "Profile"
@@ -140,7 +146,7 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     private func setupUI() {
         view.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -50).isActive = true
+        imageView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
         imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true

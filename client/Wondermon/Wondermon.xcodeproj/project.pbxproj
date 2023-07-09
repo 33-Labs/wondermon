@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		91385FB62A59C25500DF5259 /* UIColor+Wondermon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91385FB52A59C25500DF5259 /* UIColor+Wondermon.swift */; };
 		91C1F8612A5817DD00607776 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8602A5817DD00607776 /* AppDelegate.swift */; };
 		91C1F8632A5817DD00607776 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8622A5817DD00607776 /* SceneDelegate.swift */; };
 		91C1F8652A5817DD00607776 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8642A5817DD00607776 /* LoginViewController.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		91385FB52A59C25500DF5259 /* UIColor+Wondermon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Wondermon.swift"; sourceTree = "<group>"; };
 		91C1F85D2A5817DD00607776 /* Wondermon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wondermon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91C1F8602A5817DD00607776 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91C1F8622A5817DD00607776 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				91C1F8622A5817DD00607776 /* SceneDelegate.swift */,
 				91C1F8AD2A59728000607776 /* SignUpViewController.swift */,
 				91C1F8642A5817DD00607776 /* LoginViewController.swift */,
+				91385FB52A59C25500DF5259 /* UIColor+Wondermon.swift */,
 				91C1F8AF2A59BBAA00607776 /* Main.storyboard */,
 				91C1F8A52A59174F00607776 /* placeholder.svg */,
 				91C1F8902A58688300607776 /* FlovatarViewController.swift */,
@@ -301,6 +304,7 @@
 				91C1F89E2A58F21D00607776 /* Flovatar.swift in Sources */,
 				91C1F8AE2A59728000607776 /* SignUpViewController.swift in Sources */,
 				91C1F8652A5817DD00607776 /* LoginViewController.swift in Sources */,
+				91385FB62A59C25500DF5259 /* UIColor+Wondermon.swift in Sources */,
 				91C1F8912A58688300607776 /* FlovatarViewController.swift in Sources */,
 				91C1F8612A5817DD00607776 /* AppDelegate.swift in Sources */,
 				91C1F89C2A586B6F00607776 /* FlowService.swift in Sources */,
