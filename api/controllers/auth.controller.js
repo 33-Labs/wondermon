@@ -21,7 +21,7 @@ class AuthController {
 
             const user = await AuthService.register(req.body)
             res.status(200).json({
-                status: true,
+                status: 0,
                 message: 'User created successfully',
                 data: user
             })
@@ -38,7 +38,7 @@ class AuthController {
          try {
             const data = await AuthService.login(req.body)
             res.status(200).json({
-                status: true,
+                status: 0,
                 message: "Account login successful",
                 data
             })
@@ -51,7 +51,7 @@ class AuthController {
         try {
             const users = await AuthService.all();
             res.status(200).json({
-                status: true,
+                status: 0,
                 message: 'All users',
                 data: users
             })
