@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Flovatar.png",
+      "filename" : "flovatar.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Flovatar 1.png",
+      "filename" : "flovatar 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Flovatar 2.png",
+      "filename" : "flovatar 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

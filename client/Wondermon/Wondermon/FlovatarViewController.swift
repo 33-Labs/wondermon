@@ -32,6 +32,30 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         }
     }
     
+    private var convertedText: String? {
+        didSet {
+            if let user = user,
+               let convertedText = convertedText {
+                speakView.text = "\(user.name): \(convertedText)\n"
+            } else {
+                speakView.text = ""
+            }
+            
+        }
+    }
+    
+    private lazy var speakView: UITextView = {
+        let view = UITextView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 30
+        view.layer.borderWidth = 2
+        view.layer.borderColor = UIColor.wm_deepPurple.cgColor
+        view.clipsToBounds = true
+        view.font = .systemFont(ofSize: 16)
+        view.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        return view
+    }()
+    
     private lazy var svgView: SVGView = {
         let node = try! SVGParser.parse(resource: "placeholder", ofType: "svg")
         let svgView = SVGView(node: node, frame: CGRect(x: 0, y: 0, width: 0, height: 0))
@@ -60,7 +84,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = .white
-        imageView.tintColor = .lightGray
+        imageView.tintColor = .wm_purple
         imageView.layer.cornerRadius = 30
         imageView.clipsToBounds = true
         imageView.image = UIImage(named: "flovatar")
@@ -68,10 +92,10 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         
         view.addSubview(imageView)
         view.translatesAutoresizingMaskIntoConstraints = false
-        imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
-        imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50).isActive = true
         
         return view
     }()
@@ -85,13 +109,12 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }()
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
-    private var convertedText: String?
 
     private lazy var audioButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .white
-        button.layer.cornerRadius = 40
-        button.clipsToBounds = true
+//        button.backgroundColor = .white
+//        button.layer.cornerRadius = 40
+//        button.clipsToBounds = true
         let startImage = UIImage(named: "holdtotalk")
         let stopImage = UIImage(named: "releasetosend")
         button.setImage(startImage, for: .normal)
@@ -131,7 +154,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         if keyPath == "user" {
             print("KVO get user")
             getUser()
-            print(UserDefaults.standard.fetchUser())
         }
     }
     
@@ -201,7 +223,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -72).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         imageView.addSubview(svgView)
@@ -211,14 +233,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         svgView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
         svgView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
         
-        if user == nil {
-            imageView.addSubview(unauthenticatedCoverView)
-            unauthenticatedCoverView.translatesAutoresizingMaskIntoConstraints = false
-            unauthenticatedCoverView.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-            unauthenticatedCoverView.heightAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
-            unauthenticatedCoverView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
-            unauthenticatedCoverView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
-        }
+        
+        imageView.addSubview(unauthenticatedCoverView)
+        unauthenticatedCoverView.translatesAutoresizingMaskIntoConstraints = false
+        unauthenticatedCoverView.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
+        unauthenticatedCoverView.heightAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
+        unauthenticatedCoverView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
+        unauthenticatedCoverView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
         
         view.addSubview(flobitsButton)
         flobitsButton.translatesAutoresizingMaskIntoConstraints = false
@@ -226,13 +247,20 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         flobitsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         flobitsButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
         flobitsButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 5).isActive = true
-
+        
         view.addSubview(audioButton)
         audioButton.translatesAutoresizingMaskIntoConstraints = false
         audioButton.widthAnchor.constraint(equalToConstant:  280).isActive = true
         audioButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
         audioButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         audioButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40).isActive = true
+        
+        view.addSubview(speakView)
+        speakView.translatesAutoresizingMaskIntoConstraints = false
+        speakView.topAnchor.constraint(equalTo: flobitsButton.bottomAnchor, constant: 16).isActive = true
+        speakView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
+        speakView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
+        speakView.bottomAnchor.constraint(equalTo: audioButton.topAnchor, constant: -16).isActive = true
         
 //        view.addSubview(speakButton)
 //        speakButton.translatesAutoresizingMaskIntoConstraints = false
