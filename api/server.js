@@ -24,7 +24,7 @@ app.use('/', route)
 
 setInterval(async function() {
     try {
-        // await flow.generateFlowAccounts()
+        await flow.generateFlowAccounts()
     } catch (e) {
         console.log(e)
     }
