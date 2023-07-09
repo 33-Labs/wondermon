@@ -20,10 +20,14 @@ class FlobitsCollectionViewController: UICollectionViewController, UICollectionV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.collectionView!.register(FlobitCollectionViewCell.self, forCellWithReuseIdentifier: FlobitCollectionViewCell.reuseIdentifier)
-
         getUser()
+        setupCollectionView()
         loadFlobits()
+    }
+    
+    private func setupCollectionView() {
+        collectionView.register(FlobitCollectionViewCell.self, forCellWithReuseIdentifier: FlobitCollectionViewCell.reuseIdentifier)
+        collectionView.register(FlobitsHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: FlobitsHeaderView.reuseIdentifier)
     }
     
     private func getUser() {
@@ -103,6 +107,10 @@ pub fun main(address: Address): [Flobit] {
     }
 
     // MARK: - UICollectionViewDataSource
+    
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return flobits.count
@@ -115,8 +123,22 @@ pub fun main(address: Address): [Flobit] {
         
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionHeader {
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FlobitsHeaderView.reuseIdentifier, for: indexPath) as! FlobitsHeaderView
+            
+            return headerView
+        } else {
+            fatalError("Unsupported supplementary view type")
+        }
+    }
 
     // MARK: - UICollectionViewDelegateFlowLayout
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 100)
+    }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let paddingSpace = sectionInsets.left * (numberOfItemsPerRow + 1)
