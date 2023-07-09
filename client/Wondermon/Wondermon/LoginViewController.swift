@@ -12,8 +12,6 @@ class LoginViewController: UIViewController {
     private lazy var titleView: UIView = {
        let view = UIView()
         view.backgroundColor = .wm_purple
-//        view.layer.cornerRadius = 30
-//        view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -26,7 +24,7 @@ class LoginViewController: UIViewController {
         return view
     }()
     
-    private lazy var usernameBorder: CALayer = {
+    private lazy var emailBorder: CALayer = {
         let bottomBorder = CALayer()
         bottomBorder.backgroundColor = UIColor.wm_deepPurple.cgColor
         return bottomBorder
@@ -38,12 +36,13 @@ class LoginViewController: UIViewController {
         return bottomBorder
     }()
     
-    private lazy var usernameField: UITextField = {
+    private lazy var emailField: UITextField = {
         let view = UITextField()
-        view.placeholder = "Username"
+        view.placeholder = "Email"
         view.backgroundColor = .clear
         view.borderStyle = .none
-        view.layer.addSublayer(usernameBorder)
+        view.keyboardType = .emailAddress
+        view.layer.addSublayer(emailBorder)
 
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
@@ -110,7 +109,7 @@ class LoginViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        usernameBorder.frame = CGRect(x: 0, y: usernameField.frame.height - 1, width: usernameField.frame.width, height: 1)
+        emailBorder.frame = CGRect(x: 0, y: emailField.frame.height - 1, width: emailField.frame.width, height: 1)
         passwordBorder.frame = CGRect(x: 0, y: passwordField.frame.height - 1, width: passwordField.frame.width, height: 1)
         
     }
@@ -138,17 +137,17 @@ class LoginViewController: UIViewController {
         imageView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
         imageView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor, constant: 50).isActive = true
         
-        view.addSubview(usernameField)
-        usernameField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
-        usernameField.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        usernameField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        usernameField.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 50).isActive = true
+        view.addSubview(emailField)
+        emailField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+        emailField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        emailField.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 50).isActive = true
         
         view.addSubview(passwordField)
         passwordField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         passwordField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        passwordField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 16).isActive = true
+        passwordField.topAnchor.constraint(equalTo: emailField.bottomAnchor, constant: 16).isActive = true
         
         view.addSubview(loginButton)
         loginButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
@@ -177,7 +176,14 @@ class LoginViewController: UIViewController {
     
     @objc func signInTapped(_ sender: UIButton) {
         print("SIGN In tapped!")
-        self.dismiss(animated: true)
+        if let email = emailField.text,
+            email.isValidEmail() {
+            self.dismiss(animated: true)
+        } else {
+            print("Wrong email address")
+            // TODO: alert wrong email address
+        }
+        
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
