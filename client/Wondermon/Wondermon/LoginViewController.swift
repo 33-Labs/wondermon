@@ -9,6 +9,15 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    private lazy var titleView: UIView = {
+       let view = UIView()
+        view.backgroundColor = .wm_purple
+//        view.layer.cornerRadius = 30
+//        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private lazy var imageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
@@ -92,7 +101,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .wm_purple
+        view.backgroundColor = .white
         setupGestures()
         setupNotifications()
         setupUI()
@@ -117,17 +126,23 @@ class LoginViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.addSubview(imageView)
-        imageView.widthAnchor.constraint(equalToConstant: 220).isActive = true
+        view.addSubview(titleView)
+        titleView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        titleView.heightAnchor.constraint(equalTo: titleView.widthAnchor).isActive = true
+        titleView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        titleView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        titleView.addSubview(imageView)
+        imageView.widthAnchor.constraint(equalToConstant: 230).isActive = true
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80).isActive = true
-        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        imageView.centerXAnchor.constraint(equalTo: titleView.centerXAnchor).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: titleView.centerYAnchor, constant: 50).isActive = true
         
         view.addSubview(usernameField)
         usernameField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         usernameField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         usernameField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        usernameField.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 50).isActive = true
+        usernameField.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 50).isActive = true
         
         view.addSubview(passwordField)
         passwordField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
