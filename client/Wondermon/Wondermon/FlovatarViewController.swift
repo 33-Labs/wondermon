@@ -15,10 +15,18 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     private var user: User? {
         didSet {
-            if let user = user {
+            fetchFlovatarData()
+        }
+    }
+    
+    private var flovatarNode: Node? {
+        didSet {
+            if let node = flovatarNode {
+                svgView.node = node
+                svgView.isHidden = false
                 unauthenticatedCoverView.isHidden = true
-                fetchFlovatarData()
             } else {
+                svgView.isHidden = true
                 unauthenticatedCoverView.isHidden = false
             }
         }
@@ -33,7 +41,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     private lazy var imageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
-        view.backgroundColor = .green
         view.layer.cornerRadius = 30
         view.clipsToBounds = true
 
@@ -47,13 +54,24 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         return button
     }()
     
-    private lazy var unauthenticatedCoverView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFit
-        view.backgroundColor = .yellow
-        view.layer.cornerRadius = 30
-        view.clipsToBounds = true
-        view.image = UIImage(named: "signin_placeholder")
+    private lazy var unauthenticatedCoverView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .white
+        imageView.tintColor = .lightGray
+        imageView.layer.cornerRadius = 30
+        imageView.clipsToBounds = true
+        imageView.image = UIImage(named: "flovatar")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(imageView)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         
         return view
     }()
@@ -98,18 +116,23 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("viewDidLoad")
+        UserDefaults.standard.addObserver(self, forKeyPath: "user", options: .new, context: nil)
         
         getUser()
-
+        
         view.backgroundColor = .wm_purple
         setupNavigationBar()
         setupUI()
         setupAudio()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        getUser()
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "user" {
+            print("KVO get user")
+            getUser()
+            print(UserDefaults.standard.fetchUser())
+        }
     }
     
     private func setupNavigationBar() {
@@ -148,7 +171,10 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     private func fetchFlovatarData() {
         guard let user = user,
-              let flowAccount = user.flowAccount else { return }
+              let flowAccount = user.flowAccount else {
+            flovatarNode = nil
+            return
+        }
 
         Task {
             do {
@@ -161,7 +187,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                     
                     DispatchQueue.main.async { [weak self] in
                         guard let sSelf = self else { return }
-                        sSelf.svgView.node = node
+                        sSelf.flovatarNode = node
                     }
                 }
             } catch {
@@ -214,13 +240,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
 //        speakButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
 //        speakButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 //        speakButton.bottomAnchor.constraint(equalTo: audioButton.topAnchor, constant: -20).isActive = true
-//
-//        view.addSubview(loginButton)
-//        loginButton.translatesAutoresizingMaskIntoConstraints = false
-//        loginButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
-//        loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        loginButton.bottomAnchor.constraint(equalTo: speakButton.topAnchor, constant: -20).isActive = true
     }
     
     private func fetchFlovatarSvg(rawAddress: String, flovatarId: UInt64) async throws -> String {
@@ -397,6 +416,10 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         synthesizer.speak(utterance)
+    }
+    
+    deinit {
+        UserDefaults.standard.removeObserver(self, forKeyPath: "user", context: nil)
     }
 
 }

@@ -13,6 +13,7 @@ extension UserDefaults {
             let encoder = JSONEncoder()
             let data = try encoder.encode(user)
             UserDefaults.standard.set(data, forKey: "user")
+            UserDefaults.standard.synchronize()
             return true
         } catch {
             debugPrint(error)
@@ -36,5 +37,6 @@ extension UserDefaults {
     
     func deleteUser() {
         UserDefaults.standard.removeObject(forKey: "user")
+        UserDefaults.standard.synchronize()
     }
 }
