@@ -33,7 +33,7 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     private lazy var flobitsButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Flobit", for: .normal)
+        button.setImage(UIImage(named: "flobits"), for: .normal)
         button.addTarget(self, action: #selector(flobitsButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -202,7 +202,7 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         flobitsButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         flobitsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         flobitsButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
-        flobitsButton.topAnchor.constraint(equalTo: imageView.bottomAnchor).isActive = true
+        flobitsButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 5).isActive = true
 
         view.addSubview(audioButton)
         audioButton.translatesAutoresizingMaskIntoConstraints = false

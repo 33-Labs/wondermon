@@ -120,7 +120,7 @@ pub fun main(address: Address): [Flobit] {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FlobitCollectionViewCell.reuseIdentifier, for: indexPath) as! FlobitCollectionViewCell
         
         let flobit = flobits[indexPath.item]
-        
+        cell.setFlobit(flobit)
         return cell
     }
     
