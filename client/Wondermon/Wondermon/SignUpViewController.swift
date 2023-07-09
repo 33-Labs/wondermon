@@ -113,19 +113,19 @@ class SignUpViewController: UIViewController {
         passwordField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         passwordField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        passwordField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 30).isActive = true
+        passwordField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 16).isActive = true
         
         view.addSubview(repeatPasswordField)
         repeatPasswordField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         repeatPasswordField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         repeatPasswordField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        repeatPasswordField.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 30).isActive = true
+        repeatPasswordField.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 16).isActive = true
         
         view.addSubview(signUpButton)
         signUpButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         signUpButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        signUpButton.topAnchor.constraint(equalTo: repeatPasswordField.bottomAnchor, constant: 30).isActive = true
+        signUpButton.topAnchor.constraint(equalTo: repeatPasswordField.bottomAnchor, constant: 50).isActive = true
         
         view.addSubview(signInLabel)
         signInLabel.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true

@@ -12,16 +12,30 @@ class LoginViewController: UIViewController {
     private lazy var imageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
-        view.backgroundColor = .green
         view.translatesAutoresizingMaskIntoConstraints = false
-
+        view.image = UIImage(named: "logo")
         return view
+    }()
+    
+    private lazy var usernameBorder: CALayer = {
+        let bottomBorder = CALayer()
+        bottomBorder.backgroundColor = UIColor.wm_deepPurple.cgColor
+        return bottomBorder
+    }()
+    
+    private lazy var passwordBorder: CALayer = {
+        let bottomBorder = CALayer()
+        bottomBorder.backgroundColor = UIColor.wm_deepPurple.cgColor
+        return bottomBorder
     }()
     
     private lazy var usernameField: UITextField = {
         let view = UITextField()
         view.placeholder = "Username"
-        view.borderStyle = .roundedRect
+        view.backgroundColor = .clear
+        view.borderStyle = .none
+        view.layer.addSublayer(usernameBorder)
+
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         return view
@@ -31,7 +45,10 @@ class LoginViewController: UIViewController {
         let view = UITextField()
         view.placeholder = "Password"
         view.isSecureTextEntry = true
-        view.borderStyle = .roundedRect
+        view.backgroundColor = .clear
+        view.borderStyle = .none
+        view.layer.addSublayer(passwordBorder)
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         return view
@@ -39,8 +56,8 @@ class LoginViewController: UIViewController {
     
     private lazy var loginButton: UIButton = {
        let button = UIButton()
-        button.setTitle("Login", for: .normal)
-        button.backgroundColor = .green
+        button.setImage(UIImage(named: "signin"), for: .normal)
+        button.backgroundColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
         return button
@@ -53,12 +70,14 @@ class LoginViewController: UIViewController {
         let attributedString = NSMutableAttributedString(string: signUpText)
         let range = (signUpText as NSString).range(of: signUpLinkText)
         
-        attributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: range)
-        attributedString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: range)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.wm_deepPurple, range: range)
+        attributedString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 14), range: range)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(signUpTapped(_:)))
         
         let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .lightGray
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.attributedText = attributedString
@@ -73,10 +92,18 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .brown
+        view.backgroundColor = .wm_purple
         setupGestures()
         setupNotifications()
         setupUI()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        usernameBorder.frame = CGRect(x: 0, y: usernameField.frame.height - 1, width: usernameField.frame.width, height: 1)
+        passwordBorder.frame = CGRect(x: 0, y: passwordField.frame.height - 1, width: passwordField.frame.width, height: 1)
+        
     }
     
     private func setupGestures() {
@@ -106,13 +133,13 @@ class LoginViewController: UIViewController {
         passwordField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         passwordField.heightAnchor.constraint(equalToConstant: 50).isActive = true
         passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        passwordField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 30).isActive = true
+        passwordField.topAnchor.constraint(equalTo: usernameField.bottomAnchor, constant: 16).isActive = true
         
         view.addSubview(loginButton)
         loginButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 30).isActive = true
+        loginButton.topAnchor.constraint(equalTo: passwordField.bottomAnchor, constant: 50).isActive = true
         
         view.addSubview(signUpLabel)
         signUpLabel.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
