@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import NotificationBannerSwift
 
 class SignUpViewController: UIViewController {
     
@@ -205,8 +206,9 @@ class SignUpViewController: UIViewController {
             email.isValidEmail() {
             dismissAllViewControllers()
         } else {
-            print("Wrong email address")
-            // TODO: alert wrong email address
+            let banner = FloatingNotificationBanner(title: "Invalid Email", style: .warning)
+            banner.duration = 1
+            banner.show()
         }
 
     }
