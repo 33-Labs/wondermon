@@ -33,4 +33,8 @@ extension UserDefaults {
             return nil
         }
     }
+    
+    func deleteUser() {
+        UserDefaults.standard.removeObject(forKey: "user")
+    }
 }

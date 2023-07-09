@@ -11,7 +11,7 @@ import Macaw
 import Speech
 import AVFoundation
 
-class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
+class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeechRecognizerDelegate {
     
     private var user: User?
     
@@ -105,24 +105,16 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
         fetchFlovatarData()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        print("viewWillAppear")
-    }
-    
     private func setupNavigationBar() {
-        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.tintColor = .wm_deepPurple
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationItem.titleView = {
             let view = UIImageView()
             view.image = UIImage(named: "slogan")
             return view
         }()
-        navigationItem.rightBarButtonItem = {
-            let button = UIBarButtonItem()
-            button.title = "Profile"
-            return button
-        }()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "user"), style: .plain, target: self, action: #selector(profileButtonTapped))
     }
     
     private func setupAudio() {
@@ -370,6 +362,11 @@ class FlovatarViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     @objc func flobitsButtonTapped(_ sender: UIButton) {
         let vc = FlobitsCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        present(vc, animated: true, completion: nil)
+    }
+    
+    @objc func profileButtonTapped(_ sender: UIBarButtonItem) {
+        let vc = ProfileViewController()
         present(vc, animated: true, completion: nil)
     }
     
