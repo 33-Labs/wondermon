@@ -34,7 +34,6 @@
 		91C1F89A2A586B3400607776 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 91C1F8992A586B3400607776 /* Alamofire */; };
 		91C1F89E2A58F21D00607776 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F89D2A58F21D00607776 /* Models.swift */; };
 		91C1F8A62A59174F00607776 /* placeholder.svg in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8A52A59174F00607776 /* placeholder.svg */; };
-		91C1F8AC2A594E5400607776 /* Macaw in Frameworks */ = {isa = PBXBuildFile; productRef = 91C1F8AB2A594E5400607776 /* Macaw */; };
 		91C1F8AE2A59728000607776 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1F8AD2A59728000607776 /* SignUpViewController.swift */; };
 		91C1F8B02A59BBAA00607776 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91C1F8AF2A59BBAA00607776 /* Main.storyboard */; };
 /* End PBXBuildFile section */
@@ -97,7 +96,6 @@
 				91385FCF2A5AAF2B00DF5259 /* SVGKitSwift in Frameworks */,
 				91C1F89A2A586B3400607776 /* Alamofire in Frameworks */,
 				91385FBB2A5A529C00DF5259 /* NotificationBannerSwift in Frameworks */,
-				91C1F8AC2A594E5400607776 /* Macaw in Frameworks */,
 				91C1F8972A586AFE00607776 /* Flow in Frameworks */,
 				91385FCA2A5AA9A600DF5259 /* Kingfisher in Frameworks */,
 				4D0A84E16B152F66D39EEDBF /* Pods_Wondermon.framework in Frameworks */,
@@ -127,7 +125,6 @@
 				C79D0B9318F9E4AAE987C41E /* Pods-Wondermon.debug.xcconfig */,
 				B099ACD620D6B1407471BE40 /* Pods-Wondermon.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -227,7 +224,6 @@
 			packageProductDependencies = (
 				91C1F8962A586AFE00607776 /* Flow */,
 				91C1F8992A586B3400607776 /* Alamofire */,
-				91C1F8AB2A594E5400607776 /* Macaw */,
 				91385FBA2A5A529C00DF5259 /* NotificationBannerSwift */,
 				91385FC92A5AA9A600DF5259 /* Kingfisher */,
 				91385FCE2A5AAF2B00DF5259 /* SVGKitSwift */,
@@ -305,12 +301,11 @@
 			);
 			mainGroup = 91C1F8542A5817DD00607776;
 			packageReferences = (
-				91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift.git" */,
-				91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire.git" */,
-				91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw.git" */,
-				91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner.git" */,
-				91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher.git" */,
-				91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit.git" */,
+				91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift" */,
+				91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner" */,
+				91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit" */,
 			);
 			productRefGroup = 91C1F85E2A5817DD00607776 /* Products */;
 			projectDirPath = "";
@@ -751,7 +746,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner.git" */ = {
+		91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Daltron/NotificationBanner.git";
 			requirement = {
@@ -759,7 +754,7 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher.git" */ = {
+		91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
 			requirement = {
@@ -767,7 +762,7 @@
 				minimumVersion = 7.0.0;
 			};
 		};
-		91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit.git" */ = {
+		91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SVGKit/SVGKit.git";
 			requirement = {
@@ -775,7 +770,7 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift.git" */ = {
+		91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Outblock/flow-swift.git";
 			requirement = {
@@ -783,7 +778,7 @@
 				minimumVersion = 0.3.3;
 			};
 		};
-		91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire.git" */ = {
+		91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -791,46 +786,33 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw.git" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/exyte/Macaw.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.10;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		91385FBA2A5A529C00DF5259 /* NotificationBannerSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner.git" */;
+			package = 91385FB92A5A529C00DF5259 /* XCRemoteSwiftPackageReference "NotificationBanner" */;
 			productName = NotificationBannerSwift;
 		};
 		91385FC92A5AA9A600DF5259 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher.git" */;
+			package = 91385FC82A5AA9A600DF5259 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
 		91385FCE2A5AAF2B00DF5259 /* SVGKitSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit.git" */;
+			package = 91385FCD2A5AAF2B00DF5259 /* XCRemoteSwiftPackageReference "SVGKit" */;
 			productName = SVGKitSwift;
 		};
 		91C1F8962A586AFE00607776 /* Flow */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift.git" */;
+			package = 91C1F8952A586AFE00607776 /* XCRemoteSwiftPackageReference "flow-swift" */;
 			productName = Flow;
 		};
 		91C1F8992A586B3400607776 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire.git" */;
+			package = 91C1F8982A586B3400607776 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
-		};
-		91C1F8AB2A594E5400607776 /* Macaw */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 91C1F8A22A59053500607776 /* XCRemoteSwiftPackageReference "Macaw.git" */;
-			productName = Macaw;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

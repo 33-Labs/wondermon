@@ -11,6 +11,7 @@ import Macaw
 import Speech
 import AVFoundation
 import MicrosoftCognitiveServicesSpeech
+import WebKit
 
 class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeechRecognizerDelegate {
     
@@ -20,20 +21,15 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         }
     }
     
-    private var flovatarNode: Node? {
+    private var flovatarId: UInt64? {
         didSet {
-            if let node = flovatarNode {
-                svgView.node = node
-                svgView.isHidden = false
+            if let _ = flovatarId {
                 unauthenticatedCoverView.isHidden = true
             } else {
-                svgView.isHidden = true
                 unauthenticatedCoverView.isHidden = false
             }
         }
     }
-    
-    private var flovatarId: UInt64?
     
     private var convertedText: String? {
         didSet {
@@ -53,27 +49,45 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         let view = UITextView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 30
+        view.clipsToBounds = true
         view.layer.borderWidth = 2
         view.layer.borderColor = UIColor.wm_deepPurple.cgColor
-        view.clipsToBounds = true
         view.isEditable = false
         view.font = .systemFont(ofSize: 16)
         view.textContainerInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         return view
     }()
     
-    private lazy var svgView: SVGView = {
-        let node = try! SVGParser.parse(resource: "placeholder", ofType: "svg")
-        let svgView = SVGView(node: node, frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        return svgView
-    }()
-    
-    private lazy var imageView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFit
+    private lazy var contentView: UIView = {
+        let view = UIView()
         view.layer.cornerRadius = 30
         view.clipsToBounds = true
-
+        return view
+    }()
+    
+    private lazy var webView: WKWebView = {
+        let view = WKWebView()
+        let prefs = WKPreferences()
+        prefs.javaScriptCanOpenWindowsAutomatically = false
+        
+        let pagePrefs : WKWebpagePreferences = {
+            let prefs = WKWebpagePreferences()
+            prefs.preferredContentMode = .mobile
+            prefs.allowsContentJavaScript = false
+            return prefs
+        }()
+        
+        let config = WKWebViewConfiguration()
+        config.preferences = prefs
+        config.allowsAirPlayForMediaPlayback = false
+        config.defaultWebpagePreferences = pagePrefs
+        
+        view.scrollView.isScrollEnabled = false
+        view.scrollView.backgroundColor = .green
+        view.backgroundColor = .yellow
+        view.scrollView.showsVerticalScrollIndicator = false
+        view.scrollView.showsHorizontalScrollIndicator = false
+        
         return view
     }()
     
@@ -91,8 +105,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = .white
         imageView.tintColor = .wm_purple
-        imageView.layer.cornerRadius = 30
-        imageView.clipsToBounds = true
         imageView.image = UIImage(named: "flovatar")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -200,11 +212,10 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                     let tokenId = tokenIds[0]
                     flovatarId = tokenId
                     let svg = try await self.fetchFlovatarSvg(rawAddress: rawAddress, flovatarId: tokenId)
-                    let node = try SVGParser.parse(text: svg)
                     
                     DispatchQueue.main.async { [weak self] in
                         guard let sSelf = self else { return }
-                        sSelf.flovatarNode = node
+                        sSelf.webView.loadHTMLString("<div style=\"width: 100%; height: 100%;\">\(svg)</div>", baseURL: nil)
                     }
                 } else {
                     cleanFlovatar()
@@ -217,37 +228,36 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     private func cleanFlovatar() {
         flovatarId = nil
-        flovatarNode = nil
     }
     
     private func setupUI() {
-        view.addSubview(imageView)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
-        imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -72).isActive = true
-        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        view.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+        contentView.heightAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
+        contentView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -72).isActive = true
+        contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        imageView.addSubview(svgView)
-        svgView.translatesAutoresizingMaskIntoConstraints = false
-        svgView.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-        svgView.heightAnchor.constraint(equalTo: svgView.widthAnchor).isActive = true
-        svgView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
-        svgView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
+        contentView.addSubview(webView)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: 8).isActive = true
+        webView.heightAnchor.constraint(equalTo: webView.widthAnchor).isActive = true
+        webView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -72).isActive = true
+        webView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        imageView.addSubview(unauthenticatedCoverView)
+        contentView.addSubview(unauthenticatedCoverView)
         unauthenticatedCoverView.translatesAutoresizingMaskIntoConstraints = false
-        unauthenticatedCoverView.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-        unauthenticatedCoverView.heightAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
-        unauthenticatedCoverView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
-        unauthenticatedCoverView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        unauthenticatedCoverView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
+        unauthenticatedCoverView.heightAnchor.constraint(equalTo: contentView.heightAnchor).isActive = true
+        unauthenticatedCoverView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        unauthenticatedCoverView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         
         view.addSubview(flobitsButton)
         flobitsButton.translatesAutoresizingMaskIntoConstraints = false
         flobitsButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         flobitsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        flobitsButton.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
-        flobitsButton.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 5).isActive = true
+        flobitsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        flobitsButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
         
         view.addSubview(audioButton)
         audioButton.translatesAutoresizingMaskIntoConstraints = false
@@ -259,8 +269,8 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         view.addSubview(speakView)
         speakView.translatesAutoresizingMaskIntoConstraints = false
         speakView.topAnchor.constraint(equalTo: flobitsButton.bottomAnchor, constant: 16).isActive = true
-        speakView.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        speakView.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
+        speakView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        speakView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         speakView.bottomAnchor.constraint(equalTo: audioButton.topAnchor, constant: -16).isActive = true
     }
     
@@ -437,7 +447,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                 print(error)
             }
         }
-        
     }
     
     private func speak(text: String) {
@@ -445,7 +454,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
               let region = ProcessInfo.processInfo.environment["SPEECH_REGION"] else {
             return
         }
-
+        
         var speechConfig: SPXSpeechConfiguration?
         do {
             try speechConfig = SPXSpeechConfiguration(subscription: sub, region: region)
