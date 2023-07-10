@@ -48,8 +48,6 @@ class NetworkManager {
         }
     }
     
-
-    
     func chat(prompt: String, flovatarId: UInt64, messages: [Message], completion: @escaping (Result<AiMessage, Error>) -> Void) {
         
         let convertedMessages = messages.map { (message) -> String in
@@ -73,6 +71,70 @@ class NetworkManager {
             case .success(let messageResponse):
                 if messageResponse.status == 0, let message = messageResponse.data {
                     completion(.success(message))
+                }
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+        }
+    }
+    
+    func addContact(name: String, address: String, completion: @escaping (Result<Contact, Error>) -> Void) {
+        let endpoint = "\(endpoint)/contacts"
+        let parameters = ["name": name, "address": address]
+        
+        guard let user = UserDefaults.standard.fetchUser() else {
+            completion(.failure(WMError.unauthorized))
+            return
+        }
+        
+        let headers: HTTPHeaders = [.authorization(bearerToken: user.accessToken)]
+        AF.request(endpoint, method: .post, parameters: parameters, headers: headers).responseDecodable(of: ContactResponse.self) { response in
+            switch response.result {
+            case .success(let contactResponse):
+                if contactResponse.status == 0, let contact = contactResponse.data {
+                    completion(.success(contact))
+                }
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+        }
+    }
+    
+    func getContacts(completion: @escaping (Result<[Contact], Error>) ->Void) {
+        let endpoint = "\(endpoint)/contacts"
+        
+        guard let user = UserDefaults.standard.fetchUser() else {
+            completion(.failure(WMError.unauthorized))
+            return
+        }
+        
+        let headers: HTTPHeaders = [.authorization(bearerToken: user.accessToken)]
+        AF.request(endpoint, method: .get, headers: headers).responseDecodable(of: ContactsResponse.self) { response in
+            switch response.result {
+            case .success(let contactsResponse):
+                if contactsResponse.status == 0 {
+                    completion(.success(contactsResponse.data))
+                }
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+        }
+    }
+    
+    func deleteContact(contactId: UInt64, completion: @escaping (Result<Bool, Error>) ->Void) {
+        let endpoint = "\(endpoint)/contacts/\(contactId)"
+        
+        guard let user = UserDefaults.standard.fetchUser() else {
+            completion(.failure(WMError.unauthorized))
+            return
+        }
+        
+        let headers: HTTPHeaders = [.authorization(bearerToken: user.accessToken)]
+        AF.request(endpoint, method: .delete, headers: headers).responseDecodable(of: BaseResponse.self) { response in
+            switch response.result {
+            case .success(let baseResponse):
+                if baseResponse.status == 0 {
+                    completion(.success(true))
                 }
             case .failure(let error):
                 return completion(.failure(error))

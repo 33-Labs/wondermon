@@ -6,18 +6,12 @@
 //
 
 import UIKit
-
-struct Contact {
-    let name: String
-    let address: String
-}
+import Flow
+import NotificationBannerSwift
 
 class ContactViewController: UIViewController {
     
-    var contacts: [Contact] = [
-        Contact(name: "lanford", address: "0xb072ae75f8858c93"),
-        Contact(name: "lanford2", address: "0xb072ae75f8858c94")
-    ]
+    var contacts: [Contact] = []
     
     private lazy var headerView: UIView = {
         let view = UIView()
@@ -60,7 +54,7 @@ class ContactViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-
+        fetchContacts()
     }
     
     func setupUI() {
@@ -77,6 +71,23 @@ class ContactViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
+    func fetchContacts() {
+        NetworkManager.shared.getContacts { [weak self] result in
+            switch result {
+            case .success(let contacts):
+                self?.contacts = contacts
+                DispatchQueue.main.async { [weak self] in
+                    self?.tableView.reloadData()
+                }
+            case .failure(let error):
+                print(error)
+                let banner = FloatingNotificationBanner(title: "Fetch contacts failed", style: .warning)
+                banner.duration = 1
+                banner.show()
+            }
+        }
+    }
+    
     @objc func addContactButtonTapped() {
         let alertController = UIAlertController(title: "New Contact",
                                                 message: nil,
@@ -91,15 +102,34 @@ class ContactViewController: UIViewController {
         }
         
         let submitAction = UIAlertAction(title: "Submit", style: .default) { (action) in
-            guard let usernameField = alertController.textFields?.first,
+            guard let nameField = alertController.textFields?.first,
                   let addressField = alertController.textFields?.last,
-                  let username = usernameField.text,
+                  let name = nameField.text,
                   let address = addressField.text else {
                 return
             }
             
-            print("Name: \(username)")
-            print("Flow Address: \(address)")
+            Task { [weak self] in
+                let isValidAddress = await Flow.shared.isAddressVaildate(address: Flow.Address(hex: address))
+                guard isValidAddress else {
+                    let banner = FloatingNotificationBanner(title: "Invalid address", style: .warning)
+                    banner.duration = 1
+                    banner.show()
+                    return
+                }
+                
+                NetworkManager.shared.addContact(name: name, address: address) { [weak self] result in
+                    switch result {
+                    case .success(let contact):
+                        self?.contacts.append(contact)
+                        DispatchQueue.main.async { [weak self] in
+                            self?.tableView.reloadData()
+                        }
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            }
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -128,8 +158,11 @@ extension ContactViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            contacts.remove(at: indexPath.row)
+            let contact = contacts.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            NetworkManager.shared.deleteContact(contactId: contact.id) { result in
+                print(result)
+            }
         }
     }
 }

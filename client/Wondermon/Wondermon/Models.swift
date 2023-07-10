@@ -70,3 +70,28 @@ struct Flobit: Codable {
     let id: UInt64
     let display: FlobitDisplay
 }
+
+struct Contact: Codable {
+    let id: UInt64
+    let name: String
+    let address: String
+}
+
+struct ContactResponse: Codable {
+    let status: UInt8
+    let message: String
+    let data: Contact?
+}
+
+struct ContactsResponse: Codable {
+    let status: UInt8
+    let message: String
+    let data: [Contact]
+}
+
+struct BaseResponse: Codable {
+    let status: UInt8
+    let message: String
+}
+
+
