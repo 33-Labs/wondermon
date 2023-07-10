@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "dev": "node server.js",
+    "dev:db:up": "docker-compose up db -d",
+    "migrate:dev": "dotenv -e .env.dev npx prisma migrate dev"
+  },
   "dependencies": {
     "@onflow/fcl": "^1.3.2",
     "@onflow/types": "^1.0.5",
