@@ -9,13 +9,12 @@ class OpenaiController {
       const flowAddress = user.flowAccount.address
       const flovatarId = req.body.flovatarId
       const rawMessages = req.body.messages || []
-      console.log("rawMessages", rawMessages)
       const messages = rawMessages.map(message => {
         return JSON.parse(message)
       })
       const onchainData = await FlowService.getOnchainInfo(flowAddress, flovatarId)
       const aiMessage = await OpenaiService.chat(messages, req.body.prompt, onchainData);
-
+      console.log("aiMessage", aiMessage)
       const {message, txid} = await this.executeCommand(aiMessage, onchainData, user, flovatarId);
 
       res.status(200).json({
@@ -76,14 +75,14 @@ class OpenaiController {
   }
 
   static extractCommand(message) {
-    const regex = /(COMMAND: \[.*?\])/g;
+    const regex = /command:\s+\[(.*?)\]/ig;
     const matches = message.match(regex);
     
     let result = message;
     let command = null
     if (matches) {
       for (const match of matches) {
-        command = match.replace(/COMMAND: \[(.*?)\]/, "$1");
+        command = match.replace(/command:\s+\[(.*?)\]/i, "$1");
         result = result.replace(match, "");
       }
     }
