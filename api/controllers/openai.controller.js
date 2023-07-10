@@ -8,7 +8,7 @@ class OpenaiController {
       const user = req.user.payload
       const flowAddress = user.flowAccount.address
       const flovatarId = req.body.flovatarId
-      const messages = req.body.messages
+      const messages = req.body.messages || []
       console.log("messages", messages)
       console.log("body", req.body)
       const onchainData = await FlowService.getOnchainInfo(flowAddress, flovatarId)
