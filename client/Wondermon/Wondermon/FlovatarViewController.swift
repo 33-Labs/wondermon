@@ -105,6 +105,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         return button
     }()
     
+    private lazy var tokensButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "tokens"), for: .normal)
+        button.addTarget(self, action: #selector(tokensButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var unauthenticatedCoverView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -230,7 +237,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                     cleanFlovatar()
                 }
             } catch {
-                print(error)
+                cleanFlovatar()
             }
         }
     }
@@ -275,6 +282,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         flobitsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         flobitsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         flobitsButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
+        
+        view.addSubview(tokensButton)
+        tokensButton.translatesAutoresizingMaskIntoConstraints = false
+        tokensButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        tokensButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        tokensButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        tokensButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
         
         view.addSubview(audioButton)
         audioButton.translatesAutoresizingMaskIntoConstraints = false
@@ -427,18 +441,27 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     @objc func flobitsButtonTapped(_ sender: UIButton) {
-        if let user = user {
+        if let _ = user {
             let vc = FlobitsCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
             present(vc, animated: true, completion: nil)
         } else {
             let vc = LoginViewController()
             present(vc, animated: true, completion: nil)
         }
-
+    }
+    
+    @objc func tokensButtonTapped(_ sender: UIButton) {
+        if let _ = user {
+            let vc = TokensViewController()
+            present(vc, animated: true, completion: nil)
+        } else {
+            let vc = LoginViewController()
+            present(vc, animated: true, completion: nil)
+        }
     }
     
     @objc func profileButtonTapped(_ sender: UIBarButtonItem) {
-        if let user = user {
+        if let _ = user {
             let vc = ProfileViewController()
             present(vc, animated: true, completion: nil)
         } else {
@@ -463,7 +486,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                         self?.speak(text: message.message)
                     }
                 } else {
-                    // Alert persist error
+                    // TODO: Alert persist error
                 }
                 
                 DispatchQueue.main.async { [weak self] in
@@ -473,7 +496,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                         }
                     }
                 }
-
             case .failure(let error):
                 print(error)
             }
@@ -518,8 +540,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
             banner.show()
             fadeBlurView()
         }
-        
-
     }
     
     private func speak(text: String) {

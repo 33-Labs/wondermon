@@ -73,7 +73,6 @@ class ProfileViewController: UIViewController {
         addressView.topAnchor.constraint(equalTo: emailView.bottomAnchor).isActive = true
         addressView.heightAnchor.constraint(equalToConstant: 64).isActive = true
         
-        
         return view
     }()
     
@@ -218,12 +217,6 @@ class ProfileViewController: UIViewController {
         
         getUser()
         setupUI()
-        
-//        setupNavigationBar()
-//        setupUI()
-//        setupAudio()
-//
-//        fetchFlovatarData()
     }
     
     private func setupUI() {
