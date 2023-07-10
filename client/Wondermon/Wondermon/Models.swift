@@ -18,6 +18,27 @@ struct User: Codable {
     let flowAccount: FlowAccount?
 }
 
+struct Message: Codable {
+    let name: String
+    let text: String
+    
+    func toJsonString() -> String {
+        let dictionary: [String: String] = ["name": self.name, "text": self.text]
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: [])
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print(jsonString)
+                return jsonString
+            }
+        } catch {
+            print("Error converting dictionary to JSON: \(error.localizedDescription)")
+        }
+        
+        return ""
+    }
+}
+
 struct AiMessage: Codable {
     let message: String
     let txid: String?

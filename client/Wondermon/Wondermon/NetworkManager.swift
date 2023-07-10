@@ -50,9 +50,17 @@ class NetworkManager {
     
 
     
-    func chat(prompt: String, flovatarId: UInt64, messages: [String], completion: @escaping (Result<AiMessage, Error>) -> Void) {
+    func chat(prompt: String, flovatarId: UInt64, messages: [Message], completion: @escaping (Result<AiMessage, Error>) -> Void) {
+        
+        let convertedMessages = messages.map { (message) -> String in
+            return message.toJsonString()
+        }
+        debugPrint("convertedMessages \(convertedMessages)")
         let endpoint = "\(endpoint)/openai/chat"
-        let parameters: [String: Any] = ["prompt": prompt, "flovatarId": flovatarId]
+        let parameters: [String: Any] = ["prompt": prompt, "flovatarId": flovatarId, "messages": convertedMessages]
+        
+        debugPrint("parameters \(parameters)")
+        
         guard let user = UserDefaults.standard.fetchUser() else {
             completion(.failure(WMError.unauthorized))
             return

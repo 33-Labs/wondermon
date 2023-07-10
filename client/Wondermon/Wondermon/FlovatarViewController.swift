@@ -65,6 +65,12 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         return view
     }()
     
+    private lazy var blurView: UIVisualEffectView = {
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight)
+        )
+        return view
+    }()
+    
     private lazy var webView: WKWebView = {
         let view = WKWebView()
         let prefs = WKPreferences()
@@ -146,6 +152,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     override func viewDidLoad() {
         super.viewDidLoad()
         print("viewDidLoad")
+        UserDefaults.standard.deleteMessages()
         UserDefaults.standard.addObserver(self, forKeyPath: "user", options: .new, context: nil)
         
         getUser()
@@ -251,6 +258,14 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         unauthenticatedCoverView.heightAnchor.constraint(equalTo: contentView.heightAnchor).isActive = true
         unauthenticatedCoverView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         unauthenticatedCoverView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        
+        contentView.addSubview(blurView)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        blurView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
+        blurView.heightAnchor.constraint(equalTo: contentView.heightAnchor).isActive = true
+        blurView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        blurView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        blurView.alpha = 0
         
         view.addSubview(flobitsButton)
         flobitsButton.translatesAutoresizingMaskIntoConstraints = false
@@ -431,22 +446,65 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     private func chat(prompt: String, flovatarId: UInt64) {
-        NetworkManager.shared.chat(prompt: prompt, flovatarId: flovatarId, messages: []) { [weak self] result in
+        let messages = UserDefaults.standard.fetchMessages()
+        NetworkManager.shared.chat(prompt: prompt, flovatarId: flovatarId, messages: messages) { [weak self] result in
             guard let sSelf = self else { return }
             switch result {
             case .success(let message):
-                sSelf.speakView.text = "Flora: \(message.message)"
-                DispatchQueue.global().async { [weak self] in
-                    self?.speak(text: message.message)
+                let humanMessage = Message(name: "human", text: prompt)
+                let aiMessage = Message(name: "ai", text: message.message)
+                
+                if UserDefaults.standard.store(message: humanMessage) &&
+                    UserDefaults.standard.store(message: aiMessage) {
+                    sSelf.speakView.text = "Flora: \(message.message)"
+                    DispatchQueue.global().async { [weak self] in
+                        self?.speak(text: message.message)
+                    }
+                } else {
+                    // Alert persist error
                 }
                 
-                if let txid = message.txid {
-                    print(txid)
+                DispatchQueue.main.async { [weak self] in
+                    Task {
+                        if let txid = message.txid {
+                            await self?.handleTxid(txid)
+                        }
+                    }
                 }
+
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    private func handleTxid(_ txid: String) async {
+        UIView.animate(withDuration: 2, animations: { [weak self] in
+            self?.blurView.alpha = 1
+        })
+        let txid = Flow.ID(hex: txid)
+        do {
+            let result = try await txid.onceSealed()
+            
+            debugPrint("txid result \(result)")
+            switch result.status {
+            case .sealed:
+                // ALERT CONFIRMED
+                // REFRESH IMAGE
+                print("SEALED!")
+                fetchFlovatarData()
+            default:
+                // ALERT OTHERS
+                print("status is \(result.status)")
+            }
+        } catch {
+            // ALERT ERROR
+            debugPrint("txid error \(error)")
+        }
+        
+        UIView.animate(withDuration: 2, animations: { [weak self] in
+            self?.blurView.alpha = 0
+        })
     }
     
     private func speak(text: String) {

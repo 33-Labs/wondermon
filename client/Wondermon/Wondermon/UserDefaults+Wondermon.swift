@@ -8,6 +8,40 @@
 import Foundation
 
 extension UserDefaults {
+    func fetchMessages() -> [Message] {
+        if let data = UserDefaults.standard.data(forKey: "messages") {
+            do {
+                let decoder = JSONDecoder()
+                let notes = try decoder.decode([Message].self, from: data)
+                return notes
+            } catch {
+                return []
+            }
+        } else {
+            return []
+        }
+    }
+    
+    func store(message: Message) -> Bool {
+        var messages = fetchMessages()
+        messages.append(message)
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(messages)
+            UserDefaults.standard.set(data, forKey: "messages")
+            UserDefaults.standard.synchronize()
+            return true
+        } catch {
+            debugPrint("Unable to Encode Array of Messages (\(error))")
+            return false
+        }
+    }
+    
+    func deleteMessages() {
+        UserDefaults.standard.removeObject(forKey: "messages")
+        UserDefaults.standard.synchronize()
+    }
+    
     func store(user: User) -> Bool {
         do {
             let encoder = JSONEncoder()
@@ -16,7 +50,7 @@ extension UserDefaults {
             UserDefaults.standard.synchronize()
             return true
         } catch {
-            debugPrint(error)
+            debugPrint("Unable to Encode Array of User (\(error))")
             return false
         }
     }
