@@ -8,11 +8,10 @@ class OpenaiController {
       const user = req.user.payload
       const flowAddress = user.flowAccount.address
       const flovatarId = req.body.flovatarId
-      console.log(flowAddress, flovatarId)
-      const messages = []
+      const messages = req.body.messages
+      console.log(messages)
       const onchainData = await FlowService.getOnchainInfo(flowAddress, flovatarId)
       const aiMessage = await OpenaiService.chat(messages, req.body.prompt, onchainData);
-      console.log('\naiMessage', aiMessage)
 
       const {message, txid} = await this.executeCommand(aiMessage, onchainData, user, flovatarId);
 

@@ -12,7 +12,6 @@ class AuthController {
     }
 
     static register = async (req, res, next) => {
-
         try {
             const { name, email, password } = req.body
             if (!name || !email || !password || !this.validateEmail(email)) {
@@ -34,7 +33,6 @@ class AuthController {
     }
 
     static login = async (req, res, next) => {
-
          try {
             const data = await AuthService.login(req.body)
             res.status(200).json({
