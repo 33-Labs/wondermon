@@ -112,6 +112,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         return button
     }()
     
+    private lazy var contactsButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "contacts"), for: .normal)
+        button.addTarget(self, action: #selector(contactsButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var unauthenticatedCoverView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -290,6 +297,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         tokensButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         tokensButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
         
+        view.addSubview(contactsButton)
+        contactsButton.translatesAutoresizingMaskIntoConstraints = false
+        contactsButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        contactsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        contactsButton.leadingAnchor.constraint(equalTo: tokensButton.trailingAnchor).isActive = true
+        contactsButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
+        
         view.addSubview(audioButton)
         audioButton.translatesAutoresizingMaskIntoConstraints = false
         audioButton.widthAnchor.constraint(equalToConstant:  280).isActive = true
@@ -363,7 +377,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     @objc func audioButtonTapped(_ sender: UIButton) {
-        if let user = user {
+        if let _ = user {
             if audioEngine.isRunning {
                 stopRecording()
             } else {
@@ -453,6 +467,16 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     @objc func tokensButtonTapped(_ sender: UIButton) {
         if let _ = user {
             let vc = TokensViewController()
+            present(vc, animated: true, completion: nil)
+        } else {
+            let vc = LoginViewController()
+            present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    @objc func contactsButtonTapped(_ sender: UIButton) {
+        if let _ = user {
+            let vc = ContactViewController()
             present(vc, animated: true, completion: nil)
         } else {
             let vc = LoginViewController()

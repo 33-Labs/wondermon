@@ -36,6 +36,7 @@ class ProfileViewController: UIViewController {
     
     private lazy var headerView: UIView = {
         let view = UIView()
+        view.backgroundColor = .white
         view.translatesAutoresizingMaskIntoConstraints = false
         
         let imageView = UIImageView()
