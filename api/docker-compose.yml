@@ -1,0 +1,15 @@
+version: "3"
+services:
+  db:
+    image: postgres:13-alpine
+    restart: always
+    container_name: wondermon
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=wondermon
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+    command: ["postgres", "-c", "log_statement=all"]
