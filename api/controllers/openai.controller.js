@@ -60,7 +60,7 @@ class OpenaiController {
       if (onchainData.backgroundData) {
         wearingFlobits[`${onchainData.backgroundData.id}`] = "background"
       }
-      console.log(wearingFlobits)
+      console.log("wearing Flobits", wearingFlobits)
       let category = wearingFlobits[`${command.serial}`]
       if (category) {
         const txid = await FlowService.removeFlobit(user, flovatarId, category)
@@ -75,14 +75,14 @@ class OpenaiController {
   }
 
   static extractCommand(message) {
-    const regex = /command:\s+\[(.*?)\]/ig;
+    const regex = /\[(.*?)\]/g;
     const matches = message.match(regex);
     
     let result = message;
     let command = null
     if (matches) {
       for (const match of matches) {
-        command = match.replace(/command:\s+\[(.*?)\]/i, "$1");
+        command = match.replace(/\[(.*?)\]/, "$1");
         result = result.replace(match, "");
       }
     }
@@ -92,7 +92,7 @@ class OpenaiController {
     }
 
     return {
-      message: result,
+      message: result.trim(),
       command: command
     }
   }
