@@ -34,6 +34,16 @@ class ContactViewController: UIViewController {
         imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12).isActive = true
         
+        let button = UIButton(type: .contactAdd)
+        button.tintColor = .wm_deepPurple
+        view.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.widthAnchor.constraint(equalToConstant: 48).isActive = true
+        button.heightAnchor.constraint(equalTo: button.widthAnchor).isActive = true
+        button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        button.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        button.addTarget(self, action: #selector(addContactButtonTapped), for: .touchUpInside)
+        
         return view
     }()
     
@@ -67,8 +77,37 @@ class ContactViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
-    @objc func addContact() {
+    @objc func addContactButtonTapped() {
+        let alertController = UIAlertController(title: "New Contact",
+                                                message: nil,
+                                                preferredStyle: .alert)
+
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Name"
+        }
+
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Flow Address"
+        }
         
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { (action) in
+            guard let usernameField = alertController.textFields?.first,
+                  let addressField = alertController.textFields?.last,
+                  let username = usernameField.text,
+                  let address = addressField.text else {
+                return
+            }
+            
+            print("Name: \(username)")
+            print("Flow Address: \(address)")
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(submitAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
 }
 
