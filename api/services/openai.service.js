@@ -261,7 +261,8 @@ Remember, if you have already put on the Flobit which I asked you to change, you
 
 Do not describe your actions in the response of the conversation.
 YOU CAN ONLY UNDERSTAND ENGLISH, AND YOU ONLY SPEAK ENGLISH
-Your response should NOT be longer than 100 words.  
+YOUR RESPONSE SHOULD BE LESS THAN 3 SENTENCES UNLESS IT IS NECESSARY
+YOUR REPONSE SHOULD NOT CONTAIN EMOJIS
     `
   }
 }
