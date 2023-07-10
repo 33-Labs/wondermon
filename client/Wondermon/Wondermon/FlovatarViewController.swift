@@ -12,6 +12,7 @@ import Speech
 import AVFoundation
 import MicrosoftCognitiveServicesSpeech
 import WebKit
+import NotificationBannerSwift
 
 class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeechRecognizerDelegate {
     
@@ -204,7 +205,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         self.user = UserDefaults.standard.fetchUser()
     }
     
-    private func fetchFlovatarData() {
+    private func fetchFlovatarData(completion: (() -> Void)? = nil)  {
         guard let user = user,
               let flowAccount = user.flowAccount else {
             cleanFlovatar()
@@ -223,6 +224,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                     DispatchQueue.main.async { [weak self] in
                         guard let sSelf = self else { return }
                         sSelf.webView.loadHTMLString("<div style=\"width: 100%; height: 100%;\">\(svg)</div>", baseURL: nil)
+                        completion?()
                     }
                 } else {
                     cleanFlovatar()
@@ -479,32 +481,45 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     private func handleTxid(_ txid: String) async {
+        func fadeBlurView() {
+            UIView.animate(withDuration: 2, animations: { [weak self] in
+                self?.blurView.alpha = 0
+            })
+        }
+        
+        let banner = FloatingNotificationBanner(title: "Transaction pending", style: .info)
+        banner.duration = 2
+        banner.show()
+        
         UIView.animate(withDuration: 2, animations: { [weak self] in
             self?.blurView.alpha = 1
         })
+        
         let txid = Flow.ID(hex: txid)
         do {
             let result = try await txid.onceSealed()
-            
-            debugPrint("txid result \(result)")
-            switch result.status {
-            case .sealed:
-                // ALERT CONFIRMED
-                // REFRESH IMAGE
-                print("SEALED!")
-                fetchFlovatarData()
-            default:
-                // ALERT OTHERS
-                print("status is \(result.status)")
+            if result.status == .sealed && result.errorMessage == "" {
+                let banner = FloatingNotificationBanner(title: "Transaction sealed", style: .success)
+                banner.duration = 1
+                banner.show()
+                fetchFlovatarData {
+                    fadeBlurView()
+                }
+            } else {
+                let banner = FloatingNotificationBanner(title: "Transaction failed", style: .warning)
+                banner.duration = 1
+                banner.show()
+                fadeBlurView()
             }
         } catch {
-            // ALERT ERROR
-            debugPrint("txid error \(error)")
+            debugPrint("Transaction failed \(error)")
+            let banner = FloatingNotificationBanner(title: "Transaction failed", style: .warning)
+            banner.duration = 1
+            banner.show()
+            fadeBlurView()
         }
         
-        UIView.animate(withDuration: 2, animations: { [weak self] in
-            self?.blurView.alpha = 0
-        })
+
     }
     
     private func speak(text: String) {

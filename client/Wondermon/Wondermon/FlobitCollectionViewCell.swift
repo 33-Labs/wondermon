@@ -18,7 +18,6 @@ class FlobitCollectionViewCell: UICollectionViewCell {
         view.layer.cornerRadius = 30
         view.clipsToBounds = true
         view.backgroundColor = .wm_purple
-
         return view
     }()
     
