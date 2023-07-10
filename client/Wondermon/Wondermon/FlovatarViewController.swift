@@ -7,12 +7,13 @@
 
 import UIKit
 import Flow
-import Macaw
+//import Macaw
 import Speech
 import AVFoundation
 import MicrosoftCognitiveServicesSpeech
 import WebKit
 import NotificationBannerSwift
+import SafariServices
 
 class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeechRecognizerDelegate {
     
@@ -526,6 +527,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         }
     }
     
+    func navigateToTransaction(txid: String) {
+        // Your navigation code here.
+        // For example, if you're using a WebView, you can open a new page with the transaction URL.
+        let transactionURL = URL(string: "https://flowscan.org/transaction/\(txid)")!
+        UIApplication.shared.open(transactionURL)
+    }
+    
     private func handleTxid(_ txid: String) async {
         func fadeBlurView() {
             UIView.animate(withDuration: 2, animations: { [weak self] in
@@ -533,8 +541,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
             })
         }
         
-        let banner = FloatingNotificationBanner(title: "Transaction pending", style: .info)
-        banner.duration = 2
+        let tx = txid
+        
+        let banner = FloatingNotificationBanner(title: "Transaction pending, tap to view", style: .info)
+        banner.onTap = {
+                self.navigateToTransaction(txid: tx)
+            }
+        banner.duration = 5
         banner.show()
         
         UIView.animate(withDuration: 2, animations: { [weak self] in
@@ -545,22 +558,31 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         do {
             let result = try await txid.onceSealed()
             if result.status == .sealed && result.errorMessage == "" {
-                let banner = FloatingNotificationBanner(title: "Transaction sealed", style: .success)
-                banner.duration = 1
+                let banner = FloatingNotificationBanner(title: "Transaction sealed, tap to view", style: .success)
+                banner.onTap = {
+                        self.navigateToTransaction(txid: tx)
+                    }
+                banner.duration = 2
                 banner.show()
                 fetchFlovatarData {
                     fadeBlurView()
                 }
             } else {
-                let banner = FloatingNotificationBanner(title: "Transaction failed", style: .warning)
-                banner.duration = 1
+                let banner = FloatingNotificationBanner(title: "Transaction failed, tap to view", style: .warning)
+                banner.onTap = {
+                        self.navigateToTransaction(txid: tx)
+                    }
+                banner.duration = 2
                 banner.show()
                 fadeBlurView()
             }
         } catch {
             debugPrint("Transaction failed \(error)")
-            let banner = FloatingNotificationBanner(title: "Transaction failed", style: .warning)
-            banner.duration = 1
+            let banner = FloatingNotificationBanner(title: "Transaction failed, tap to view", style: .warning)
+            banner.onTap = {
+                    self.navigateToTransaction(txid: tx)
+                }
+            banner.duration = 2
             banner.show()
             fadeBlurView()
         }
