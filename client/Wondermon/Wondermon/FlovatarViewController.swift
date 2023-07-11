@@ -540,16 +540,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     func navigateToTransaction(txid: String) {
-        //let transactionURL = URL(string: "https://flowscan.org/transaction/\(txid)")!
-        //UIApplication.shared.open(transactionURL)
-        
         guard let url = URL(string: "https://flowscan.org/transaction/\(txid)") else {
-                return
-            }
-            
-            let safariViewController = SFSafariViewController(url: url)
-            safariViewController.modalPresentationStyle = .overFullScreen
-            present(safariViewController, animated: true, completion: nil)
+            return
+        }
+        
+        let safariViewController = SFSafariViewController(url: url)
+        safariViewController.modalPresentationStyle = .overFullScreen
+        present(safariViewController, animated: true, completion: nil)
     }
     
     private func handleTxid(_ txid: String) async {

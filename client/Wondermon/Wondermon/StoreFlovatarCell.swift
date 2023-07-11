@@ -39,12 +39,14 @@ class StoreFlovatarCell: UICollectionViewCell {
     }
     
     func setFlovatar(_ flovatar: Flovatar) {
+        let rawUrl = flovatar.display.thumbnail.url.replacingOccurrences(of: "svg", with: "png")
+        let url = URL(string: rawUrl)
+        imageView.kf.setImage(with: url)
+        
         label.text = "#\(flovatar.id)"
     }
 
     private func setupUI() {
-        contentView.backgroundColor = .yellow
-        
         contentView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true

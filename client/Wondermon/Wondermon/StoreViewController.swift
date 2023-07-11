@@ -6,26 +6,36 @@
 //
 
 import UIKit
+import Flow
 
 class StoreViewController: UIViewController {
     
-    var flovatars: [Flovatar] = [
-        Flovatar(id: 1), Flovatar(id: 2)
-    ]
-    var flobits: [Flobit] = [
-        Flobit(id: 0, display: FlobitDisplay(name: "A", description: "", thumbnail: HTTPFile(url: ""))),
-        Flobit(id: 0, display: FlobitDisplay(name: "B", description: "", thumbnail: HTTPFile(url: ""))),
-        Flobit(id: 0, display: FlobitDisplay(name: "C", description: "", thumbnail: HTTPFile(url: "")))
-    ]
+    fileprivate var user: User?
     
-    private let numberOfItemsPerRow: CGFloat = 2
+    var flovatars: [Flovatar] = []
+    var flobits: [Flobit] = []
+    
+    private let numberOfItemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
 
     let collectionView: UICollectionView
     let headerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .wm_purple
+        view.backgroundColor = .white
         view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "store")
+
+        view.addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: view.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -8),
+            imageView.widthAnchor.constraint(equalToConstant: 150),
+            imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
         return view
     }()
     
@@ -45,6 +55,12 @@ class StoreViewController: UIViewController {
         
         view.backgroundColor = .white
         
+        setupUI()
+        getUser()
+        loadStoreItems()
+    }
+    
+    private func setupUI() {
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -67,6 +83,117 @@ class StoreViewController: UIViewController {
         collectionView.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
+    
+    private func getUser() {
+        self.user = UserDefaults.standard.fetchUser()
+    }
+    
+    private func loadStoreItems() {
+        Task { [weak self] in
+            guard let sSelf = self else { return }
+            do {
+                let items = try await sSelf.fetchStoreItems()
+                print("iii \(items)")
+                DispatchQueue.main.async {
+                    self?.flobits = items.flobits
+                    self?.flovatars = items.flovatars
+                    self?.collectionView.reloadData()
+                }
+            } catch {
+                print(error)
+                // TODO: alert load flobits failed
+            }
+        }
+    }
+    
+    private func fetchStoreItems() async throws -> StoreItems {
+        print("fetchStoreItems")
+        guard let user = user,
+              let _ = user.flowAccount else {
+            return StoreItems(flovatars: [], flobits: [])
+        }
+        
+        // NOTE: Just hardcode the store address
+        let rawAddress = "0xfd798728acbb0e06"
+        let rawScript = fetchStoreItemsScript()
+        let script = Flow.Script(text: rawScript)
+        let address = Flow.Address(hex: rawAddress)
+        
+        let result = try await flow.executeScriptAtLatestBlock(script: script, arguments: [.init(value: .address(address))])
+        let items: StoreItems = try result.decode()
+        return items
+    }
+    
+    private func fetchStoreItemsScript() -> String {
+        return """
+import Flovatar from 0x921ea449dffec68a
+import FlovatarComponent from 0x921ea449dffec68a
+import MetadataViews from 0x1d7e57aa55817448
+
+pub struct FlobitItem {
+  pub let id: UInt64
+  pub let display: MetadataViews.Display
+
+  init(id: UInt64, display: MetadataViews.Display) {
+    self.id = id
+    self.display = display
+  }
+}
+
+pub struct FlovatarItem {
+  pub let id: UInt64
+  pub let display: MetadataViews.Display
+
+  init(id: UInt64, display: MetadataViews.Display) {
+    self.id = id
+    self.display = display
+  }
+}
+
+pub struct StoreItems {
+  pub let flovatars: [FlovatarItem]
+  pub let flobits: [FlobitItem]
+
+  init(flovatars: [FlovatarItem], flobits: [FlobitItem]) {
+    self.flovatars = flovatars
+    self.flobits = flobits
+  }
+}
+
+pub fun main(address: Address): StoreItems {
+    let account = getAccount(address)
+    let flobitCap = account
+      .getCapability(FlovatarComponent.CollectionPublicPath)
+      .borrow<&{FlovatarComponent.CollectionPublic, MetadataViews.ResolverCollection}>()
+        ?? panic("Could not borrow Flobit collection")
+
+    let flobits: [FlobitItem] = []
+    let flobitIds = flobitCap.getIDs()
+    for tokenId in flobitIds {
+      let resolver = flobitCap.borrowViewResolver(id: tokenId)
+      if let display = MetadataViews.getDisplay(resolver) {
+        flobits.append(FlobitItem(id: tokenId, display: display))
+      }
+    }
+
+    let flovatarCap = account
+      .getCapability(Flovatar.CollectionPublicPath)
+      .borrow<&{Flovatar.CollectionPublic, MetadataViews.ResolverCollection}>()
+        ?? panic("Could not borrow Flovatar collection")
+
+    let flovatars: [FlovatarItem] = []
+    let flovatarIds = flovatarCap.getIDs()
+    for tokenId in flovatarIds {
+      let resolver = flovatarCap.borrowViewResolver(id: tokenId)
+      if let display = MetadataViews.getDisplay(resolver) {
+        flovatars.append(FlovatarItem(id: tokenId, display: display))
+      }
+    }
+
+    return StoreItems(flovatars: flovatars, flobits: flobits)
+}
+"""
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -87,12 +214,12 @@ extension StoreViewController: UICollectionViewDataSource {
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoreFlovatarCell.reuseIdentifier, for: indexPath) as! StoreFlovatarCell
             let flovatar = flovatars[indexPath.item]
-            
+            cell.setFlovatar(flovatar)
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoreFlobitCell.reuseIdentifier, for: indexPath) as! StoreFlobitCell
             let flobit = flobits[indexPath.item]
-            
+            cell.setFlobit(flobit)
             return cell
         }
     }
@@ -109,11 +236,17 @@ extension StoreViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 100)
+        return CGSize(width: collectionView.frame.width, height: 64)
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: StoreCollectionHeaderView.reuseIdentifier, for: indexPath) as! StoreCollectionHeaderView
+        
+        if indexPath.section == 0 {
+            headerView.setTitle("Flovatars")
+        } else if indexPath.section == 1 {
+            headerView.setTitle("Flobits")
+        }
         
         return headerView
     }

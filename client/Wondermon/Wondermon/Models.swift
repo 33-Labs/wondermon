@@ -60,7 +60,7 @@ struct HTTPFile: Codable {
     let url: String
 }
 
-struct FlobitDisplay: Codable {
+struct Display: Codable {
     let name: String
     let description: String
     let thumbnail: HTTPFile
@@ -68,11 +68,17 @@ struct FlobitDisplay: Codable {
 
 struct Flobit: Codable {
     let id: UInt64
-    let display: FlobitDisplay
+    let display: Display
 }
 
 struct Flovatar: Codable {
     let id: UInt64
+    let display: Display
+}
+
+struct StoreItems: Codable {
+    let flovatars: [Flovatar]
+    let flobits: [Flobit]
 }
 
 struct Contact: Codable {

@@ -39,11 +39,13 @@ class StoreFlobitCell: UICollectionViewCell {
     }
     
     func setFlobit(_ flobit: Flobit) {
+        let url = URL(string: flobit.display.thumbnail.url)
+        imageView.kf.setImage(with: url, options: [.processor(SVGImgProcessor())])
+        
         label.text = "#\(flobit.id)"
     }
 
     private func setupUI() {
-        contentView.backgroundColor = .green
         contentView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true

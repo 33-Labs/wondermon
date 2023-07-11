@@ -15,20 +15,25 @@ class StoreCollectionHeaderView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupImageView()
+        setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupImageView() {
+    func setTitle(_ title: String) {
+        label.text = title
+    }
+    
+    private func setupUI() {
         addSubview(label)
+        label.font = .boldSystemFont(ofSize: 30)
         label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: topAnchor),
-            label.leadingAnchor.constraint(equalTo: leadingAnchor),
-            label.widthAnchor.constraint(equalToConstant: 150),
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             label.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
