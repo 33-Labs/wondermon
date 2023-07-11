@@ -3,6 +3,8 @@ const router = express.Router();
 const auth = require('./auth');
 const openai = require('./openai');
 const contact = require('./contact');
+const stripe = require('./stripe');
+const hook = require('./hook');
 const createError = require('http-errors')
 
 router.get('/', (req, res) => {
@@ -12,6 +14,8 @@ router.get('/', (req, res) => {
 router.use('/auth', auth);
 router.use('/openai', openai)
 router.use('/contacts', contact)
+router.use('/stripe', stripe)
+router.use('/hooks', hook)
 
 router.use( async (req, res, next) => {
     next(createError.NotFound('Route not Found'))

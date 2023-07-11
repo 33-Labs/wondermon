@@ -8,6 +8,7 @@ const openai = require('./services/openai.service')
 
 const morgan = require("morgan");
 
+app.use(express.static('public'));
 app.use(morgan('dev'));
 
 // redirect to routes/index.js
