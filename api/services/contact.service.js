@@ -49,6 +49,26 @@ class ContactService {
         })
     }
 
+    static async getFlowAddress(userData, contactName) {
+        let user = await prisma.user.findUnique({
+            where: { email: userData.email }
+        })
+
+        if (!user) {
+            throw createError.NotFound('User not found')
+        }
+
+        let contact = await prisma.contact.findFirst({
+            where: { name: contactName }
+        })
+
+        if (!contact) {
+            throw createError.NotFound('Contact not found')
+        }
+
+        return contact.address
+    }
+
     static async all(userData) {
         let user = await prisma.user.findUnique({
             where: { email: userData.email }

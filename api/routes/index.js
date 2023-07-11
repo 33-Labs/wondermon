@@ -4,6 +4,7 @@ const auth = require('./auth');
 const openai = require('./openai');
 const contact = require('./contact');
 const stripe = require('./stripe');
+const flow = require('./flow');
 const hook = require('./hook');
 const createError = require('http-errors')
 
@@ -15,6 +16,7 @@ router.use('/auth', auth);
 router.use('/openai', openai)
 router.use('/contacts', contact)
 router.use('/stripe', stripe)
+router.use('/flow', flow)
 router.use('/hooks', hook)
 
 router.use( async (req, res, next) => {

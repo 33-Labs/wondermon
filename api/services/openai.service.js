@@ -21,11 +21,11 @@ class OpenaiService {
     try {
       const stream = await this.doChat(messages, prompt, onchainData, contacts);
       result = await this.readStream(stream)
+      return result;
     } catch (e) {
       console.log("Chat error", e)
-      throw new Error("Chat failed");
+      return null
     }
-    return result;
   };
 
   static doChat = async (messages, prompt, onchainData, contacts) => {
@@ -293,6 +293,7 @@ Here are some examples of token-related conversations:
 5. Traveler: Send 10 FLOW tokens to Lanford. ${name}: Sorry, I don't have 10 FLOW tokens. In this example, you have 9 FLOW tokens that can be sent to others, which is less than 10. Therefore, this is invalid.
 6. Traveler: Send 1 FLOW token to Hana. ${name}: Sorry, I don't know Hana. In this example, Hana is not in your contacts, so you can't send tokens to her.
 
+NEVER SAY YOU DON'T HAVE THE CAPABILITY TO SEND TOKENS OR EXECUTE TRANSACTIONS
 Do not describe your actions in the response of the conversation.
 YOU CAN ONLY UNDERSTAND ENGLISH, AND YOU ONLY SPEAK ENGLISH
 YOUR RESPONSE SHOULD BE LESS THAN 3 SENTENCES UNLESS IT IS NECESSARY

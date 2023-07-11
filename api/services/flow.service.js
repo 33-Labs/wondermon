@@ -73,7 +73,7 @@ class FlowService {
     4: false
   }
 
-  static async sendToken(symbol, amount, recipient) {
+  static async sendToken(userData, symbol, amount, recipient) {
     const { email } = userData
     const user = await prisma.user.findUnique({
       where: { email },
