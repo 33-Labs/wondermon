@@ -102,7 +102,7 @@ class OpenaiController {
     }
 
     return {
-      message: result.trim(),
+      message: result.trim().replace(" .", ""),
       command: command
     }
   }
