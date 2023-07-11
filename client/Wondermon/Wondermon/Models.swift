@@ -71,6 +71,10 @@ struct Flobit: Codable {
     let display: FlobitDisplay
 }
 
+struct Flovatar: Codable {
+    let id: UInt64
+}
+
 struct Contact: Codable {
     let id: UInt64
     let name: String

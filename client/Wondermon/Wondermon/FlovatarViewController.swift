@@ -120,6 +120,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         return button
     }()
     
+    private lazy var storeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "store"), for: .normal)
+        button.addTarget(self, action: #selector(storeButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var unauthenticatedCoverView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -305,6 +312,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         contactsButton.leadingAnchor.constraint(equalTo: tokensButton.trailingAnchor).isActive = true
         contactsButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
         
+        view.addSubview(storeButton)
+        storeButton.translatesAutoresizingMaskIntoConstraints = false
+        storeButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        storeButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        storeButton.leadingAnchor.constraint(equalTo: contactsButton.trailingAnchor).isActive = true
+        storeButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
+        
         view.addSubview(audioButton)
         audioButton.translatesAutoresizingMaskIntoConstraints = false
         audioButton.widthAnchor.constraint(equalToConstant:  280).isActive = true
@@ -478,6 +492,16 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     @objc func contactsButtonTapped(_ sender: UIButton) {
         if let _ = user {
             let vc = ContactViewController()
+            present(vc, animated: true, completion: nil)
+        } else {
+            let vc = LoginViewController()
+            present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    @objc func storeButtonTapped(_ sender: UIButton) {
+        if let _ = user {
+            let vc = StoreViewController()
             present(vc, animated: true, completion: nil)
         } else {
             let vc = LoginViewController()
