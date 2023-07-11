@@ -87,7 +87,7 @@ class StripeService {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.HOST}/stripe/payment_succeeded`,
+      success_url: `${process.env.HOST}/stripe/payment_succeed`,
       cancel_url: `${process.env.HOST}/stripe/payment_cancelled`,
     })
     return session
