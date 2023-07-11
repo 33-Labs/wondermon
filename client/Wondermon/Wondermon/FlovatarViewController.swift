@@ -540,10 +540,16 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     func navigateToTransaction(txid: String) {
-        // Your navigation code here.
-        // For example, if you're using a WebView, you can open a new page with the transaction URL.
-        let transactionURL = URL(string: "https://flowscan.org/transaction/\(txid)")!
-        UIApplication.shared.open(transactionURL)
+        //let transactionURL = URL(string: "https://flowscan.org/transaction/\(txid)")!
+        //UIApplication.shared.open(transactionURL)
+        
+        guard let url = URL(string: "https://flowscan.org/transaction/\(txid)") else {
+                return
+            }
+            
+            let safariViewController = SFSafariViewController(url: url)
+            safariViewController.modalPresentationStyle = .overFullScreen
+            present(safariViewController, animated: true, completion: nil)
     }
     
     private func handleTxid(_ txid: String) async {
