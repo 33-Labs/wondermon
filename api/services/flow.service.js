@@ -4,6 +4,7 @@ const { PrismaClient } = require('@prisma/client')
 const createError = require('http-errors')
 const prisma = new PrismaClient()
 const CryptoJS = require("crypto-js");
+const Decimal = require('decimal.js')
 
 require('dotenv').config()
 utils.switchToMainnet()
@@ -90,10 +91,10 @@ class FlowService {
 
     let signer = await this.getUserSigner(user.flowAccount)
     let code = this.getSendTokenCode(symbol)
-
+    let amt = new Decimal(amount).toFixed(8).toString()
     try {
       const txid = await signer.sendTransaction(code, (arg, t) => [
-        arg(`${amount}`, t.UFix64),
+        arg(`${amt}`, t.UFix64),
         arg(`${recipient}`, t.Address),
       ])
 
