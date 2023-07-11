@@ -14,6 +14,10 @@ class StoreViewController: UIViewController {
     
     var flovatars: [Flovatar] = []
     var flobits: [Flobit] = []
+    var tokens: [Token] = [
+        Token(symbol: "FLOW", logo: UIImage(named: "100flow")!),
+        Token(symbol: "LOPPY", logo: UIImage(named: "100loppy")!)
+    ]
     
     private let numberOfItemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -64,8 +68,7 @@ class StoreViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        collectionView.register(StoreFlovatarCell.self, forCellWithReuseIdentifier: StoreFlovatarCell.reuseIdentifier)
-        collectionView.register(StoreFlobitCell.self, forCellWithReuseIdentifier: StoreFlobitCell.reuseIdentifier)
+        collectionView.register(StoreItemCell.self, forCellWithReuseIdentifier: StoreItemCell.reuseIdentifier)
         collectionView.register(StoreCollectionHeaderView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: StoreCollectionHeaderView.reuseIdentifier)
@@ -199,27 +202,33 @@ pub fun main(address: Address): StoreItems {
 // MARK: - UICollectionViewDataSource
 extension StoreViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
             return flovatars.count
-        } else {
+        } else if section == 1 {
             return flobits.count
+        } else {
+            return tokens.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoreItemCell.reuseIdentifier, for: indexPath) as! StoreItemCell
+        
         if indexPath.section == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoreFlovatarCell.reuseIdentifier, for: indexPath) as! StoreFlovatarCell
             let flovatar = flovatars[indexPath.item]
             cell.setFlovatar(flovatar)
             return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoreFlobitCell.reuseIdentifier, for: indexPath) as! StoreFlobitCell
+        } else if indexPath.section == 1 {
             let flobit = flobits[indexPath.item]
             cell.setFlobit(flobit)
+            return cell
+        } else {
+            let token = tokens[indexPath.item]
+            cell.setToken(token)
             return cell
         }
     }
@@ -232,11 +241,11 @@ extension StoreViewController: UICollectionViewDelegateFlowLayout {
         let availableWidth = view.frame.width - paddingSpace
         let widthPerItem = availableWidth / numberOfItemsPerRow
         
-        return CGSize(width: widthPerItem, height: widthPerItem)
+        return CGSize(width: widthPerItem, height: 1.25 * widthPerItem)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 64)
+        return CGSize(width: collectionView.frame.width, height: 56)
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -246,6 +255,8 @@ extension StoreViewController: UICollectionViewDelegateFlowLayout {
             headerView.setTitle("Flovatars")
         } else if indexPath.section == 1 {
             headerView.setTitle("Flobits")
+        } else {
+            headerView.setTitle("Tokens")
         }
         
         return headerView

@@ -41,8 +41,7 @@
 		91F263722A5C20B600F44A84 /* ContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F263712A5C20B600F44A84 /* ContactViewController.swift */; };
 		91F263742A5C210D00F44A84 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F263732A5C210D00F44A84 /* ContactTableViewCell.swift */; };
 		91F263802A5CEC5A00F44A84 /* StoreCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F2637F2A5CEC5A00F44A84 /* StoreCollectionHeaderView.swift */; };
-		91F263822A5CEC6F00F44A84 /* StoreFlobitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F263812A5CEC6F00F44A84 /* StoreFlobitCell.swift */; };
-		91F263842A5CEC7500F44A84 /* StoreFlovatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F263832A5CEC7500F44A84 /* StoreFlovatarCell.swift */; };
+		91F263822A5CEC6F00F44A84 /* StoreItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F263812A5CEC6F00F44A84 /* StoreItemCell.swift */; };
 		91F263862A5CEC8D00F44A84 /* StoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F263852A5CEC8D00F44A84 /* StoreViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -96,8 +95,7 @@
 		91F263712A5C20B600F44A84 /* ContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewController.swift; sourceTree = "<group>"; };
 		91F263732A5C210D00F44A84 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		91F2637F2A5CEC5A00F44A84 /* StoreCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreCollectionHeaderView.swift; sourceTree = "<group>"; };
-		91F263812A5CEC6F00F44A84 /* StoreFlobitCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreFlobitCell.swift; sourceTree = "<group>"; };
-		91F263832A5CEC7500F44A84 /* StoreFlovatarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreFlovatarCell.swift; sourceTree = "<group>"; };
+		91F263812A5CEC6F00F44A84 /* StoreItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreItemCell.swift; sourceTree = "<group>"; };
 		91F263852A5CEC8D00F44A84 /* StoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreViewController.swift; sourceTree = "<group>"; };
 		B099ACD620D6B1407471BE40 /* Pods-Wondermon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wondermon.release.xcconfig"; path = "Target Support Files/Pods-Wondermon/Pods-Wondermon.release.xcconfig"; sourceTree = "<group>"; };
 		C79D0B9318F9E4AAE987C41E /* Pods-Wondermon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wondermon.debug.xcconfig"; path = "Target Support Files/Pods-Wondermon/Pods-Wondermon.debug.xcconfig"; sourceTree = "<group>"; };
@@ -186,8 +184,7 @@
 				91F263732A5C210D00F44A84 /* ContactTableViewCell.swift */,
 				91F263852A5CEC8D00F44A84 /* StoreViewController.swift */,
 				91F2637F2A5CEC5A00F44A84 /* StoreCollectionHeaderView.swift */,
-				91F263812A5CEC6F00F44A84 /* StoreFlobitCell.swift */,
-				91F263832A5CEC7500F44A84 /* StoreFlovatarCell.swift */,
+				91F263812A5CEC6F00F44A84 /* StoreItemCell.swift */,
 				91F2636D2A5BEB5600F44A84 /* TokenView.swift */,
 				91F2636F2A5BF8FC00F44A84 /* TokensViewController.swift */,
 				91385FCB2A5AAEF100DF5259 /* Kingfisher+Wondermon.swift */,
@@ -418,10 +415,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				91C1F89E2A58F21D00607776 /* Models.swift in Sources */,
-				91F263822A5CEC6F00F44A84 /* StoreFlobitCell.swift in Sources */,
+				91F263822A5CEC6F00F44A84 /* StoreItemCell.swift in Sources */,
 				91C1F8AE2A59728000607776 /* SignUpViewController.swift in Sources */,
 				91F263722A5C20B600F44A84 /* ContactViewController.swift in Sources */,
-				91F263842A5CEC7500F44A84 /* StoreFlovatarCell.swift in Sources */,
 				91F263702A5BF8FC00F44A84 /* TokensViewController.swift in Sources */,
 				91385FC72A5AA5F800DF5259 /* FlobitsHeaderView.swift in Sources */,
 				91385FCC2A5AAEF100DF5259 /* Kingfisher+Wondermon.swift in Sources */,
