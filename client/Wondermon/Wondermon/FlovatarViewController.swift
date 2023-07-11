@@ -544,9 +544,10 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         let tx = txid
         
         let banner = FloatingNotificationBanner(title: "Transaction pending, tap to view", style: .info)
-        banner.onTap = {
-                self.navigateToTransaction(txid: tx)
-            }
+        banner.onTap = { [weak self] in
+            self?.navigateToTransaction(txid: tx)
+        }
+        
         banner.duration = 5
         banner.show()
         
@@ -559,9 +560,9 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
             let result = try await txid.onceSealed()
             if result.status == .sealed && result.errorMessage == "" {
                 let banner = FloatingNotificationBanner(title: "Transaction sealed, tap to view", style: .success)
-                banner.onTap = {
-                        self.navigateToTransaction(txid: tx)
-                    }
+                banner.onTap = { [weak self] in
+                    self?.navigateToTransaction(txid: tx)
+                }
                 banner.duration = 2
                 banner.show()
                 fetchFlovatarData {
@@ -569,9 +570,9 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                 }
             } else {
                 let banner = FloatingNotificationBanner(title: "Transaction failed, tap to view", style: .warning)
-                banner.onTap = {
-                        self.navigateToTransaction(txid: tx)
-                    }
+                banner.onTap = { [weak self] in
+                    self?.navigateToTransaction(txid: tx)
+                }
                 banner.duration = 2
                 banner.show()
                 fadeBlurView()
@@ -579,9 +580,9 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         } catch {
             debugPrint("Transaction failed \(error)")
             let banner = FloatingNotificationBanner(title: "Transaction failed, tap to view", style: .warning)
-            banner.onTap = {
-                    self.navigateToTransaction(txid: tx)
-                }
+            banner.onTap = { [weak self] in
+                self?.navigateToTransaction(txid: tx)
+            }
             banner.duration = 2
             banner.show()
             fadeBlurView()
