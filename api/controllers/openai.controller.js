@@ -18,14 +18,15 @@ class OpenaiController {
       const contacts = await ContactService.all(user)
       const aiMessage = await OpenaiService.chat(messages, req.body.prompt, onchainData, contacts);
       console.log("aiMessage", aiMessage)
-      const {message, txid} = await this.executeCommand(aiMessage, onchainData, user, flovatarId);
+      const {message, txid, command} = await this.executeCommand(aiMessage, onchainData, contacts, user, flovatarId);
 
       res.status(200).json({
         status: 0,
         message: 'success',
         data: {
           message: message,
-          txid: txid
+          txid: txid,
+          command: command
         },
       });
     } catch (e) {
@@ -34,20 +35,20 @@ class OpenaiController {
     }
   }
 
-  static async executeCommand(aiMessage, onchainData, user, flovatarId) {
+  static async executeCommand(aiMessage, onchainData, contacts, user, flovatarId) {
+    const contactNames = contacts.map((c) => c.name)
     const { message, command } = this.extractCommand(aiMessage);
     console.log('\nmessage', message)
     console.log('\ncommand', command)
     if (command && command.action == 'set_flobit' && command.serial) {
       const flobitId = command.serial
       const flobitIds = onchainData.flovatarInfo.flobits.map((f) => f.id)
-      console.log("flobitIds", flobitIds)
       if (flobitIds.includes(`${flobitId}`)) {
         const txid = await FlowService.setFlobit(user, flovatarId, flobitId)
-        return {message: "Sure!", txid: txid}
+        return {message: "Sure!", txid: txid, command: command}
       } else {
         const msg = "Oh, it seems like I don't have this flobit."
-        return {message: msg, txid: null}
+        return {message: msg, txid: null, command: command}
       }
     } else if (command && command.action == 'remove_flobit' && command.serial) {
       let wearingFlobits = {}
@@ -63,17 +64,23 @@ class OpenaiController {
       if (onchainData.flovatarInfo.backgroundData) {
         wearingFlobits[`${onchainData.flovatarInfo.backgroundData.id}`] = "background"
       }
-      console.log("wearing Flobits", wearingFlobits)
       let category = wearingFlobits[`${command.serial}`]
       if (category) {
         const txid = await FlowService.removeFlobit(user, flovatarId, category)
-        return {message: "Okay!", txid: txid}
+        return {message: "Okay!", txid: txid, command: command}
       } else {
         const msg = "Oh, it seems like I'm not wearing this flobit."
-        return {message: msg, txid: null}
+        return {message: msg, txid: null, command: command}
       }
+    } else if (command 
+      && command.action == 'send_token' 
+      && (command.token == 'flow' || command.token == 'loppy')
+      && command.amount
+      && command.recipient && contactNames.includes(command.recipient)) {
+        console.log("SEND TOKEN: ", command)
+        return {message: message, txid: null, command: command}
     } else {
-      return {message: message, txid: null}
+      return {message: message, txid: null, command: command}
     }
   }
 
