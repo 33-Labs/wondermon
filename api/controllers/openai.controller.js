@@ -74,13 +74,18 @@ class OpenaiController {
       }
     } else if (command 
       && command.action == 'send_token' 
-      && (command.token == 'flow' || command.token == 'loppy')
+      && (command.token.toUpperCase() == 'FLOW' || command.token.totoUpperCase() == 'LOPPY')
       && command.amount
       && command.recipient && contactNames.includes(command.recipient)) {
         console.log("SEND TOKEN: ", command)
+        console.log("CONTACT NAMES: ", contactNames)
         return {message: message, txid: null, command: command}
+    } else if (command && command.action == 'none') {
+      return {message: message, txid: null, command: null}
+    } else if (command) {
+      return {message: "Sorry, I can't understand you", txid: null, command: null}
     } else {
-      return {message: message, txid: null, command: command}
+      return {message: message, txid: null, command: null}
     }
   }
 
