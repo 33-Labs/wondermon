@@ -412,8 +412,10 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     @objc func audioButtonTapped(_ sender: UIButton) {
         if audioCancelButton.alpha == 0.5 {
             // Stop recording logic if button is tapped and released on the audioCancelButton
-            print("Stopped!")
-            cancelRecording()
+            if audioEngine.isRunning {
+                cancelRecording()
+                return
+            }
        }
         audioCancelButton.alpha = 1.0
 
@@ -485,13 +487,10 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     private func cancelRecording() {
-        print("it's a cancel!")
-        
-        audioCancelButton.isHidden = true
+        print("Voice recording cancelled")
         
         try? audioSession.setActive(false)
         audioEngine.stop()
-        recognitionRequest?.endAudio()
         audioEngine.inputNode.removeTap(onBus: 0)
 
         recognitionRequest = nil
