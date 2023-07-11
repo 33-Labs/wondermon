@@ -160,8 +160,7 @@ extension ContactViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             let contact = contacts.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-            NetworkManager.shared.deleteContact(contactId: contact.id) { result in
-                print(result)
+            NetworkManager.shared.deleteContact(contactId: contact.id) { _ in
             }
         }
     }

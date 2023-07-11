@@ -174,7 +174,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
         UserDefaults.standard.deleteMessages()
         UserDefaults.standard.addObserver(self, forKeyPath: "user", options: .new, context: nil)
         
@@ -188,7 +187,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "user" {
-            print("KVO get user")
             getUser()
         }
     }

@@ -7,6 +7,7 @@
 
 import UIKit
 import Flow
+import NotificationBannerSwift
 
 class StoreViewController: UIViewController {
     
@@ -96,7 +97,6 @@ class StoreViewController: UIViewController {
             guard let sSelf = self else { return }
             do {
                 let items = try await sSelf.fetchStoreItems()
-                print("iii \(items)")
                 DispatchQueue.main.async {
                     self?.flobits = items.flobits
                     self?.flovatars = items.flovatars
@@ -110,7 +110,6 @@ class StoreViewController: UIViewController {
     }
     
     private func fetchStoreItems() async throws -> StoreItems {
-        print("fetchStoreItems")
         guard let user = user,
               let _ = user.flowAccount else {
             return StoreItems(flovatars: [], flobits: [])
@@ -230,6 +229,19 @@ extension StoreViewController: UICollectionViewDataSource {
             let token = tokens[indexPath.item]
             cell.setToken(token)
             return cell
+        }
+    }
+}
+
+extension StoreViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.section == 1 {
+            let flobit = flobits[indexPath.item]
+            // TODO: 
+        } else {
+            let banner = FloatingNotificationBanner(title: "Coming soom", style: .info)
+            banner.duration = 2
+            banner.show()
         }
     }
 }

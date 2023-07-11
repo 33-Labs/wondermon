@@ -52,7 +52,6 @@ class FlobitsCollectionViewController: UICollectionViewController, UICollectionV
     }
     
     private func fetchFlobits() async throws -> [Flobit] {
-        print("fetchFlobits")
         guard let user = user,
               let flowAccount = user.flowAccount else {
             return []
@@ -65,7 +64,6 @@ class FlobitsCollectionViewController: UICollectionViewController, UICollectionV
         
         let result = try await flow.executeScriptAtLatestBlock(script: script, arguments: [.init(value: .address(address))])
         let flobits: [Flobit] = try result.decode()
-        print(flobits)
         return flobits
     }
     

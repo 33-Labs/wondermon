@@ -17,7 +17,6 @@ extension String {
             let matches = regex.matches(in: self, range: range)
             return !matches.isEmpty
         } catch {
-            print("Invalid regex pattern: \(error.localizedDescription)")
             return false
         }
     }
@@ -31,7 +30,6 @@ extension String {
             let matches = regex.matches(in: self, range: range)
             return !matches.isEmpty
         } catch {
-            print("Invalid regex pattern: \(error.localizedDescription)")
             return false
         }
     }

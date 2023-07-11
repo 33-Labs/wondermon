@@ -57,8 +57,6 @@ class NetworkManager {
         let endpoint = "\(endpoint)/openai/chat"
         let parameters: [String: Any] = ["prompt": prompt, "flovatarId": flovatarId, "messages": convertedMessages]
         
-        debugPrint("parameters \(parameters)")
-        
         guard let user = UserDefaults.standard.fetchUser() else {
             completion(.failure(WMError.unauthorized))
             return
@@ -66,7 +64,6 @@ class NetworkManager {
         
         let headers: HTTPHeaders = [.authorization(bearerToken: user.accessToken)]
         AF.request(endpoint, method: .post, parameters: parameters, headers: headers).responseDecodable(of: AiMessageResponse.self) { response in
-            debugPrint(response)
             switch response.result {
             case .success(let messageResponse):
                 if messageResponse.status == 0, let message = messageResponse.data {
