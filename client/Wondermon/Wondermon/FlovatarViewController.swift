@@ -291,33 +291,21 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         blurView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         blurView.alpha = 0
         
-        view.addSubview(flobitsButton)
-        flobitsButton.translatesAutoresizingMaskIntoConstraints = false
-        flobitsButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        flobitsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        flobitsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        flobitsButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
-        
-        view.addSubview(tokensButton)
-        tokensButton.translatesAutoresizingMaskIntoConstraints = false
-        tokensButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        tokensButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        tokensButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-        tokensButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
-        
-        view.addSubview(contactsButton)
-        contactsButton.translatesAutoresizingMaskIntoConstraints = false
-        contactsButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        contactsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        contactsButton.leadingAnchor.constraint(equalTo: tokensButton.trailingAnchor).isActive = true
-        contactsButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
-        
-        view.addSubview(storeButton)
-        storeButton.translatesAutoresizingMaskIntoConstraints = false
-        storeButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        storeButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        storeButton.leadingAnchor.constraint(equalTo: contactsButton.trailingAnchor).isActive = true
-        storeButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        view.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        stackView.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
+        stackView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        stackView.addArrangedSubview(flobitsButton)
+        stackView.addArrangedSubview(tokensButton)
+        stackView.addArrangedSubview(contactsButton)
+        stackView.addArrangedSubview(storeButton)
         
         view.addSubview(audioButton)
         audioButton.translatesAutoresizingMaskIntoConstraints = false

@@ -69,7 +69,7 @@ class TokenView: UIView {
         nameLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 8).isActive = true
         
         addSubview(balanceLabel)
-        balanceLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        balanceLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor).isActive = true
         balanceLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor).isActive = true
         balanceLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         balanceLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
