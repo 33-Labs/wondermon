@@ -41,6 +41,7 @@ struct Message: Codable {
 struct AiMessage: Codable {
     let message: String
     let txid: String?
+    let command: [String: String]?
 }
 
 struct UserResponse: Codable {
@@ -112,5 +113,15 @@ struct StripeSessionResponse: Codable {
     let status: UInt8
     let message: String
     let data: StripeSession
+}
+
+struct TransactionId: Codable {
+    let txid: String
+}
+
+struct SendTokenResponse: Codable {
+    let status: UInt8
+    let message: String
+    let data: TransactionId
 }
 

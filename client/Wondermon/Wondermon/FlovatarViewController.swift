@@ -526,7 +526,9 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                 DispatchQueue.main.async { [weak self] in
                     Task {
                         if let txid = message.txid {
-                            await self?.handleTxid(txid)
+                            await self?.handleFlovatarRelatedTxid(txid)
+                        } else if let command = message.command {
+                            self?.handleCommand(command)
                         }
                     }
                 }
@@ -546,58 +548,92 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         present(safariViewController, animated: true, completion: nil)
     }
     
-    private func handleTxid(_ txid: String) async {
-        func fadeBlurView() {
-            UIView.animate(withDuration: 2, animations: { [weak self] in
-                self?.blurView.alpha = 0
-            })
+    private func handleCommand(_ command: [String: String]) {
+        if let action = command["action"],
+           let token = command["token"],
+           let amount = command["amount"],
+           let recipient = command["recipient"],
+            action == "send_token" {
+            let content = "Send \(amount) \(token.uppercased()) to \(recipient)"
+            let alertController = UIAlertController(title: "Review Transaction", message: content, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            let confirmAction = UIAlertAction(title: "Confirm", style: .default) { _ in
+
+                NetworkManager.shared.sendToken(symbol: token, recipient: recipient, amount: amount) { [weak self] result in
+                    Task {
+                        switch result {
+                        case .success(let txid):
+                            await self?.watchTransaction(transactionHash: txid.txid)
+                        case .failure(let error):
+                            print("handleCommand \(error)")
+                        }
+                    }
+                }
+            }
+            alertController.addAction(confirmAction)
+            present(alertController, animated: true, completion: nil)
         }
-        
-        let tx = txid
-        
-        let banner = FloatingNotificationBanner(title: "Transaction pending, tap to view", style: .info)
-        banner.onTap = { [weak self] in
-            self?.navigateToTransaction(txid: tx)
-        }
-        
-        banner.duration = 5
-        banner.show()
-        
+    }
+    
+    private func handleFlovatarRelatedTxid(_ txid: String) async {
         UIView.animate(withDuration: 2, animations: { [weak self] in
             self?.blurView.alpha = 1
         })
         
-        let txid = Flow.ID(hex: txid)
+        await watchTransaction(transactionHash: txid) { [weak self] in
+            self?.fetchFlovatarData {
+                self?.fadeBlurView()
+            }
+        } onFailure: { [weak self] in
+            self?.fadeBlurView()
+        }
+    }
+    
+    func fadeBlurView() {
+        UIView.animate(withDuration: 2, animations: { [weak self] in
+            self?.blurView.alpha = 0
+        })
+    }
+    
+    private func watchTransaction(transactionHash: String, onSuccess: (() -> Void)? = nil, onFailure: (() -> Void)? = nil) async {
+        let txid = Flow.ID(hex: transactionHash)
         do {
+            let banner = FloatingNotificationBanner(title: "Transaction pending, tap to view", style: .info)
+            banner.onTap = { [weak self] in
+                self?.navigateToTransaction(txid: transactionHash)
+            }
+            
+            banner.duration = 5
+            banner.show()
+            
             let result = try await txid.onceSealed()
             if result.status == .sealed && result.errorMessage == "" {
                 let banner = FloatingNotificationBanner(title: "Transaction sealed, tap to view", style: .success)
                 banner.onTap = { [weak self] in
-                    self?.navigateToTransaction(txid: tx)
+                    self?.navigateToTransaction(txid: transactionHash)
                 }
                 banner.duration = 2
                 banner.show()
-                fetchFlovatarData {
-                    fadeBlurView()
-                }
+                onSuccess?()
             } else {
                 let banner = FloatingNotificationBanner(title: "Transaction failed, tap to view", style: .warning)
                 banner.onTap = { [weak self] in
-                    self?.navigateToTransaction(txid: tx)
+                    self?.navigateToTransaction(txid: transactionHash)
                 }
                 banner.duration = 2
                 banner.show()
-                fadeBlurView()
+                onFailure?()
             }
         } catch {
             debugPrint("Transaction failed \(error)")
             let banner = FloatingNotificationBanner(title: "Transaction failed, tap to view", style: .warning)
             banner.onTap = { [weak self] in
-                self?.navigateToTransaction(txid: tx)
+                self?.navigateToTransaction(txid: transactionHash)
             }
             banner.duration = 2
             banner.show()
-            fadeBlurView()
+            onFailure?()
         }
     }
     

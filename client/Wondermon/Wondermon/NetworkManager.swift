@@ -160,4 +160,26 @@ class NetworkManager {
             }
         }
     }
+    
+    func sendToken(symbol: String, recipient: String, amount: String, completion: @escaping (Result<TransactionId, Error>) -> Void) {
+        let endpoint = "\(endpoint)/flow/send_token"
+        let parameters: [String: Any] = ["symbol": symbol, "recipient": recipient, "amount": amount]
+        
+        guard let user = UserDefaults.standard.fetchUser() else {
+            completion(.failure(WMError.unauthorized))
+            return
+        }
+        
+        let headers: HTTPHeaders = [.authorization(bearerToken: user.accessToken)]
+        AF.request(endpoint, method: .post, parameters: parameters, headers: headers).responseDecodable(of: SendTokenResponse.self) { response in
+            switch response.result {
+            case .success(let sendTokenResponse):
+                if sendTokenResponse.status == 0 {
+                    completion(.success(sendTokenResponse.data))
+                }
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+        }
+    }
 }

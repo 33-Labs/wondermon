@@ -238,12 +238,12 @@ extension StoreViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             let flobit = flobits[indexPath.item]
-            NetworkManager.shared.checkout(itemType: "Flobit", tokenId: 1) { [weak self] result in
+            NetworkManager.shared.checkout(itemType: "Flobit", tokenId: 2) { [weak self] result in
                 switch result {
                 case .success(let session):
                     if let url = URL(string: session.sessionURL) {
                         let safariViewController = SFSafariViewController(url: url)
-                        safariViewController.modalPresentationStyle = .overFullScreen
+//                        safariViewController.modalPresentationStyle = .overFullScreen
                         DispatchQueue.main.async { [weak self] in
                             self?.present(safariViewController, animated: true, completion: nil)
                         }
