@@ -22,7 +22,7 @@ class OpenaiService {
       const stream = await this.doChat(messages, prompt, onchainData);
       result = await this.readStream(stream)
     } catch (e) {
-      console.log(e)
+      console.log("Chat error", e)
       throw new Error("Chat failed");
     }
     return result;

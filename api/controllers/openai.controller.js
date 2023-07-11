@@ -12,6 +12,7 @@ class OpenaiController {
       const messages = rawMessages.map(message => {
         return JSON.parse(message)
       })
+      console.log("rawMessages", rawMessages)
       const onchainData = await FlowService.getOnchainInfo(flowAddress, flovatarId)
       const aiMessage = await OpenaiService.chat(messages, req.body.prompt, onchainData);
       console.log("aiMessage", aiMessage)
