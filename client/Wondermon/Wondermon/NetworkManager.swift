@@ -118,7 +118,7 @@ class NetworkManager {
         }
     }
     
-    func deleteContact(contactId: UInt64, completion: @escaping (Result<Bool, Error>) ->Void) {
+    func deleteContact(contactId: UInt64, completion: @escaping (Result<Bool, Error>) -> Void) {
         let endpoint = "\(endpoint)/contacts/\(contactId)"
         
         guard let user = UserDefaults.standard.fetchUser() else {
@@ -132,6 +132,28 @@ class NetworkManager {
             case .success(let baseResponse):
                 if baseResponse.status == 0 {
                     completion(.success(true))
+                }
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+        }
+    }
+    
+    func checkout(itemType: String, tokenId: UInt64, completion: @escaping (Result<StripeSession, Error>) -> Void) {
+        let endpoint = "\(endpoint)/stripe/create_checkout_session"
+        let parameters: [String: Any] = ["itemType": itemType, "tokenId": tokenId]
+        
+        guard let user = UserDefaults.standard.fetchUser() else {
+            completion(.failure(WMError.unauthorized))
+            return
+        }
+        
+        let headers: HTTPHeaders = [.authorization(bearerToken: user.accessToken)]
+        AF.request(endpoint, method: .post, parameters: parameters, headers: headers).responseDecodable(of: StripeSessionResponse.self) { response in
+            switch response.result {
+            case .success(let stripeResponse):
+                if stripeResponse.status == 0 {
+                    completion(.success(stripeResponse.data))
                 }
             case .failure(let error):
                 return completion(.failure(error))

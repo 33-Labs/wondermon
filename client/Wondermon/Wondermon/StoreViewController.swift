@@ -8,6 +8,7 @@
 import UIKit
 import Flow
 import NotificationBannerSwift
+import SafariServices
 
 class StoreViewController: UIViewController {
     
@@ -237,9 +238,26 @@ extension StoreViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             let flobit = flobits[indexPath.item]
-            // TODO: 
+            NetworkManager.shared.checkout(itemType: "Flobit", tokenId: 1) { [weak self] result in
+                switch result {
+                case .success(let session):
+                    if let url = URL(string: session.sessionURL) {
+                        let safariViewController = SFSafariViewController(url: url)
+                        safariViewController.modalPresentationStyle = .overFullScreen
+                        DispatchQueue.main.async { [weak self] in
+                            self?.present(safariViewController, animated: true, completion: nil)
+                        }
+                    }
+                case .failure(let error):
+                    print(error)
+                    let banner = FloatingNotificationBanner(title: "Checkout failed", style: .warning)
+                    banner.duration = 2
+                    banner.show()
+                }
+            }
+            
         } else {
-            let banner = FloatingNotificationBanner(title: "Coming soom", style: .info)
+            let banner = FloatingNotificationBanner(title: "Coming soon", style: .info)
             banner.duration = 2
             banner.show()
         }

@@ -4,15 +4,15 @@ const StripeService = require('../services/stripe.service')
 class StripeController {
   static createCheckoutSession = async (req, res, next) => {
     try {
-      const itemType = req.body.itemType
-      const tokenId = req.body.tokenId
-      if (!tokenId || !itemType) {
+      if (!req.body.tokenId || !req.body.itemType) {
         res.status(422).json({
           status: 1,
           message: "invalid params"
         })
         return
       }
+      const itemType = req.body.itemType
+      const tokenId = parseInt(`${req.body.tokenId}`)
       console.log(itemType, tokenId)
 
       const data = await StripeService.createCheckoutSession(req.user.payload, itemType, tokenId)

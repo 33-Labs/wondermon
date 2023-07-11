@@ -28,7 +28,6 @@ struct Message: Codable {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: dictionary, options: [])
             if let jsonString = String(data: jsonData, encoding: .utf8) {
-                print(jsonString)
                 return jsonString
             }
         } catch {
@@ -104,4 +103,14 @@ struct BaseResponse: Codable {
     let message: String
 }
 
+struct StripeSession: Codable {
+    let sessionID: String
+    let sessionURL: String
+}
+
+struct StripeSessionResponse: Codable {
+    let status: UInt8
+    let message: String
+    let data: StripeSession
+}
 
