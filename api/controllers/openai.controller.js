@@ -18,17 +18,23 @@ class OpenaiController {
       const contacts = await ContactService.all(user)
       const aiMessage = await OpenaiService.chat(messages, req.body.prompt, onchainData, contacts);
       console.log("aiMessage", aiMessage)
-      const {message, txid, command} = await this.executeCommand(aiMessage, onchainData, contacts, user, flovatarId);
-
-      res.status(200).json({
-        status: 0,
-        message: 'success',
-        data: {
-          message: message,
-          txid: txid,
-          command: command
-        },
-      });
+      if (aiMessage) {
+        const {message, txid, command} = await this.executeCommand(aiMessage, onchainData, contacts, user, flovatarId);
+        res.status(200).json({
+          status: 0,
+          message: 'success',
+          data: {
+            message: message,
+            txid: txid,
+            command: command
+          },
+        });
+      } else {
+        res.status(500).json({
+          status: 1,
+          message: 'failed to chat with NFT'
+        });
+      }
     } catch (e) {
       console.log(e);
       next(createError.InternalServerError(e.message));
