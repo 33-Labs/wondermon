@@ -1,3 +1,4 @@
+const ContactService = require('../services/contact.service');
 const FlowService = require('../services/flow.service');
 const OpenaiService = require('../services/openai.service')
 const createError = require('http-errors');
@@ -14,7 +15,8 @@ class OpenaiController {
       })
       console.log("rawMessages", rawMessages)
       const onchainData = await FlowService.getOnchainInfo(flowAddress, flovatarId)
-      const aiMessage = await OpenaiService.chat(messages, req.body.prompt, onchainData);
+      const contacts = await ContactService.all(user)
+      const aiMessage = await OpenaiService.chat(messages, req.body.prompt, onchainData, contacts);
       console.log("aiMessage", aiMessage)
       const {message, txid} = await this.executeCommand(aiMessage, onchainData, user, flovatarId);
 
@@ -38,7 +40,7 @@ class OpenaiController {
     console.log('\ncommand', command)
     if (command && command.action == 'set_flobit' && command.serial) {
       const flobitId = command.serial
-      const flobitIds = onchainData.flobits.map((f) => f.id)
+      const flobitIds = onchainData.flovatarInfo.flobits.map((f) => f.id)
       console.log("flobitIds", flobitIds)
       if (flobitIds.includes(`${flobitId}`)) {
         const txid = await FlowService.setFlobit(user, flovatarId, flobitId)
@@ -49,17 +51,17 @@ class OpenaiController {
       }
     } else if (command && command.action == 'remove_flobit' && command.serial) {
       let wearingFlobits = {}
-      if (onchainData.accessoryData) {
-        wearingFlobits[`${onchainData.accessoryData.id}`] = "accessory"
+      if (onchainData.flovatarInfo.accessoryData) {
+        wearingFlobits[`${onchainData.flovatarInfo.accessoryData.id}`] = "accessory"
       }
-      if (onchainData.hatData) {
-        wearingFlobits[`${onchainData.hatData.id}`] = "hat"
+      if (onchainData.flovatarInfo.hatData) {
+        wearingFlobits[`${onchainData.flovatarInfo.hatData.id}`] = "hat"
       }
-      if (onchainData.eyeglassesData) {
-        wearingFlobits[`${onchainData.eyeglassesData.id}`] = "eyeglasses"
+      if (onchainData.flovatarInfo.eyeglassesData) {
+        wearingFlobits[`${onchainData.flovatarInfo.eyeglassesData.id}`] = "eyeglasses"
       }
-      if (onchainData.backgroundData) {
-        wearingFlobits[`${onchainData.backgroundData.id}`] = "background"
+      if (onchainData.flovatarInfo.backgroundData) {
+        wearingFlobits[`${onchainData.flovatarInfo.backgroundData.id}`] = "background"
       }
       console.log("wearing Flobits", wearingFlobits)
       let category = wearingFlobits[`${command.serial}`]

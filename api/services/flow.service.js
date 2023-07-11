@@ -212,6 +212,14 @@ class FlowService {
     import FlovatarComponentTemplate from 0x921ea449dffec68a
     import MetadataViews from 0x1d7e57aa55817448
     
+    import FlowToken from 0x1654653399040a61
+    import SloppyStakes from 0x53f389d96fb4ce5e
+    import FungibleToken from 0xf233dcee88fe0abe
+    
+    import SwapPair from 0xbfb26bb8adf90399
+    import SwapConfig from 0xb78ef7afa52ff906
+    import SwapInterfaces from 0xb78ef7afa52ff906
+    
     pub struct FlobitData {
       pub let id: UInt64
       pub let templateId: UInt64
@@ -270,6 +278,42 @@ class FlowService {
       }
     }
     
+    pub struct TokensInfo {
+      pub let flowBalance: UFix64
+      pub let loppyBalance: UFix64
+      pub let availableFlowBalance: UFix64
+      pub let availableLoppyBalance: UFix64
+      pub let flowToLoppyPrice: UFix64
+      pub let loppyToFlowPrice: UFix64
+    
+      init(
+        flowBalance: UFix64,
+        loppyBalance: UFix64,
+        flowToLoppyPrice: UFix64,
+        loppyToFlowPrice: UFix64
+      ) {
+        self.flowBalance = flowBalance
+        self.loppyBalance = loppyBalance
+        self.availableFlowBalance = flowBalance - 1.0 > 0.0 ? flowBalance - 1.0 : 0.0
+        self.availableLoppyBalance = loppyBalance
+        self.flowToLoppyPrice = flowToLoppyPrice
+        self.loppyToFlowPrice = loppyToFlowPrice
+      }
+    }
+    
+    pub struct OnchainData {
+      pub let flovatarInfo: FlovatarInfo
+      pub let tokensInfo: TokensInfo
+    
+      init(
+        flovatarInfo: FlovatarInfo,
+        tokensInfo: TokensInfo
+      ) {
+        self.flovatarInfo = flovatarInfo
+        self.tokensInfo = tokensInfo
+      }
+    }
+    
     pub struct FlovatarInfo {
       pub let flovatarData: FlovatarData
       pub let flovatarTraits: MetadataViews.Traits
@@ -298,7 +342,7 @@ class FlowService {
       }
     }
     
-    pub fun main(address: Address, flovatarId: UInt64): FlovatarInfo {
+    pub fun main(address: Address, flovatarId: UInt64): OnchainData {
       let account = getAuthAccount(address)
     
       let flovatarCap = account
@@ -430,7 +474,33 @@ class FlowService {
         flobits: flobits
       )
     
-      return flovatarInfo
+      var flowBalance: UFix64 = 0.0
+      let flowCap = account.getCapability<&FlowToken.Vault{FungibleToken.Balance}>(/public/flowTokenBalance).borrow()
+      if let flow = flowCap {
+        flowBalance = flow.balance
+      }
+    
+      let loppyBalance = SloppyStakes.getBalance(address: address)
+    
+      let pairAccount = getAccount(0xbfb26bb8adf90399)
+      let pair = pairAccount
+        .getCapability<&{SwapInterfaces.PairPublic}>(SwapConfig.PairPublicPath)
+        .borrow()
+        ?? panic("Could not borrow pair")
+      let loppyToFlow = pair.getAmountOut(amountIn: 1.0, tokenInKey: "A.1654653399040a61.FlowToken")
+      let flowToLoppy = pair.getAmountOut(amountIn: 1.0, tokenInKey: "A.53f389d96fb4ce5e.SloppyStakes")
+    
+      let tokensInfo = TokensInfo(
+        flowBalance: flowBalance,
+        loppyBalance: loppyBalance,
+        flowToLoppyPrice: flowToLoppy,
+        loppyToFlowPrice: loppyToFlow
+      )
+    
+      return OnchainData(
+        flovatarInfo: flovatarInfo,
+        tokensInfo: tokensInfo
+      )
     }
     `
     const onChainInfo = await fcl.query({
