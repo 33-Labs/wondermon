@@ -162,8 +162,31 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         button.addTarget(self, action: #selector(audioButtonTapped), for: .touchDown)
         button.addTarget(self, action: #selector(audioButtonTapped), for: .touchUpInside)
         button.addTarget(self, action: #selector(audioButtonTapped), for: .touchUpOutside)
+        button.addTarget(self, action: #selector(audioButtonTouchDrag(_:with:)), for: .touchDragInside)
+        button.addTarget(self, action: #selector(audioButtonTouchDrag(_:with:)), for: .touchDragOutside)
         return button
     }()
+    
+    private lazy var audioCancelButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("X", for: .normal)
+        button.setTitleColor(.yellow, for: .normal)
+        button.backgroundColor = .gray
+        button.layer.cornerRadius = 10
+        button.isHidden = true
+
+        return button
+    }()
+    
+    @objc func audioButtonTouchDrag(_ sender: UIButton, with event: UIEvent) {
+        if let touchLocation = event.allTouches?.first?.location(in: self.view) {
+            if audioCancelButton.frame.contains(touchLocation) {
+                audioCancelButton.alpha = 0.5 // Change the appearance when the touch moves over the button
+            } else {
+                audioCancelButton.alpha = 1.0
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -305,6 +328,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         contactsButton.leadingAnchor.constraint(equalTo: tokensButton.trailingAnchor).isActive = true
         contactsButton.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
         
+        view.addSubview(audioCancelButton)
+        audioCancelButton.translatesAutoresizingMaskIntoConstraints = false
+        audioCancelButton.widthAnchor.constraint(equalToConstant:  40).isActive = true
+        audioCancelButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        audioCancelButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        audioCancelButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+        
         view.addSubview(audioButton)
         audioButton.translatesAutoresizingMaskIntoConstraints = false
         audioButton.widthAnchor.constraint(equalToConstant:  280).isActive = true
@@ -318,6 +348,8 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         speakView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         speakView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         speakView.bottomAnchor.constraint(equalTo: audioButton.topAnchor, constant: -16).isActive = true
+        
+        view.bringSubviewToFront(audioCancelButton)
     }
     
     private func fetchFlovatarSvg(rawAddress: String, flovatarId: UInt64) async throws -> String {
@@ -378,6 +410,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     @objc func audioButtonTapped(_ sender: UIButton) {
+        if audioCancelButton.alpha == 0.5 {
+            // Stop recording logic if button is tapped and released on the audioCancelButton
+            print("Stopped!")
+            cancelRecording()
+       }
+        audioCancelButton.alpha = 1.0
+
         if let _ = user {
             if audioEngine.isRunning {
                 stopRecording()
@@ -392,6 +431,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     private func startRecording() {
         audioButton.isEnabled = false
+        audioCancelButton.isHidden = false
         convertedText = nil
         if recognitionTask != nil {
             recognitionTask?.cancel()
@@ -440,7 +480,24 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     private func stopRecording() {
+        audioCancelButton.isHidden = true
         resetRecordingStatus()
+    }
+    
+    private func cancelRecording() {
+        print("it's a cancel!")
+        
+        audioCancelButton.isHidden = true
+        
+        try? audioSession.setActive(false)
+        audioEngine.stop()
+        recognitionRequest?.endAudio()
+        audioEngine.inputNode.removeTap(onBus: 0)
+
+        recognitionRequest = nil
+        recognitionTask = nil
+
+        audioButton.isEnabled = true
     }
     
     private func resetRecordingStatus() {
