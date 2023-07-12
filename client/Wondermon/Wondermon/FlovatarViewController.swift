@@ -520,7 +520,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                         self?.speak(text: message.message)
                     }
                 } else {
-                    // TODO: Alert persist error
+                    print("Message persist failed")
                 }
                 
                 DispatchQueue.main.async { [weak self] in
@@ -558,14 +558,16 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
             let alertController = UIAlertController(title: "Review Transaction", message: content, preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
-            let confirmAction = UIAlertAction(title: "Confirm", style: .default) { _ in
+            let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] _ in
 
                 NetworkManager.shared.sendToken(symbol: token, recipient: recipient, amount: amount) { [weak self] result in
                     Task {
                         switch result {
                         case .success(let txid):
+                            self?.showAndDoSpeak(text: "Ok! Let me do it!")
                             await self?.watchTransaction(transactionHash: txid.txid)
                         case .failure(let error):
+                            self?.showAndDoSpeak(text: "Seems something went wrong...")
                             print("handleCommand \(error)")
                         }
                     }
@@ -573,6 +575,13 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
             }
             alertController.addAction(confirmAction)
             present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    private func showAndDoSpeak(text: String) {
+        DispatchQueue.main.async { [weak self] in
+            self?.speakView.text = "Flora: \(text)"
+            self?.speak(text: text)
         }
     }
     
@@ -637,18 +646,26 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         }
     }
     
-    private func speak(text: String) {
+    var synthesizer: SPXSpeechSynthesizer?
+    private func speak(text: String, completion: (() -> Void)? = nil) {
         guard let sub = ProcessInfo.processInfo.environment["SPEECH_KEY"],
               let region = ProcessInfo.processInfo.environment["SPEECH_REGION"] else {
             return
         }
         
+
+        
         var speechConfig: SPXSpeechConfiguration?
         do {
+            if let syn = synthesizer {
+                try syn.stopSpeaking()
+                synthesizer = nil
+            }
+            
             try speechConfig = SPXSpeechConfiguration(subscription: sub, region: region)
             speechConfig!.speechSynthesisVoiceName = "en-US-RogerNeural";
             
-            let synthesizer = try! SPXSpeechSynthesizer(speechConfig!)
+            synthesizer = try! SPXSpeechSynthesizer(speechConfig!)
             let ssml = """
 <speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis"
        xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="en-US">
@@ -659,15 +676,16 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     </voice>
 </speak>
 """
-            let result = try! synthesizer.speakSsml(ssml)
+            guard let result = try! synthesizer?.speakSsml(ssml) else {
+                return
+            }
             
             if result.reason == SPXResultReason.canceled {
                 let cancellationDetails = try! SPXSpeechSynthesisCancellationDetails(fromCanceledSynthesisResult: result)
                 print("cancelled, error code: \(cancellationDetails.errorCode) detail: \(cancellationDetails.errorDetails!) ")
                 print("Did you set the speech resource key and region values?");
-                return
             }
-            
+            completion?()
         } catch {
             print("error \(error) happened")
         }
