@@ -20,13 +20,13 @@ class StripeService {
       throw createError.NotFound('flow account not found')
     }
 
-    const _order = await prisma.stripeOrder.findFirst({
-      where: { itemType: itemType, tokenId: tokenId, checkoutExpired: false } 
-    })
+    // const _order = await prisma.stripeOrder.findFirst({
+    //   where: { itemType: itemType, tokenId: tokenId, checkoutExpired: false } 
+    // })
 
-    if (_order && !_order.checkoutCompleted) {
-      throw createError.UnprocessableEntity("has been ordered")
-    }
+    // if (_order && !_order.checkoutCompleted) {
+    //   throw createError.UnprocessableEntity("has been ordered")
+    // }
 
     const session = await this.doCreateSession()
     const data = {
