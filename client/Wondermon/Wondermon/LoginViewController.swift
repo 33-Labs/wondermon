@@ -168,7 +168,6 @@ class LoginViewController: UIViewController {
     }
     
     @objc func signUpTapped(_ gesture: UITapGestureRecognizer) {
-        print("SIGN UP tapped!")
         let signUpViewController = SignUpViewController()
         signUpViewController.modalPresentationStyle = .overFullScreen
         present(signUpViewController, animated: true, completion: nil)
@@ -188,7 +187,6 @@ class LoginViewController: UIViewController {
             
             switch result {
             case .success(let user):
-                debugPrint(user)
                 if UserDefaults.standard.store(user: user) {
                     sSelf.showSignInSucceed()
                     sSelf.dismiss(animated: true)

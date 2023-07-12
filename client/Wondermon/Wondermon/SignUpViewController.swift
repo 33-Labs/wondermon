@@ -194,7 +194,6 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func signInTapped(_ gesture: UITapGestureRecognizer) {
-        print("SIGN IN tapped!")
         self.dismiss(animated: true)
     }
     
@@ -225,7 +224,6 @@ class SignUpViewController: UIViewController {
             
             switch result {
             case .success(let user):
-                debugPrint(user)
                 if UserDefaults.standard.store(user: user) {
                     sSelf.showSignUpSucceed()
                     sSelf.dismiss(animated: true)

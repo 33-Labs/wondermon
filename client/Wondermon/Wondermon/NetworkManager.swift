@@ -53,7 +53,6 @@ class NetworkManager {
         let convertedMessages = messages.map { (message) -> String in
             return message.toJsonString()
         }
-        debugPrint("convertedMessages \(convertedMessages)")
         let endpoint = "\(endpoint)/openai/chat"
         let parameters: [String: Any] = ["prompt": prompt, "flovatarId": flovatarId, "messages": convertedMessages]
         

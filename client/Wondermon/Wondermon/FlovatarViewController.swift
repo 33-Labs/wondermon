@@ -14,7 +14,7 @@ import WebKit
 import NotificationBannerSwift
 import SafariServices
 
-class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeechRecognizerDelegate, WKNavigationDelegate {
+class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeechRecognizerDelegate {
     
     private var user: User? {
         didSet {
@@ -33,18 +33,29 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     private var convertedText: String? {
+        willSet {
+            guard shouldRecord else {
+                return
+            }
+        }
         didSet {
+            guard shouldRecord else {
+                return
+            }
+            
             if let user = user,
                let convertedText = convertedText,
-               let flovatarId = flovatarId{
+               let flovatarId = flovatarId,
+                convertedText.count > 0 {
                 speakView.text = "\(user.name): \(convertedText)\n"
                 chat(prompt: convertedText, flovatarId: flovatarId)
             } else {
                 speakView.text = ""
             }
-            
         }
     }
+    
+    var shouldRecord = true
     
     private lazy var speakView: UITextView = {
         let view = UITextView()
@@ -89,7 +100,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         config.allowsAirPlayForMediaPlayback = false
         config.defaultWebpagePreferences = pagePrefs
         
-        view.navigationDelegate = self
         view.scrollView.isScrollEnabled = false
         view.scrollView.backgroundColor = .green
         view.backgroundColor = .yellow
@@ -156,21 +166,35 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }()
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
-
-    private lazy var audioButton: UIButton = {
-        let button = UIButton()
-        let startImage = UIImage(named: "holdtotalk")
-        let stopImage = UIImage(named: "releasetosend")
-        button.setImage(startImage, for: .normal)
-        button.setImage(stopImage, for: .focused)
-        button.setImage(stopImage, for: .highlighted)
-        button.setImage(stopImage, for: .disabled)
-        
-        button.addTarget(self, action: #selector(audioButtonTapped), for: .touchDown)
-        button.addTarget(self, action: #selector(audioButtonTapped), for: .touchUpInside)
-        button.addTarget(self, action: #selector(audioButtonTapped), for: .touchUpOutside)
-        return button
+    
+    private lazy var audioImageView: UIImageView = {
+        let imageView = UIImageView()
+        return imageView
     }()
+
+    let startImage = UIImage(named: "holdtotalk")
+    let stopImage = UIImage(named: "releasetosend")
+    private lazy var audioButton: UIView = {
+        let view = UIView()
+        
+        view.addSubview(audioImageView)
+        audioImageView.translatesAutoresizingMaskIntoConstraints = false
+        audioImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        audioImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        audioImageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        audioImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    
+        audioImageView.image = startImage
+        audioImageView.isUserInteractionEnabled = true
+        
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        longPressGestureRecognizer.minimumPressDuration = 0.3
+        longPressGestureRecognizer.allowableMovement = 10
+        view.addGestureRecognizer(longPressGestureRecognizer)
+        return view
+    }()
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -207,9 +231,9 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         SFSpeechRecognizer.requestAuthorization { (authStatus) in
             DispatchQueue.main.async {
                 if authStatus == .authorized {
-                    self.audioButton.isEnabled = true
+                    self.audioButton.isUserInteractionEnabled = true
                 } else {
-                    self.audioButton.isEnabled = false
+                    self.audioButton.isUserInteractionEnabled = false
                 }
             }
         }
@@ -297,10 +321,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                 print("JavaScript error: \(error)")
             }
         }
-    }
-    
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-//        self.stopAnimation()
     }
     
     private func cleanFlovatar() {
@@ -425,21 +445,34 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         """
     }
     
-    @objc func audioButtonTapped(_ sender: UIButton) {
-        if let _ = user {
-            if audioEngine.isRunning {
-                stopRecording()
+    @objc func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+            shouldRecord = true
+            if let _ = user {
+                if !audioEngine.isRunning {
+                    startRecording()
+                }
+                audioImageView.image = stopImage
             } else {
-                startRecording()
+                let vc = LoginViewController()
+                present(vc, animated: true, completion: nil)
             }
-        } else {
-            let vc = LoginViewController()
-            present(vc, animated: true, completion: nil)
+        } else if gestureRecognizer.state == .changed {
+            let touchLocation = gestureRecognizer.location(in: self.view)
+            if !audioButton.frame.contains(touchLocation) {
+                shouldRecord = false
+                audioImageView.image = UIImage(named: "releasetocancel")
+            } else {
+                shouldRecord = true
+                audioImageView.image = stopImage
+            }
+        } else if gestureRecognizer.state == .ended {
+            audioImageView.image = startImage
+            stopRecording()
         }
     }
     
     private func startRecording() {
-        audioButton.isEnabled = false
         convertedText = nil
         if recognitionTask != nil {
             recognitionTask?.cancel()
@@ -499,8 +532,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
 
         recognitionRequest = nil
         recognitionTask = nil
-
-        audioButton.isEnabled = true
     }
     
     @objc func flobitsButtonTapped(_ sender: UIButton) {
@@ -617,7 +648,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                             await self?.watchTransaction(transactionHash: txid.txid)
                         case .failure(let error):
                             self?.showAndDoSpeak(text: "Seems something went wrong...")
-                            print("handleCommand \(error)")
+                            print("handleCommand error: \(error)")
                         }
                     }
                 }
