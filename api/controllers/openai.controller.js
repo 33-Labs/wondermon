@@ -88,6 +88,8 @@ class OpenaiController {
         return {message: message, txid: null, command: command}
     } else if (command && command.action == 'none') {
       return {message: message, txid: null, command: null}
+    } else if (command && command.action == 'present') {
+      return {message: message, txid: null, command: command}
     } else if (command) {
       return {message: "Sorry, I can't understand you", txid: null, command: null}
     } else {
