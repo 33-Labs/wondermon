@@ -644,10 +644,8 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                     Task {
                         switch result {
                         case .success(let txid):
-                            self?.showAndDoSpeak(text: "Ok! Let me do it!")
                             await self?.watchTransaction(transactionHash: txid.txid)
                         case .failure(let error):
-                            self?.showAndDoSpeak(text: "Seems something went wrong...")
                             print("handleCommand error: \(error)")
                         }
                     }
