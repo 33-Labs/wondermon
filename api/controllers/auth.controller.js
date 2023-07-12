@@ -19,6 +19,8 @@ class AuthController {
             }
 
             const user = await AuthService.register(req.body)
+            user.speechKey = process.env.SPEECH_KEY
+            user.speechRegion = process.env.SPEECH_REGION
             res.status(200).json({
                 status: 0,
                 message: 'User created successfully',
@@ -35,10 +37,12 @@ class AuthController {
     static login = async (req, res, next) => {
          try {
             const data = await AuthService.login(req.body)
+            data.speechKey = process.env.SPEECH_KEY
+            data.speechRegion = process.env.SPEECH_REGION
             res.status(200).json({
                 status: 0,
                 message: "Account login successful",
-                data
+                data: data
             })
         } catch (e) {
             next(createError(e.statusCode, e.message))

@@ -16,6 +16,8 @@ struct User: Codable {
     let email: String
     let accessToken: String
     let flowAccount: FlowAccount?
+    let speechKey: String
+    let speechRegion: String
 }
 
 struct Message: Codable {

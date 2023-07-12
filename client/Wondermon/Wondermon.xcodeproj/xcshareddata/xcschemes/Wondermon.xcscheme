@@ -73,18 +73,6 @@
             ReferencedContainer = "container:Wondermon.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "SPEECH_KEY"
-            value = "130f44074e90407787e0bd4c8a219131"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "SPEECH_REGION"
-            value = "westus"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
