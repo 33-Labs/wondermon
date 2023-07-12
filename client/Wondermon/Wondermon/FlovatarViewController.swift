@@ -624,6 +624,26 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
             }
             alertController.addAction(confirmAction)
             present(alertController, animated: true, completion: nil)
+        } else if let action = command["action"],
+                  action == "present",
+                  let rawPage = command["page"] {
+            let page = rawPage.lowercased()
+            switch page {
+            case "flobit":
+                let vc = FlobitsCollectionViewController()
+                present(vc, animated: true)
+            case "tokens", "token":
+                let vc = TokensViewController()
+                present(vc, animated: true)
+            case "store":
+                let vc = StoreViewController()
+                present(vc, animated: true)
+            case "contacts", "contact":
+                let vc = ContactViewController()
+                present(vc, animated: true)
+            default:
+                return
+            }
         }
     }
     
@@ -697,12 +717,12 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     var synthesizer: SPXSpeechSynthesizer?
     private func speak(text: String, completion: (() -> Void)? = nil) {
-        guard let sub = ProcessInfo.processInfo.environment["SPEECH_KEY"],
-              let region = ProcessInfo.processInfo.environment["SPEECH_REGION"] else {
+        guard let user = user else {
+            print("[Speak] Unauthorized")
             return
         }
-        
-
+        let sub = user.speechKey
+        let region = user.speechRegion
         
         var speechConfig: SPXSpeechConfiguration?
         do {
