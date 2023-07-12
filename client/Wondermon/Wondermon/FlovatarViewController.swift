@@ -14,7 +14,7 @@ import WebKit
 import NotificationBannerSwift
 import SafariServices
 
-class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeechRecognizerDelegate {
+class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeechRecognizerDelegate, WKNavigationDelegate {
     
     private var user: User? {
         didSet {
@@ -89,6 +89,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         config.allowsAirPlayForMediaPlayback = false
         config.defaultWebpagePreferences = pagePrefs
         
+        view.navigationDelegate = self
         view.scrollView.isScrollEnabled = false
         view.scrollView.backgroundColor = .green
         view.backgroundColor = .yellow
@@ -238,8 +239,8 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                 if (tokenIds.count > 0) {
                     let tokenId = tokenIds[0]
                     flovatarId = tokenId
-                    let svg = try await self.fetchFlovatarSvg(rawAddress: rawAddress, flovatarId: tokenId)
-                    
+                    let rawSvg = try await self.fetchFlovatarSvg(rawAddress: rawAddress, flovatarId: tokenId)
+                    let svg = addSvgAnimation(svg: rawSvg)
                     DispatchQueue.main.async { [weak self] in
                         guard let sSelf = self else { return }
                         sSelf.webView.loadHTMLString("<div style=\"width: 100%; height: 100%;\">\(svg)</div>", baseURL: nil)
@@ -252,6 +253,54 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                 cleanFlovatar()
             }
         }
+    }
+    
+    private func addSvgAnimation(svg: String) -> String {
+        let ext = """
+        <defs><style>.cls-1-441{fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:13px;}.cls-2-441{opacity:0.24;}</style></defs>
+        
+        <g id="Mouth_Smile" style="visibility: hidden;"><path class="cls-1-441" d="M1846.08,1506.27c0,15.86-44.86,28.73-100.2,28.73s-100.19-12.87-100.19-28.73"/><path class="cls-2-441" d="M1842.61,1539.4c14.7-6-17.39,43.39-95.87,43.39-53,0-95.87-27.52-95.87-43.39C1650.87,1539.4,1735.77,1582.84,1842.61,1539.4Z"/></g>
+
+        <animate id="smile_anim" attributeName="visibility" from="hidden" to="visible" begin="indefinite" dur="0.4s" repeatCount="indefinite" href="#Mouth_Smile" />
+        <animate id="tooth_grin_anim" attributeName="visibility" from="hidden" to="visible" begin="indefinite" dur="0.4s" repeatCount="indefinite" href="#Mouth_ToothGrin" />
+        </svg>
+        """
+        return svg.replacingOccurrences(of: "</svg>", with: ext)
+    }
+    
+    func playAnimation() {
+        let javascript = """
+            var smileAnimate = document.getElementById('smile_anim');
+            var toothGrinAnimate = document.getElementById('tooth_grin_anim');
+            smileAnimate.beginElement();
+          setTimeout(function() {
+                        toothGrinAnimate.beginElement();
+          }, 200);
+            
+        """
+        webView.evaluateJavaScript(javascript) { (result, error) in
+            if let error = error {
+                print("JavaScript error: \(error)")
+            }
+        }
+    }
+    
+    func stopAnimation() {
+        let javascript = """
+            var smileAnimate = document.getElementById('smile_anim');
+            var toothGrinAnimate = document.getElementById('tooth_grin_anim');
+            smileAnimate.endElement();
+            toothGrinAnimate.endElement();
+        """
+        webView.evaluateJavaScript(javascript) { (result, error) in
+            if let error = error {
+                print("JavaScript error: \(error)")
+            }
+        }
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+//        self.stopAnimation()
     }
     
     private func cleanFlovatar() {
@@ -676,8 +725,16 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     </voice>
 </speak>
 """
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                self?.playAnimation()
+            }
             guard let result = try! synthesizer?.speakSsml(ssml) else {
                 return
+            }
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.stopAnimation()
             }
             
             if result.reason == SPXResultReason.canceled {
