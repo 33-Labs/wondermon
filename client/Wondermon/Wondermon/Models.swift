@@ -121,7 +121,7 @@ struct TransactionId: Codable {
     let txid: String
 }
 
-struct SendTokenResponse: Codable {
+struct FlowTxResponse: Codable {
     let status: UInt8
     let message: String
     let data: TransactionId

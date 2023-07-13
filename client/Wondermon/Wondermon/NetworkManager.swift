@@ -170,11 +170,55 @@ class NetworkManager {
         }
         
         let headers: HTTPHeaders = [.authorization(bearerToken: user.accessToken)]
-        AF.request(endpoint, method: .post, parameters: parameters, headers: headers).responseDecodable(of: SendTokenResponse.self) { response in
+        AF.request(endpoint, method: .post, parameters: parameters, headers: headers).responseDecodable(of: FlowTxResponse.self) { response in
             switch response.result {
             case .success(let sendTokenResponse):
                 if sendTokenResponse.status == 0 {
                     completion(.success(sendTokenResponse.data))
+                }
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+        }
+    }
+    
+    func setPromptTemplate(flovatarId: UInt64, template: String, completion: @escaping (Result<TransactionId, Error>) -> Void) {
+        let endpoint = "\(endpoint)/flow/set_prompt_template"
+        let parameters: [String: Any] = ["flovatarId": flovatarId, "template": template]
+        
+        guard let user = UserDefaults.standard.fetchUser() else {
+            completion(.failure(WMError.unauthorized))
+            return
+        }
+        
+        let headers: HTTPHeaders = [.authorization(bearerToken: user.accessToken)]
+        AF.request(endpoint, method: .post, parameters: parameters, headers: headers).responseDecodable(of: FlowTxResponse.self) { response in
+            switch response.result {
+            case .success(let txResponse):
+                if txResponse.status == 0 {
+                    completion(.success(txResponse.data))
+                }
+            case .failure(let error):
+                return completion(.failure(error))
+            }
+        }
+    }
+    
+    func removePromptTemplate(flovatarId: UInt64, completion: @escaping (Result<TransactionId, Error>) -> Void) {
+        let endpoint = "\(endpoint)/flow/remove_prompt_template"
+        let parameters: [String: Any] = ["flovatarId": flovatarId]
+        
+        guard let user = UserDefaults.standard.fetchUser() else {
+            completion(.failure(WMError.unauthorized))
+            return
+        }
+        
+        let headers: HTTPHeaders = [.authorization(bearerToken: user.accessToken)]
+        AF.request(endpoint, method: .post, parameters: parameters, headers: headers).responseDecodable(of: FlowTxResponse.self) { response in
+            switch response.result {
+            case .success(let txResponse):
+                if txResponse.status == 0 {
+                    completion(.success(txResponse.data))
                 }
             case .failure(let error):
                 return completion(.failure(error))

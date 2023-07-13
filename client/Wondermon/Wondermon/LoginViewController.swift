@@ -201,15 +201,19 @@ class LoginViewController: UIViewController {
     }
     
     private func showSignInSucceed() {
-        let banner = FloatingNotificationBanner(title: "Sign in successfully", style: .success)
-        banner.duration = 1
-        banner.show()
+        DispatchQueue.main.async {
+            let banner = FloatingNotificationBanner(title: "Sign in successfully", style: .success)
+            banner.duration = 1
+            banner.show()
+        }
     }
     
     private func showSignInFailed() {
-        let banner = FloatingNotificationBanner(title: "Sign in failed", style: .warning)
-        banner.duration = 1
-        banner.show()
+        DispatchQueue.main.async {
+            let banner = FloatingNotificationBanner(title: "Sign in failed", style: .warning)
+            banner.duration = 1
+            banner.show()
+        }
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {

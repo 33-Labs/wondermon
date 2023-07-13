@@ -194,8 +194,6 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         return view
     }()
     
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         UserDefaults.standard.deleteMessages()
@@ -332,15 +330,15 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
         contentView.heightAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
-        contentView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -72).isActive = true
+        contentView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -88).isActive = true
         contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         contentView.addSubview(webView)
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: 8).isActive = true
         webView.heightAnchor.constraint(equalTo: webView.widthAnchor).isActive = true
-        webView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -72).isActive = true
-        webView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        webView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        webView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         
         contentView.addSubview(unauthenticatedCoverView)
         unauthenticatedCoverView.translatesAutoresizingMaskIntoConstraints = false
@@ -366,7 +364,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        stackView.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 5).isActive = true
+        stackView.topAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 16).isActive = true
         stackView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         stackView.addArrangedSubview(flobitsButton)
         stackView.addArrangedSubview(tokensButton)
