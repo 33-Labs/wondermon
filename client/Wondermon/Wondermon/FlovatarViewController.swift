@@ -285,9 +285,19 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
 
         <animate id="smile_anim" attributeName="visibility" from="hidden" to="visible" begin="indefinite" dur="0.4s" repeatCount="indefinite" href="#Mouth_Smile" />
         <animate id="tooth_grin_anim" attributeName="visibility" from="hidden" to="visible" begin="indefinite" dur="0.4s" repeatCount="indefinite" href="#Mouth_ToothGrin" />
-        </svg>
         """
-        return svg.replacingOccurrences(of: "</svg>", with: ext)
+        
+        let pattern = "<g id=\"Mouth_ToothGrin\">(.+?)</g>"
+        let regex = try! NSRegularExpression(pattern: pattern, options: [])
+        if let match = regex.firstMatch(in: svg, options: [], range: NSRange(location: 0, length: svg.utf16.count)) {
+            let matchedRange = match.range
+            let insertionIndex = svg.index(svg.startIndex, offsetBy: matchedRange.upperBound + 1)
+            var modifiedSvg = svg
+            modifiedSvg.insert(contentsOf: "\n\(ext)", at: insertionIndex)
+            return modifiedSvg
+        }
+        
+        return svg
     }
     
     func playAnimation() {
