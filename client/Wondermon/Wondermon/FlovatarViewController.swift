@@ -70,6 +70,17 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         return view
     }()
     
+    private lazy var shadowView: UIView = {
+        let view = UIView()
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOpacity = 0.2
+        view.layer.shadowRadius = 10
+        view.layer.shadowOffset = CGSize(width: 0, height: 0)
+        view.layer.cornerRadius = 30
+
+        return view
+    }()
+    
     private lazy var contentView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 30
@@ -247,6 +258,15 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         self.user = UserDefaults.standard.fetchUser()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        //路径阴影
+        let path = UIBezierPath(roundedRect: shadowView.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 50, height: 50))
+        //设置阴影路径
+        shadowView.layer.shadowPath = path.cgPath
+    }
+    
     private func fetchFlovatarData(completion: (() -> Void)? = nil)  {
         guard let user = user,
               let flowAccount = user.flowAccount else {
@@ -336,6 +356,14 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     private func setupUI() {
+        view.addSubview(shadowView)
+        shadowView.backgroundColor = .yellow
+        shadowView.translatesAutoresizingMaskIntoConstraints = false
+        shadowView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
+        shadowView.heightAnchor.constraint(equalTo: shadowView.widthAnchor).isActive = true
+        shadowView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -88).isActive = true
+        shadowView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
         view.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -60).isActive = true
