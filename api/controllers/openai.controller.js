@@ -44,7 +44,8 @@ class OpenaiController {
 
   static async executeCommand(aiMessage, onchainData, contacts, user, flovatarId) {
     const contactNames = contacts.map((c) => c.name)
-    const { message, command } = this.extractCommand(aiMessage);
+    const name = onchainData.flovatarInfo.flovatarData.name || "Flora"
+    const { message, command } = this.extractCommand(aiMessage.replace(`${name}: `, ''));
     console.log('\nmessage', message)
     console.log('\ncommand', command)
     if (command && command.action == 'set_flobit' && command.serial) {
