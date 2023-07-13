@@ -43,6 +43,7 @@
 		91F263802A5CEC5A00F44A84 /* StoreCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F2637F2A5CEC5A00F44A84 /* StoreCollectionHeaderView.swift */; };
 		91F263822A5CEC6F00F44A84 /* StoreItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F263812A5CEC6F00F44A84 /* StoreItemCell.swift */; };
 		91F263862A5CEC8D00F44A84 /* StoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F263852A5CEC8D00F44A84 /* StoreViewController.swift */; };
+		91F263882A600E6000F44A84 /* PromptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F263872A600E6000F44A84 /* PromptViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +98,7 @@
 		91F2637F2A5CEC5A00F44A84 /* StoreCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreCollectionHeaderView.swift; sourceTree = "<group>"; };
 		91F263812A5CEC6F00F44A84 /* StoreItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreItemCell.swift; sourceTree = "<group>"; };
 		91F263852A5CEC8D00F44A84 /* StoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreViewController.swift; sourceTree = "<group>"; };
+		91F263872A600E6000F44A84 /* PromptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptViewController.swift; sourceTree = "<group>"; };
 		B099ACD620D6B1407471BE40 /* Pods-Wondermon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wondermon.release.xcconfig"; path = "Target Support Files/Pods-Wondermon/Pods-Wondermon.release.xcconfig"; sourceTree = "<group>"; };
 		C79D0B9318F9E4AAE987C41E /* Pods-Wondermon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wondermon.debug.xcconfig"; path = "Target Support Files/Pods-Wondermon/Pods-Wondermon.debug.xcconfig"; sourceTree = "<group>"; };
 		D21C604EC87BED43C70E47A2 /* Pods_Wondermon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Wondermon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,6 +179,7 @@
 				91385FBE2A5A860500DF5259 /* UserDefaults+Wondermon.swift */,
 				91385FC02A5A988E00DF5259 /* ProfileViewController.swift */,
 				91C1F8902A58688300607776 /* FlovatarViewController.swift */,
+				91F263872A600E6000F44A84 /* PromptViewController.swift */,
 				91385FC22A5A999600DF5259 /* FlobitsCollectionViewController.swift */,
 				91385FC42A5A99C600DF5259 /* FlobitCollectionViewCell.swift */,
 				91385FC62A5AA5F800DF5259 /* FlobitsHeaderView.swift */,
@@ -420,6 +423,7 @@
 				91F263722A5C20B600F44A84 /* ContactViewController.swift in Sources */,
 				91F263702A5BF8FC00F44A84 /* TokensViewController.swift in Sources */,
 				91385FC72A5AA5F800DF5259 /* FlobitsHeaderView.swift in Sources */,
+				91F263882A600E6000F44A84 /* PromptViewController.swift in Sources */,
 				91385FCC2A5AAEF100DF5259 /* Kingfisher+Wondermon.swift in Sources */,
 				91F263862A5CEC8D00F44A84 /* StoreViewController.swift in Sources */,
 				91385FBD2A5A5A6600DF5259 /* NetworkManager.swift in Sources */,

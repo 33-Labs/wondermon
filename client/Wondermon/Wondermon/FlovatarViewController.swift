@@ -347,6 +347,18 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         unauthenticatedCoverView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         unauthenticatedCoverView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         
+        let promptButton = UIButton()
+        promptButton.tintColor = .wm_purple
+        promptButton.addTarget(self, action: #selector(promptButtonTapped), for: .touchUpInside)
+        let image = UIImage(named: "flovatar_simple")
+        promptButton.setImage(image, for: .normal)
+        contentView.addSubview(promptButton)
+        promptButton.translatesAutoresizingMaskIntoConstraints = false
+        promptButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        promptButton.heightAnchor.constraint(equalTo: promptButton.widthAnchor).isActive = true
+        promptButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8).isActive = true
+        promptButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
+        
         contentView.addSubview(blurView)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
@@ -575,6 +587,16 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     @objc func profileButtonTapped(_ sender: UIBarButtonItem) {
         if let _ = user {
             let vc = ProfileViewController()
+            present(vc, animated: true, completion: nil)
+        } else {
+            let vc = LoginViewController()
+            present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    @objc func promptButtonTapped(_ sender: UIButton) {
+        if let _ = user, let flovatarId = flovatarId {
+            let vc = PromptViewController(flovatarId: flovatarId)
             present(vc, animated: true, completion: nil)
         } else {
             let vc = LoginViewController()
