@@ -291,6 +291,132 @@ class FlowService {
     }
   }
 
+  static async setPromptTemplate(userData, flovatarId, template) {
+    const { email } = userData
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { flowAccount: true }
+    })
+
+    if (!user) {
+      throw createError.NotFound('User not found')
+    }
+
+    if (!user.flowAccount) {
+      throw createError.NotFound('flow account not found')
+    }
+
+    let keyIndex = null
+    for (const [key, value] of Object.entries(this.AdminKeys)) {
+      if (value == false) {
+        keyIndex = parseInt(key)
+        break
+      }
+    }
+
+    if (keyIndex == null) {
+      return
+    }
+
+    this.AdminKeys[keyIndex] = true
+
+    let signer = await this.getAdminAccountWithKeyIndex(keyIndex)
+    let code = `
+    import WondermonFlovatarPromptTemplate from 0x504dadc2410ae4f6
+
+    transaction(flovatarId: UInt64, template: String) {
+    
+      let adminRef: &WondermonFlovatarPromptTemplate.Admin
+    
+      prepare(acct: AuthAccount) {
+        self.adminRef = acct
+          .borrow<&WondermonFlovatarPromptTemplate.Admin>(from: WondermonFlovatarPromptTemplate.AdminStoragePath)
+          ?? panic("Could not borrow admin")
+      }
+    
+      execute {
+        self.adminRef.setTemplate(flovatarId: flovatarId, template: template)
+      }
+    }
+    `
+
+    try {
+      const txid = await signer.sendTransaction(code, (arg, t) => [
+        arg(`${flovatarId}`, t.UInt64),
+        arg(`${template}`, t.String),
+      ])
+      this.AdminKeys[keyIndex] = false
+
+      return txid
+    } catch (e) {
+      this.AdminKeys[keyIndex] = false
+      throw { statusCode: 500, message: `set prompt template failed ${e}` }
+    } 
+  }
+
+  static async removePromptTemplate(userData, flovatarId) {
+    const { email } = userData
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { flowAccount: true }
+    })
+
+    if (!user) {
+      throw createError.NotFound('User not found')
+    }
+
+    if (!user.flowAccount) {
+      throw createError.NotFound('flow account not found')
+    }
+
+    let keyIndex = null
+    for (const [key, value] of Object.entries(this.AdminKeys)) {
+      if (value == false) {
+        keyIndex = parseInt(key)
+        break
+      }
+    }
+
+    if (keyIndex == null) {
+      return
+    }
+
+    this.AdminKeys[keyIndex] = true
+
+    let signer = await this.getAdminAccountWithKeyIndex(keyIndex)
+    let code = `
+    import WondermonFlovatarPromptTemplate from 0x504dadc2410ae4f6
+
+    transaction(flovatarId: UInt64) {
+
+      let adminRef: &WondermonFlovatarPromptTemplate.Admin
+    
+      prepare(acct: AuthAccount) {
+        self.adminRef = acct
+          .borrow<&WondermonFlovatarPromptTemplate.Admin>(from: WondermonFlovatarPromptTemplate.AdminStoragePath)
+          ?? panic("Could not borrow admin")
+      }
+    
+      execute {
+        self.adminRef.removeTemplate(flovatarId: flovatarId)
+      }
+    }
+    `
+
+    try {
+      const txid = await signer.sendTransaction(code, (arg, t) => [
+        arg(`${flovatarId}`, t.UInt64)
+      ])
+      this.AdminKeys[keyIndex] = false
+
+      return txid
+    } catch (e) {
+      this.AdminKeys[keyIndex] = false
+      throw { statusCode: 500, message: `remove prompt template failed ${e}` }
+    } 
+  }
+
+
   static async getTemplate(flovatarId) {
     let script = `
     import WondermonFlovatarPromptTemplate from 0x504dadc2410ae4f6
