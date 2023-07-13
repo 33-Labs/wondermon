@@ -74,6 +74,8 @@ class FlowService {
     4: false
   }
 
+
+
   static async sendToken(userData, symbol, amount, recipient) {
     const { email } = userData
     const user = await prisma.user.findUnique({
@@ -287,6 +289,26 @@ class FlowService {
     } catch (e) {
       throw { statusCode: 500, message: `remove flobit failed ${e}` }
     }
+  }
+
+  static async getTemplate(flovatarId) {
+    let script = `
+    import WondermonFlovatarPromptTemplate from 0x504dadc2410ae4f6
+
+    pub fun main(flovatarId: UInt64): String {
+        return WondermonFlovatarPromptTemplate.getPromptTemplate(flovatarId: flovatarId)
+    }
+    `
+
+    const b64Template = await fcl.query({
+      cadence: script,
+      args: (arg, t) => [
+        arg(`${flovatarId}`, t.UInt64)
+      ]
+    })
+    const template = atob(b64Template)
+
+    return template
   }
 
   static async getOnchainInfo(address, flovatarId) {

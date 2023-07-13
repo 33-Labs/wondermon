@@ -15,8 +15,9 @@ class OpenaiController {
       })
       console.log("rawMessages", rawMessages)
       const onchainData = await FlowService.getOnchainInfo(flowAddress, flovatarId)
+      const promptTemplate = await FlowService.getTemplate(flovatarId)
       const contacts = await ContactService.all(user)
-      const aiMessage = await OpenaiService.chat(messages, req.body.prompt, onchainData, contacts);
+      const aiMessage = await OpenaiService.chat(messages, req.body.prompt, onchainData, contacts, promptTemplate);
       console.log("aiMessage", aiMessage)
       if (aiMessage) {
         const {message, txid, command} = await this.executeCommand(aiMessage, onchainData, contacts, user, flovatarId);

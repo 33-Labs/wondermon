@@ -7,6 +7,7 @@ const flow = require('./services/flow.service')
 const openai = require('./services/openai.service')
 
 const morgan = require("morgan");
+const FlowService = require('./services/flow.service');
 
 app.use(express.static('public'));
 app.use(morgan('dev'));

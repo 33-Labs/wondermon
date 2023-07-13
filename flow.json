@@ -1,0 +1,48 @@
+{
+	"contracts": {
+        "WondermonFlovatarPromptTemplate": {
+			"source": "./cadence/contracts/WondermonFlovatarPromptTemplate.cdc",
+			"aliases": {
+				"mainnet": "0x504dadc2410ae4f6",
+				"testnet": "0xb1891ca866d4647e"
+			}
+		}
+	},
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+		"admin": {
+            "address": "0x504dadc2410ae4f6",
+            "key": {
+                "type": "file",
+                "location": "./admin.key"
+            }
+		},
+		"admin-testnet": {
+            "address": "b1891ca866d4647e",
+            "key": {
+                "type": "file",
+                "location": "./admin-testnet.key"
+            }
+		},
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": "fae10f262a46ca34e438a48daff66d6672340a49e634bb7d0f7f9eeb78d7fa1b"
+		}
+	},
+	"deployments": {
+        "mainnet": {
+            "admin": [
+                "WondermonFlovatarPromptTemplate"
+            ]
+        },
+		"testnet": {
+			"admin-testnet": [
+                "WondermonFlovatarPromptTemplate"
+			]
+		}
+	}
+}
