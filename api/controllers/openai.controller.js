@@ -44,7 +44,7 @@ class OpenaiController {
 
   static async executeCommand(aiMessage, onchainData, contacts, user, flovatarId) {
     const contactNames = contacts.map((c) => c.name)
-    const name = onchainData.flovatarInfo.flovatarData.name || "Flora"
+    const name = onchainData.flovatarInfo.flovatarData.name || "Frank"
     const { message, command } = this.extractCommand(aiMessage.replace(`${name}: `, ''));
     console.log('\nmessage', message)
     console.log('\ncommand', command)

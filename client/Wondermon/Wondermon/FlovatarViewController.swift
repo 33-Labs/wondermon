@@ -653,7 +653,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                 
                 if UserDefaults.standard.store(message: humanMessage) &&
                     UserDefaults.standard.store(message: aiMessage) {
-                    sSelf.speakView.text = "Flora: \(message.message)"
+                    sSelf.speakView.text = "Frank: \(message.message)"
                     DispatchQueue.global().async { [weak self] in
                         self?.speak(text: message.message)
                     }
@@ -736,7 +736,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     private func showAndDoSpeak(text: String) {
         DispatchQueue.main.async { [weak self] in
-            self?.speakView.text = "Flora: \(text)"
+            self?.speakView.text = "Frank: \(text)"
             self?.speak(text: text)
         }
     }

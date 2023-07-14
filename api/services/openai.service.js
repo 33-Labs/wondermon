@@ -67,7 +67,7 @@ class OpenaiService {
   
     const tokensPrompt = this.generateTokensPrompt(onchainData, contacts)
     const flovatarPrompt = this.generateFlovatarPrompt(onchainData)
-    const name = onchainData.flovatarInfo.flovatarData.name || "Flora"
+    const name = onchainData.flovatarInfo.flovatarData.name || "Frank"
     const systemPrompt = this.getSystemPrompt(name, flovatarPrompt, tokensPrompt, promptTemplate)
     const chatPrompt = ChatPromptTemplate.fromPromptMessages([
       SystemMessagePromptTemplate.fromTemplate(systemPrompt),
