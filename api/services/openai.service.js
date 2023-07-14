@@ -37,8 +37,7 @@ class OpenaiService {
     const chat = new ChatOpenAI({
       streaming: true,
       maxRetries: 1,
-      // modelName: "gpt-3.5-turbo-16k",
-      modelName: "gpt-4-32k",
+      modelName: "gpt-3.5-turbo-16k",
       callbackManager: CallbackManager.fromHandlers({
         handleLLMNewToken: async (token, runId, parentRunId) => {
           await writer.ready;
