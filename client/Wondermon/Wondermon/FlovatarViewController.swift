@@ -32,6 +32,8 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         }
     }
     
+    private var flovatarName: String = "Frank"
+    
     private var convertedText: String? {
         willSet {
             guard shouldRecord else {
@@ -281,7 +283,9 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                 if (tokenIds.count > 0) {
                     let tokenId = tokenIds[0]
                     flovatarId = tokenId
-                    let rawSvg = try await self.fetchFlovatarSvg(rawAddress: rawAddress, flovatarId: tokenId)
+                    let flovatar = try await self.fetchBasicFlovatar(rawAddress: rawAddress, flovatarId: tokenId)
+                    let rawSvg = flovatar.svg
+                    flovatarName = flovatar.name == "" ? "Frank" : flovatar.name
                     let svg = addSvgAnimation(svg: rawSvg)
                     DispatchQueue.main.async { [weak self] in
                         guard let sSelf = self else { return }
@@ -436,8 +440,8 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         speakView.bottomAnchor.constraint(equalTo: audioButton.topAnchor, constant: -16).isActive = true
     }
     
-    private func fetchFlovatarSvg(rawAddress: String, flovatarId: UInt64) async throws -> String {
-        let rawScript = fetchFlovatarSvgScript()
+    private func fetchBasicFlovatar(rawAddress: String, flovatarId: UInt64) async throws -> BasicFlovatar {
+        let rawScript = fetchBasicFlovatarScript()
         let script = Flow.Script(text: rawScript)
         let address = Flow.Address(hex: rawAddress)
         
@@ -445,8 +449,8 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
             .init(value: .address(address)),
             .init(value: .uint64(flovatarId))
         ])
-        let svg: String = try result.decode()
-        return svg
+        let basicFlovatar: BasicFlovatar = try result.decode()
+        return basicFlovatar
         
     }
     
@@ -473,11 +477,20 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
         """
     }
     
-    private func fetchFlovatarSvgScript() -> String {
+    private func fetchBasicFlovatarScript() -> String {
         return """
         import Flovatar from 0x921ea449dffec68a
+        pub struct BasicFlovatar {
+            pub let name: String
+            pub let svg: String
+        
+            init(name: String, svg: String) {
+                self.name = name
+                self.svg = svg
+            }
+        }
 
-        pub fun main(address: Address, flovatarId: UInt64): String {
+        pub fun main(address: Address, flovatarId: UInt64): BasicFlovatar {
           let account = getAuthAccount(address)
 
           let flovatarCap = account
@@ -488,7 +501,9 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
           let flovatar = flovatarCap.borrowFlovatar(id: flovatarId)
             ?? panic("Could not borrow flovatar with that ID from collection")
 
-          return flovatar.getSvg()
+          let svg = flovatar.getSvg()
+          let res = BasicFlovatar(name: flovatar.getName(), svg: svg)
+          return res
         }
         """
     }
@@ -653,7 +668,7 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                 
                 if UserDefaults.standard.store(message: humanMessage) &&
                     UserDefaults.standard.store(message: aiMessage) {
-                    sSelf.speakView.text = "Frank: \(message.message)"
+                    sSelf.speakView.text = "\(sSelf.flovatarName): \(message.message)"
                     DispatchQueue.global().async { [weak self] in
                         self?.speak(text: message.message)
                     }
@@ -736,8 +751,9 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     private func showAndDoSpeak(text: String) {
         DispatchQueue.main.async { [weak self] in
-            self?.speakView.text = "Frank: \(text)"
-            self?.speak(text: text)
+            guard let sSelf = self else { return }
+            sSelf.speakView.text = "\(sSelf.flovatarName): \(text)"
+            sSelf.speak(text: text)
         }
     }
     

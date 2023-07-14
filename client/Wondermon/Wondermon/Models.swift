@@ -127,3 +127,8 @@ struct FlowTxResponse: Codable {
     let data: TransactionId
 }
 
+struct BasicFlovatar: Codable {
+    let name: String
+    let svg: String
+}
+
