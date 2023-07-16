@@ -294,11 +294,21 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                     }
                 } else {
                     cleanFlovatar()
+                    alertNoFlovatar()
                 }
             } catch {
                 cleanFlovatar()
+                alertNoFlovatar()
             }
         }
+    }
+    
+    private func alertNoFlovatar() {
+        let banner = FloatingNotificationBanner(title: "No Flovatar Found", subtitle: "Please transfer 1 Flovatar to your address (which can be found on the Profile page)", style: .warning)
+        banner.dismissOnSwipeUp = true
+        banner.dismissOnTap = true
+        banner.duration = 4
+        banner.show()
     }
     
     private func addSvgAnimation(svg: String) -> String {
@@ -510,16 +520,21 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     
     @objc func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state == .began {
-            shouldRecord = true
-            if let _ = user {
-                if !audioEngine.isRunning {
-                    startRecording()
-                }
-                audioImageView.image = stopImage
-            } else {
+            guard let _ = user else {
                 let vc = LoginViewController()
                 present(vc, animated: true, completion: nil)
+                return
             }
+            
+            guard let _ = flovatarId else {
+                alertNoFlovatar()
+                return
+            }
+            shouldRecord = true
+            if !audioEngine.isRunning {
+                startRecording()
+            }
+            audioImageView.image = stopImage
         } else if gestureRecognizer.state == .changed {
             let touchLocation = gestureRecognizer.location(in: self.view)
             if !audioButton.frame.contains(touchLocation) {
@@ -648,13 +663,19 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
     }
     
     @objc func promptButtonTapped(_ sender: UIButton) {
-        if let _ = user, let flovatarId = flovatarId {
-            let vc = PromptViewController(flovatarId: flovatarId)
-            present(vc, animated: true, completion: nil)
-        } else {
+        guard let _ = user else {
             let vc = LoginViewController()
             present(vc, animated: true, completion: nil)
+            return
         }
+        
+        guard let flovatarId = flovatarId else {
+            alertNoFlovatar()
+            return
+        }
+        
+        let vc = PromptViewController(flovatarId: flovatarId)
+        present(vc, animated: true, completion: nil)
     }
     
     private func chat(prompt: String, flovatarId: UInt64) {
@@ -853,6 +874,9 @@ class FlovatarViewController: UIViewController, UINavigationBarDelegate, SFSpeec
                 self?.playAnimation()
             }
             guard let result = try! synthesizer?.speakSsml(ssml) else {
+                DispatchQueue.main.async { [weak self] in
+                    self?.stopAnimation()
+                }
                 return
             }
             
