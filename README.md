@@ -8,6 +8,8 @@ Note: You need to have Testflight installed for testing
 
 ### Test Wondermon Account
 
+You are free to register and use Wondermon, but currently, you will need to transfer a Flovatar to the Wondermon address first. If you prefer not to do so, I have a test account here with a pre-existing Flovatar and some Flobits available for use.
+
 Please contact lanford33 on Flow's Discord or send a direct message to https://twitter.com/33_labs on Twitter for the test account
 
 ### More Details:
